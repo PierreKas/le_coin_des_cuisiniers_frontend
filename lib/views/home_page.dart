@@ -10,7 +10,6 @@ import 'package:le_coin_des_cuisiniers_app/database/sync_to_firebase.dart';
 import 'package:le_coin_des_cuisiniers_app/views/acceuil.dart';
 import 'package:le_coin_des_cuisiniers_app/views/login.dart';
 import 'package:le_coin_des_cuisiniers_app/views/product/products_list.dart';
-import 'package:le_coin_des_cuisiniers_app/views/transactions/add_trans.dart';
 import 'package:le_coin_des_cuisiniers_app/views/transactions/add_transactions.dart';
 import 'package:le_coin_des_cuisiniers_app/views/user/users_list.dart';
 

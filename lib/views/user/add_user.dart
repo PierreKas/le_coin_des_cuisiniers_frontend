@@ -8,7 +8,6 @@ import 'package:le_coin_des_cuisiniers_app/models/users.dart';
 import 'package:le_coin_des_cuisiniers_app/views/acceuil.dart';
 import 'package:le_coin_des_cuisiniers_app/views/base_layout.dart';
 import 'package:le_coin_des_cuisiniers_app/views/product/products_list.dart';
-import 'package:le_coin_des_cuisiniers_app/views/transactions/add_trans.dart';
 import 'package:le_coin_des_cuisiniers_app/views/transactions/add_transactions.dart';
 
 class AddUser extends StatefulWidget {
