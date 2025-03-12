@@ -83,12 +83,12 @@ class User {
   Map<String, dynamic> toJson() {
     return {
       'id': id,
-      'full_name': fullName,
-      'phone_number': phoneNumber,
+      'fullName': fullName,
+      'phoneNumber': phoneNumber,
       'email': email,
       'address': address,
       'password': password,
-      'user_status': userStatus,
+      'userStatus': userStatus,
       'role': role,
     };
   }

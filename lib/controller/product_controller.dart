@@ -9,9 +9,8 @@ class ProductController {
   static List<Product> productsList = [];
   Future<void> addProduct(Product product, BuildContext context) async {
     if (!_isValidProduct(product)) {
-      // MySnackBar.showErrorMessage(
-      //   'Complète toutes  les cases sans erreur'
-      // );
+      MySnackBar.showErrorMessage(
+          'Complète toutes  les cases sans erreur', context);
     } else {
       await productService.addProduct(product);
       Navigator.push(
@@ -35,8 +34,8 @@ class ProductController {
   Future<void> updateProduct(
       int prodId, Product product, BuildContext context) async {
     if (!_isValidProduct(product)) {
-      // MySnackBar.showErrorMessage(
-      //     'Veuillez remplir tous les champs correctement', context);
+      MySnackBar.showErrorMessage(
+          'Veuillez remplir tous les champs correctement', context);
       return;
     }
 

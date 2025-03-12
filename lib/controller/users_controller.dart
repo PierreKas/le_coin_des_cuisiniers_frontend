@@ -17,6 +17,7 @@ class UsersController {
       MySnackBar.showErrorMessage('Complète toutes les cases', context);
     } else {
       await _userService.addUser(user);
+
       Navigator.push(
           context, MaterialPageRoute(builder: (context) => const HomePage()));
     }

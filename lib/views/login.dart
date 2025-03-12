@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:le_coin_des_cuisiniers_app/components/buttons.dart';
+import 'package:le_coin_des_cuisiniers_app/components/loading.dart';
 import 'package:le_coin_des_cuisiniers_app/components/text_hearder.dart';
 import 'package:le_coin_des_cuisiniers_app/components/textfields.dart';
 import 'package:le_coin_des_cuisiniers_app/controller/users_controller.dart';
@@ -58,8 +59,25 @@ class _LoginPageState extends State<LoginPage> {
                   const SizedBox(height: 20),
                   MyButtons(
                       onPressed: () {
-                        UsersController().login(_phoneController.text,
-                            _passwordController.text, context);
+                        showLoadingDialog(context);
+                        try {
+                          UsersController().login(_phoneController.text,
+                              _passwordController.text, context);
+
+                          if (context.mounted) {
+                            Navigator.of(context).pop();
+                          }
+                        } on Exception catch (e) {
+                          if (context.mounted) {
+                            Navigator.of(context).pop();
+                          }
+                        }
+                        // try {
+                        //   UsersController().login(_phoneController.text,
+                        //       _passwordController.text, context);
+                        // } on Exception catch (e) {
+                        //   print(e);
+                        // }
                       },
                       text: 'Login')
                 ],

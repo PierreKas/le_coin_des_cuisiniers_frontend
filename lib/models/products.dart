@@ -138,15 +138,15 @@ class Product {
 
   Map<String, dynamic> toJson() {
     return {
-      'product_code': productCode,
-      'product_name': productName,
-      'purchase_price': purchasePrice,
-      'purchased_quantity': purchasedQuantity,
-      'purchased_date': purchasedDate?.toIso8601String(),
-      'selling_price': sellingPrice,
+      'productCode': productCode,
+      'productName': productName,
+      'purchasePrice': purchasePrice,
+      'purchasedQuantity': purchasedQuantity,
+      'purchasedDate': purchasedDate?.toIso8601String(),
+      'sellingPrice': sellingPrice,
       'brand': brand,
-      'remaining_quantity': remainingQuantity,
-      'other_expenses': otherExpenses,
+      'remainingQuantity': remainingQuantity,
+      'otherExpenses': otherExpenses,
       'id': id,
     };
   }

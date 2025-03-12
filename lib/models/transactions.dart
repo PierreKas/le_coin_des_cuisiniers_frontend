@@ -105,16 +105,16 @@ class Transactions {
 
   Map<String, dynamic> toJson() {
     return {
-      'bill_code': billCode,
-      'product_code': productCode,
+      'billCode': billCode,
+      'productCode': productCode,
       //  'unit_price': unitPrice,
       'quantity': quantity,
-      'selling_date': sellingDate, //?.toIso8601String(),
-      'total_price': totalPrice,
-      'user_id': userId,
+      'sellingDate': sellingDate, //?.toIso8601String(),
+      'totalPrice': totalPrice,
+      'userId': userId,
       'TransactionId': transactionId,
       // 'product_name': productName,
-      'product_id': productId,
+      'productId': productId,
     };
   }
 }
