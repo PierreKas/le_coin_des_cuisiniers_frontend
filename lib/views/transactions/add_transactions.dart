@@ -243,13 +243,16 @@ class _AddTransactionState extends State<AddTransaction> {
                       double unitPrice = double.tryParse(unitPriceStr) ?? 0.0;
                       double totalPrice = double.tryParse(totalPriceStr) ?? 0.0;
 
+                      selectedProduct = productsList.firstWhere(
+                          (product) => product.productCode == productCode);
+
                       setState(() {
                         tranId++;
                         print(tranId);
                       });
                       Transactions newTransaction = Transactions(
                           productCode: productCode,
-                          // product.productName: productName,
+                          product: selectedProduct,
                           quantity: quantity,
                           sellingDate: DateTime.now(),
                           totalPrice: totalPrice,
@@ -329,11 +332,11 @@ class _AddTransactionState extends State<AddTransaction> {
             ),
           ),
         ),
-        child: Icon(
+        backgroundColor: chocolateColor,
+        child: const Icon(
           Icons.shopping_cart_sharp,
           color: Colors.white,
         ),
-        backgroundColor: chocolateColor,
       ),
       body: Stack(
         children: [

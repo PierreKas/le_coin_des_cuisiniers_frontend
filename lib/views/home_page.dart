@@ -5,10 +5,7 @@ import 'package:le_coin_des_cuisiniers_app/colors/colors.dart';
 import 'package:le_coin_des_cuisiniers_app/components/appbar_text.dart';
 import 'package:le_coin_des_cuisiniers_app/components/snack_bar.dart';
 import 'package:le_coin_des_cuisiniers_app/controller/users_controller.dart';
-import 'package:le_coin_des_cuisiniers_app/database/sync_helper.dart';
-import 'package:le_coin_des_cuisiniers_app/database/sync_to_firebase.dart';
 import 'package:le_coin_des_cuisiniers_app/views/acceuil.dart';
-import 'package:le_coin_des_cuisiniers_app/views/login.dart';
 import 'package:le_coin_des_cuisiniers_app/views/product/products_list.dart';
 import 'package:le_coin_des_cuisiniers_app/views/transactions/add_transactions.dart';
 import 'package:le_coin_des_cuisiniers_app/views/user/users_list.dart';
@@ -131,43 +128,9 @@ class _HomePageState extends State<HomePage> {
                 if (UsersController.userRole == 'ADMIN')
                   TextButton(
                     style: TextButton.styleFrom(backgroundColor: Colors.white),
-                    onPressed: () async {
-                      showDialog(
-                        context: context,
-                        barrierDismissible: false,
-                        builder: (BuildContext context) {
-                          return const Column(
-                            children: [
-                              Text(
-                                'Patientez pendant que les données sont entrain d\'etre envoyées en ligne',
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.bold,
-                                    decoration: TextDecoration.none),
-                              ),
-                              CircularProgressIndicator(color: chocolateColor),
-                            ],
-                          );
-                        },
-                      );
-
-                      try {
-                        // await SyncHelper.instance.syncData();
-                        // await FirestoreSyncHelper.instance.syncData();
-                        Navigator.pop(context);
-                        MySnackBar.showSuccessMessage(
-                            'Synchronisation réussie', context);
-                      } catch (e) {
-                        print('Sync failed: $e');
-                        Navigator.pop(context);
-                        MySnackBar.showErrorMessage(
-                            'Erreur de synchronisation, veuillez vérifier ta connexion internet',
-                            context);
-                      }
-                    },
+                    onPressed: () async {},
                     child: const Text(
-                      'Synchroniser en ligne',
+                      'Dashboard',
                       style: TextStyle(color: chocolateColor),
                     ),
                   ),

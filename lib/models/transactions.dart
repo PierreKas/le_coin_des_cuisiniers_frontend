@@ -51,7 +51,7 @@ class Transactions {
       'productCode': productCode,
       //  'unit_price': unitPrice,
       'quantity': quantity,
-      'sellingDate': sellingDate, //?.toIso8601String(),
+      'sellingDate': sellingDate!.toIso8601String(), //?.toIso8601String(),
       'totalPrice': totalPrice,
       'userId': userId,
       'TransactionId': transactionId,
