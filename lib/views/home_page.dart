@@ -129,49 +129,49 @@ class _HomePageState extends State<HomePage> {
             padding: const EdgeInsets.only(right: 10.0),
             child: Row(
               children: [
-                //if (UsersController.userRole == 'ADMIN')
-                TextButton(
-                  style: TextButton.styleFrom(backgroundColor: Colors.white),
-                  onPressed: () async {
-                    showDialog(
-                      context: context,
-                      barrierDismissible: false,
-                      builder: (BuildContext context) {
-                        return const Column(
-                          children: [
-                            Text(
-                              'Patientez pendant que les données sont entrain d\'etre envoyées en ligne',
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.bold,
-                                  decoration: TextDecoration.none),
-                            ),
-                            CircularProgressIndicator(color: chocolateColor),
-                          ],
-                        );
-                      },
-                    );
+                if (UsersController.userRole == 'ADMIN')
+                  TextButton(
+                    style: TextButton.styleFrom(backgroundColor: Colors.white),
+                    onPressed: () async {
+                      showDialog(
+                        context: context,
+                        barrierDismissible: false,
+                        builder: (BuildContext context) {
+                          return const Column(
+                            children: [
+                              Text(
+                                'Patientez pendant que les données sont entrain d\'etre envoyées en ligne',
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.bold,
+                                    decoration: TextDecoration.none),
+                              ),
+                              CircularProgressIndicator(color: chocolateColor),
+                            ],
+                          );
+                        },
+                      );
 
-                    try {
-                      // await SyncHelper.instance.syncData();
-                      // await FirestoreSyncHelper.instance.syncData();
-                      Navigator.pop(context);
-                      MySnackBar.showSuccessMessage(
-                          'Synchronisation réussie', context);
-                    } catch (e) {
-                      print('Sync failed: $e');
-                      Navigator.pop(context);
-                      MySnackBar.showErrorMessage(
-                          'Erreur de synchronisation, veuillez vérifier ta connexion internet',
-                          context);
-                    }
-                  },
-                  child: const Text(
-                    'Synchroniser en ligne',
-                    style: TextStyle(color: chocolateColor),
+                      try {
+                        // await SyncHelper.instance.syncData();
+                        // await FirestoreSyncHelper.instance.syncData();
+                        Navigator.pop(context);
+                        MySnackBar.showSuccessMessage(
+                            'Synchronisation réussie', context);
+                      } catch (e) {
+                        print('Sync failed: $e');
+                        Navigator.pop(context);
+                        MySnackBar.showErrorMessage(
+                            'Erreur de synchronisation, veuillez vérifier ta connexion internet',
+                            context);
+                      }
+                    },
+                    child: const Text(
+                      'Synchroniser en ligne',
+                      style: TextStyle(color: chocolateColor),
+                    ),
                   ),
-                ),
                 const SizedBox(
                   width: 15,
                 ),
