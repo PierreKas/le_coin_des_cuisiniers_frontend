@@ -38,7 +38,7 @@ class MyApp extends StatelessWidget {
         selectionColor: chocolateColor.withOpacity(0.7),
         // cursorColor: chocolateColor,
       )),
-      home: const HomePage(),
+      home: const LoginPage(),
       debugShowCheckedModeBanner: false,
     );
   }
