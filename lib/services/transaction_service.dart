@@ -27,4 +27,28 @@ class TransactionService {
     }
     throw Exception('Try to handle null values');
   }
+
+  Future<Map<String, dynamic>> saveTransactionBatch(
+      List<Transactions> transactions) async {
+    final url = Uri.parse('$baseUrl/batch');
+
+    try {
+      final response = await http.post(
+        url,
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode(
+            transactions.map((transaction) => transaction.toJson()).toList()),
+      );
+
+      if (response.statusCode == 201) {
+        // Successfully created
+        return jsonDecode(response.body);
+      } else {
+        Map<String, dynamic> errorData = jsonDecode(response.body);
+        throw Exception(errorData['message'] ?? 'Failed to save transactions');
+      }
+    } catch (e) {
+      throw Exception('Error submitting transactions: $e');
+    }
+  }
 }
