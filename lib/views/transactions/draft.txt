@@ -1,0 +1,41 @@
+DELIMITER $$
+CREATE TRIGGER decrease_product_quantity 
+BEFORE INSERT 
+ON transactions
+FOR EACH ROW
+BEGIN
+	
+	IF (SELECT purchased_quantity FROM products WHERE product_code=NEW.product_code) <=3
+	THEN
+	SIGNAL SQLSTATE '45000'
+	SET MESSAGE_TEXT='Le stock est presque epuisé';
+	ELSEIF NEW.quantity>(SELECT purchased_quantity FROM products WHERE product_code=NEW.product_code) 
+	THEN
+	SIGNAL SQLSTATE '45000'
+	SET MESSAGE_TEXT='Le stock n'est pas suffisant';
+	ELSE
+		UPDATE products SET remaining_quantity = purchased_quantity - NEW.purchased_quantity  WHERE product_code=NEW.product_code;
+	END IF;
+END$$
+
+=======
+CREATE TRIGGER IF NOT EXISTS  decrease_product_quantity 
+BEFORE INSERT ON transactions
+BEGIN
+    -- Check if stock is running low (<=3)
+    SELECT CASE 
+        WHEN (SELECT remaining_quantity FROM products WHERE product_code = NEW.product_code) <= 3
+        THEN RAISE(ABORT, 'Le stock est presque epuisé')
+    END;
+    
+    -- Check if requested quantity exceeds available stock
+    SELECT CASE 
+        WHEN NEW.quantity > (SELECT remaining_quantity FROM products WHERE product_code = NEW.product_code)
+        THEN RAISE(ABORT, 'Le stock n''est pas suffisant')
+    END;
+    
+    -- Update the remaining quantity
+    UPDATE products 
+    SET remaining_quantity = remaining_quantity - NEW.quantity 
+    WHERE product_code = NEW.product_code;
+END;

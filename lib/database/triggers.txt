@@ -1,0 +1,9 @@
+CREATE TABLE product_history (id INTEGER PRIMARY KEY AUTOINCREMENT, product_code TEXT, new_product_name TEXT,old_product_name TEXT, new_purchase_price TEXT, old_purchase_price TEXT, new_other_expenses TEXT, old_other_expenses TEXT,new_selling_price  INTEGER, old_selling_price  INTEGER,new_purchased_quantity INTEGER , old_purchased_quantity INTEGER , new_remaining_quantity INTEGER, old_remaining_quantity INTEGER,new_purchased_date TEXT, old_purchased_date TEXT, new_brand TEXT,old_brand TEXT);
+==============
+CREATE TRIGGER IF NOT EXISTS  product_restock_history
+AFTER UPDATE ON products
+FOR EACH ROW
+WHEN NEW.purchased_date != OLD.purchased_date
+BEGIN
+INSERT INTO product_history (product_code ,new_product_name ,old_product_name ,new_purchase_price ,old_purchase_price ,new_other_expenses ,old_other_expenses ,new_selling_price  ,old_selling_price ,new_purchased_quantity , old_purchased_quantity , new_remaining_quantity ,old_remaining_quantity ,new_purchased_date ,old_purchased_date ,new_brand ,old_brand) VALUES (OLD.product_code,new.product_name ,old.product_name ,new.purchase_price ,old.purchase_price ,new.other_expenses ,old.other_expenses ,new.selling_price  ,old.selling_price ,new.purchased_quantity , old.purchased_quantity , new.remaining_quantity ,old.remaining_quantity ,new.purchased_date ,old.purchased_date ,new.brand ,old.brand );
+END;
