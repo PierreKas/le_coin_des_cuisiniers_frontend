@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:le_coin_des_cuisiniers_app/colors/colors.dart';
 import 'package:le_coin_des_cuisiniers_app/components/appbar_text.dart';
+import 'package:le_coin_des_cuisiniers_app/components/loading.dart';
 import 'package:le_coin_des_cuisiniers_app/components/snack_bar.dart';
 import 'package:le_coin_des_cuisiniers_app/controller/users_controller.dart';
 import 'package:le_coin_des_cuisiniers_app/dashboard/dashboard_home.dart';
@@ -132,6 +133,7 @@ class _HomePageState extends State<HomePage> {
                   TextButton(
                     style: TextButton.styleFrom(backgroundColor: Colors.white),
                     onPressed: () async {
+                      // showLoadingDialog(context);
                       Navigator.push(
                         context,
                         MaterialPageRoute(

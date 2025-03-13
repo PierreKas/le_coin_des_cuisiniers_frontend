@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:le_coin_des_cuisiniers_app/colors/colors.dart';
+import 'package:le_coin_des_cuisiniers_app/components/appbar_text.dart';
 import 'package:le_coin_des_cuisiniers_app/components/drawer_label.dart';
 import 'package:le_coin_des_cuisiniers_app/components/text_content.dart';
 import 'package:le_coin_des_cuisiniers_app/components/text_hearder.dart';
@@ -14,7 +15,7 @@ import 'package:le_coin_des_cuisiniers_app/services/transaction_service.dart';
 import 'package:le_coin_des_cuisiniers_app/services/user_service.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:le_coin_des_cuisiniers_app/views/product/products_list.dart';
+import 'package:le_coin_des_cuisiniers_app/dashboard/views/products_list_dashboard.dart';
 import 'package:le_coin_des_cuisiniers_app/views/user/users_list.dart';
 
 class DashboardHome extends StatefulWidget {
@@ -80,10 +81,6 @@ class _DashboardHomeState extends State<DashboardHome> {
         child: Column(
           //crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const MyTextHeader(content: 'Le coin des cuisiniers'),
-            const SizedBox(
-              height: 15,
-            ),
             const MyTextContent(content: 'Dashboard'),
             const SizedBox(
               height: 25,
@@ -342,7 +339,7 @@ class _DashboardHomeState extends State<DashboardHome> {
                             child: Padding(
                               padding: EdgeInsets.only(left: 30.0),
                               child: Text(
-                                  'Dites moi ce que vous voulezque je mette ici comme information(Ce qui va la peine bien sur)'),
+                                  'Da Chino ni ambiye détails financiers zenye ni tiye apa'),
                             ),
                           ),
                         ),
@@ -858,6 +855,10 @@ class _DashboardHomeState extends State<DashboardHome> {
       // body: ((currentWidth > mobileWidth) && ((currentHeight > mobileHeight)))
       //     ? desktop()
       //     : mobile(),);
+      appBar: AppBar(
+        title: const MyAppBarText(content: 'Le coin des cuisiniers'),
+        backgroundColor: chocolateColor,
+      ),
       body: desktop(),
       // drawer:
       //     ((currentWidth > mobileWidth) && ((currentHeight > mobileHeight)))
