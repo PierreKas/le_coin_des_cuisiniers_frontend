@@ -27,7 +27,7 @@ void showLoadingDialog(BuildContext context) {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(15),
         ),
-        backgroundColor: Colors.white.withOpacity(0.2),
+        backgroundColor: Colors.white.withOpacity(1),
         child: const Padding(
           padding: EdgeInsets.all(20),
           child: Column(

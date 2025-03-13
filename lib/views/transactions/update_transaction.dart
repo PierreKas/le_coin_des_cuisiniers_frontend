@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:le_coin_des_cuisiniers_app/components/buttons.dart';
 import 'package:le_coin_des_cuisiniers_app/components/label.dart';
 import 'package:le_coin_des_cuisiniers_app/components/textfields.dart';
+import 'package:le_coin_des_cuisiniers_app/controller/product_controller.dart';
 import 'package:le_coin_des_cuisiniers_app/controller/transactions_controller.dart';
 import 'package:le_coin_des_cuisiniers_app/controller/users_controller.dart';
+import 'package:le_coin_des_cuisiniers_app/models/products.dart';
 import 'package:le_coin_des_cuisiniers_app/models/transactions.dart';
 import 'package:le_coin_des_cuisiniers_app/views/acceuil.dart';
 import 'package:le_coin_des_cuisiniers_app/views/base_layout.dart';
@@ -37,9 +39,18 @@ class _UpdateTransactionState extends State<UpdateTransaction> {
   @override
   void initState() {
     _getTransactionData();
+    _fetchProducts();
     _quantity.addListener(_totalPriceCalculation);
     _unitPrice.addListener(_totalPriceCalculation);
     super.initState();
+  }
+
+  Product? selectedProduct;
+  List<Product> productsList = [];
+  Future<List<Product>> _fetchProducts() async {
+    productsList = await ProductController().getProducts();
+    setState(() {});
+    return productsList;
   }
 
   void _getTransactionData() async {
@@ -203,22 +214,22 @@ class _UpdateTransactionState extends State<UpdateTransaction> {
                   MyButtons(
                       onPressed: () {
                         String productCode = _productCode.text;
-                        String productName = _productName.text;
+                        // String productName = _productName.text;
                         String quantityStr = _quantity.text;
-                        String unitPriceStr = _unitPrice.text;
+                        //String unitPriceStr = _unitPrice.text;
                         String totalPriceStr = _totalPrice.text;
 
                         int quantity = int.tryParse(quantityStr) ?? 0;
 
-                        double unitPrice = double.tryParse(unitPriceStr) ?? 0.0;
+                        //double unitPrice = double.tryParse(unitPriceStr) ?? 0.0;
                         double totalPrice =
                             double.tryParse(totalPriceStr) ?? 0.0;
-
+                        selectedProduct = productsList.firstWhere(
+                            (product) => product.productCode == productCode);
                         Transactions transactionToUpdate = Transactions(
                             productCode: productCode,
-                            // productName: productName,
+                            product: selectedProduct,
                             quantity: quantity,
-                            //  unitPrice: unitPrice,
                             sellingDate: DateTime.now(),
                             totalPrice: totalPrice,
                             transactionId: widget.transId);

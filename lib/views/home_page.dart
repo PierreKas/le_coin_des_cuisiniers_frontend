@@ -6,6 +6,7 @@ import 'package:le_coin_des_cuisiniers_app/components/appbar_text.dart';
 import 'package:le_coin_des_cuisiniers_app/components/snack_bar.dart';
 import 'package:le_coin_des_cuisiniers_app/controller/users_controller.dart';
 import 'package:le_coin_des_cuisiniers_app/views/acceuil.dart';
+import 'package:le_coin_des_cuisiniers_app/views/login.dart';
 import 'package:le_coin_des_cuisiniers_app/views/product/products_list.dart';
 import 'package:le_coin_des_cuisiniers_app/views/transactions/add_transactions.dart';
 import 'package:le_coin_des_cuisiniers_app/views/user/users_list.dart';
@@ -119,6 +120,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: const MyAppBarText(content: 'Le coin des cuisiniers'),
         actions: [
           Padding(
@@ -143,12 +145,12 @@ class _HomePageState extends State<HomePage> {
                     foregroundColor: Colors.white,
                   ),
                   onPressed: () async {
-                    // Navigator.pushAndRemoveUntil(
-                    //   context,
-                    //   MaterialPageRoute(
-                    //       builder: (context) => const LoginPage()),
-                    //   (route) => false,
-                    // );
+                    Navigator.pushAndRemoveUntil(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const LoginPage()),
+                      (route) => false,
+                    );
 
                     // await relaunchApp();
                   },

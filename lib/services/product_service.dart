@@ -81,7 +81,7 @@ class ProductService {
   }
 
   Future<Product?> findProductByCode(String code) async {
-    final url = Uri.parse('$baseUrl/by-code?code=$code');
+    final url = Uri.parse('$baseUrl/by-code/$code');
     try {
       final response = await http.get(url);
       if (response.statusCode == 200) {
@@ -95,6 +95,24 @@ class ProductService {
   }
 
   Future<Product?> updateProduct(int productId, Product product) async {
+    final url = Uri.parse('$baseUrl/update/$productId');
+    try {
+      final response = await http.put(
+        url,
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode(product.toJson()),
+      );
+      if (response.statusCode == 200) {
+        dynamic jsonData = jsonDecode(response.body);
+        return Product.fromJson(jsonData);
+      }
+    } catch (e) {
+      throw Exception('Error: $e');
+    }
+    return null;
+  }
+
+    Future<Product?> restockProduct(int productId, Product product) async {
     final url = Uri.parse('$baseUrl/update/$productId');
     try {
       final response = await http.put(

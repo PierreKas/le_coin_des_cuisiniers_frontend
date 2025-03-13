@@ -5,15 +5,11 @@ import 'package:intl/intl.dart';
 import 'package:le_coin_des_cuisiniers_app/colors/colors.dart';
 import 'package:le_coin_des_cuisiniers_app/components/snack_bar.dart';
 import 'package:le_coin_des_cuisiniers_app/controller/users_controller.dart';
-import 'package:le_coin_des_cuisiniers_app/views/user/users_list.dart';
 import 'package:provider/provider.dart';
 import 'package:le_coin_des_cuisiniers_app/components/buttons.dart';
 import 'package:le_coin_des_cuisiniers_app/controller/transactions_controller.dart';
 import 'package:le_coin_des_cuisiniers_app/models/transactions.dart';
-import 'package:le_coin_des_cuisiniers_app/views/acceuil.dart';
-import 'package:le_coin_des_cuisiniers_app/views/base_layout.dart';
 import 'package:le_coin_des_cuisiniers_app/views/home_page.dart';
-import 'package:le_coin_des_cuisiniers_app/views/product/products_list.dart';
 import 'package:le_coin_des_cuisiniers_app/views/transactions/update_transaction.dart';
 import 'dart:io';
 import 'package:pdf/pdf.dart';
@@ -77,21 +73,19 @@ class _BillItemsState extends State<BillItems> {
                 '---------------------------------------------------------'),
 
             // Transaction items
-            ...controller.transactionsList
-                .map((transaction) => pw.Row(
-                        mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
-                        children: [
-                          pw.Text(transaction.productName ?? ''),
-                          pw.Text('${transaction.unitPrice} \$'),
-                          pw.Text('${transaction.quantity}'),
-                          pw.Text('${transaction.totalPrice} \$'),
+            ...controller.transactionsList.map((transaction) => pw.Row(
+                    mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+                    children: [
+                      pw.Text(transaction.productName ?? ''),
+                      pw.Text('${transaction.unitPrice} \$'),
+                      pw.Text('${transaction.quantity}'),
+                      pw.Text('${transaction.totalPrice} \$'),
 
-                          // pw.Text(transaction.sellingDate != null
-                          //     ? DateFormat('dd-MM-yyyy')
-                          //         .format(transaction.sellingDate!)
-                          //     : ''),
-                        ]))
-                ,
+                      // pw.Text(transaction.sellingDate != null
+                      //     ? DateFormat('dd-MM-yyyy')
+                      //         .format(transaction.sellingDate!)
+                      //     : ''),
+                    ])),
 
             pw.Text(
                 '---------------------------------------------------------'),
@@ -431,6 +425,7 @@ class _BillItemsState extends State<BillItems> {
                       // _downloadBillAsPDF(Provider.of<TransactionsController>(
                       //     context,
                       //     listen: false));
+                      controller.clearTransactions();
                       Navigator.push(
                         context,
                         MaterialPageRoute(

@@ -216,12 +216,12 @@ class _ProductsListState extends State<ProductsList> {
                 cursor: SystemMouseCursors.click,
                 child: GestureDetector(
                   onTap: () {
-                    // Navigator.push(
-                    //     context,
-                    //     MaterialPageRoute(
-                    //         builder: (context) => Restock(
-                    //               prCode: product.productCode!,
-                    //             )));
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => Restock(
+                                  prCode: product.productCode!,
+                                )));
                   },
                   child: Container(
                     padding: const EdgeInsets.all(8),
@@ -282,7 +282,7 @@ class _ProductsListState extends State<ProductsList> {
                         context,
                         MaterialPageRoute(
                             builder: (context) => UpdateProduct(
-                                  prCode: product.id!,
+                                  productCode: product.productCode!,
                                 )));
                   },
                   child: Container(

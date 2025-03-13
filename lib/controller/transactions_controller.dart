@@ -11,12 +11,20 @@ class TransactionsController extends ChangeNotifier {
   final List<Transactions> _transactionsList = [];
   List<Transactions> get transactionsList => _transactionsList;
   String billCode = '';
+  static bool isValidTransaction(Transactions transaction) {
+    return transaction.productCode!.isNotEmpty &&
+        transaction.quantity != null &&
+        transaction.quantity! > 0;
+  }
+
   Future<void> addItemOnTheBill(
       Transactions transaction, BuildContext context) async {
+    if (!isValidTransaction(transaction)) {
+      MySnackBar.showErrorMessage(
+          'La quantité doit etre supériere à 0', context);
+    }
     _transactionsList.add(transaction);
-    print('Adding transaction:');
-    print('Product Code: ${transaction.productCode}');
-    print('Other Details: ${transaction.toString()}');
+
     notifyListeners();
   }
 
@@ -103,5 +111,10 @@ class TransactionsController extends ChangeNotifier {
       log('Error during transaction save: $e',
           error: e, stackTrace: stackTrace);
     }
+  }
+
+  void clearTransactions() {
+    transactionsList.clear();
+    notifyListeners();
   }
 }

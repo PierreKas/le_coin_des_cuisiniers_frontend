@@ -344,37 +344,37 @@
 //     }
 //   }
 
-//   Future<void> restocProduct(Product product, BuildContext context) async {
-//     try {
-//       final Database db = await database;
+  // Future<void> restocProduct(Product product, BuildContext context) async {
+  //   try {
+  //     final Database db = await database;
 
-//       String formattedDate =
-//           DateFormat('yyyy-MM-dd').format(product.purchasedDate!);
+  //     String formattedDate =
+  //         DateFormat('yyyy-MM-dd').format(product.purchasedDate!);
 
-//       await db.update(
-//         'products',
-//         {
-//           'product_code': product.productCode,
-//           'product_name': product.productName,
-//           'purchase_price': product.purchasePrice,
-//           'purchased_quantity': product.purchasedQuantity,
-//           'purchased_date': formattedDate,
-//           'selling_price': product.sellingPrice,
-//           'brand': product.brand,
-//           'remaining_quantity': product.remainingQuantity,
-//           'other_expenses': product.otherExpenses,
-//         },
-//         where: 'product_code = ?',
-//         whereArgs: [product.productCode],
-//       );
-//       MySnackBar.checked(const Icon(Icons.check), context);
-//       // MySnackBar.showSuccessMessage('Modification effectuée', context);
-//     } catch (e) {
-//       MySnackBar.showErrorMessage(
-//           'Erreur lors de la mise à jour: ${e.toString()}', context);
-//       rethrow;
-//     }
-//   }
+  //     await db.update(
+  //       'products',
+  //       {
+  //         'product_code': product.productCode,
+  //         'product_name': product.productName,
+  //         'purchase_price': product.purchasePrice,
+  //         'purchased_quantity': product.purchasedQuantity,
+  //         'purchased_date': formattedDate,
+  //         'selling_price': product.sellingPrice,
+  //         'brand': product.brand,
+  //         'remaining_quantity': product.remainingQuantity,
+  //         'other_expenses': product.otherExpenses,
+  //       },
+  //       where: 'product_code = ?',
+  //       whereArgs: [product.productCode],
+  //     );
+  //     MySnackBar.checked(const Icon(Icons.check), context);
+  //     // MySnackBar.showSuccessMessage('Modification effectuée', context);
+  //   } catch (e) {
+  //     MySnackBar.showErrorMessage(
+  //         'Erreur lors de la mise à jour: ${e.toString()}', context);
+  //     rethrow;
+  //   }
+  // }
 
 //   Future<int> deleteProductFromDB(String prodCode, BuildContext context) async {
 //     try {

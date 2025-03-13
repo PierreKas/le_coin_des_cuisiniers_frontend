@@ -233,14 +233,14 @@ class _AddTransactionState extends State<AddTransaction> {
                   MyButtons(
                     onPressed: () {
                       String productCode = _productCode.text;
-                      String productName = _productName.text;
+                      //String productName = _productName.text;
                       String quantityStr = _quantity.text;
-                      String unitPriceStr = _unitPrice.text;
+                      //  String unitPriceStr = _unitPrice.text;
                       String totalPriceStr = _totalPrice.text;
 
                       int quantity = int.tryParse(quantityStr) ?? 0;
 
-                      double unitPrice = double.tryParse(unitPriceStr) ?? 0.0;
+                      //   double unitPrice = double.tryParse(unitPriceStr) ?? 0.0;
                       double totalPrice = double.tryParse(totalPriceStr) ?? 0.0;
 
                       selectedProduct = productsList.firstWhere(
@@ -248,7 +248,6 @@ class _AddTransactionState extends State<AddTransaction> {
 
                       setState(() {
                         tranId++;
-                        print(tranId);
                       });
                       Transactions newTransaction = Transactions(
                           productCode: productCode,
@@ -257,7 +256,6 @@ class _AddTransactionState extends State<AddTransaction> {
                           sellingDate: DateTime.now(),
                           totalPrice: totalPrice,
                           transactionId: tranId);
-
                       Provider.of<TransactionsController>(context,
                               listen: false)
                           .addItemOnTheBill(newTransaction, context);

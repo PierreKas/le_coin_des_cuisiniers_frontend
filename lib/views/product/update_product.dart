@@ -1,7 +1,10 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:le_coin_des_cuisiniers_app/colors/colors.dart';
 import 'package:le_coin_des_cuisiniers_app/components/buttons.dart';
 import 'package:le_coin_des_cuisiniers_app/components/label.dart';
+import 'package:le_coin_des_cuisiniers_app/components/snack_bar.dart';
 import 'package:le_coin_des_cuisiniers_app/components/textfields.dart';
 import 'package:le_coin_des_cuisiniers_app/controller/product_controller.dart';
 import 'package:le_coin_des_cuisiniers_app/models/products.dart';
@@ -9,8 +12,8 @@ import 'package:le_coin_des_cuisiniers_app/views/base_layout.dart';
 import 'package:le_coin_des_cuisiniers_app/views/product/products_list.dart';
 
 class UpdateProduct extends StatefulWidget {
-  final int prCode;
-  const UpdateProduct({super.key, required this.prCode});
+  final String productCode;
+  const UpdateProduct({super.key, required this.productCode});
 
   @override
   State<UpdateProduct> createState() => _UpdateProductState();
@@ -20,29 +23,32 @@ class _UpdateProductState extends State<UpdateProduct> {
   @override
   void initState() {
     super.initState();
-    //getProductInfo(widget.prCode);
+    getProductInfo(widget.productCode);
   }
 
   Product? productInfo;
-  // Future<Product?> getProductInfo(int prodCode) async {
-  //   productInfo = await ProductController().getProductByCode(prodCode);
+  Future<Product?> getProductInfo(String productCode) async {
+    productInfo = await ProductController().getProductByCode(productCode);
 
-  //   if (productInfo != null) {
-  //     _productCode.text = productInfo!.productCode ?? '';
-  //     _productName.text = productInfo!.productName ?? '';
-  //     _brand.text = productInfo!.brand ?? '';
-  //     _purchasePrice.text = productInfo!.purchasePrice?.toString() ?? '';
-  //     _otherExpenses.text = productInfo!.otherExpenses?.toString() ?? '';
-  //     _sellingPrice.text = productInfo!.sellingPrice?.toString() ?? '';
-  //     _purchaseQty.text = productInfo!.purchasedQuantity?.toString() ?? '';
-  //     _purchaseDate.text = productInfo!.purchasedDate != null
-  //         ? productInfo!.purchasedDate!.toIso8601String().split('T').first
-  //         : '';
-  //   }
+    if (productInfo != null) {
+      _productCode.text = productInfo!.productCode ?? '';
+      _productName.text = productInfo!.productName ?? '';
+      _brand.text = productInfo!.brand ?? '';
+      _purchasePrice.text = productInfo!.purchasePrice?.toString() ?? '';
+      _otherExpenses.text = productInfo!.otherExpenses?.toString() ?? '';
+      _sellingPrice.text = productInfo!.sellingPrice?.toString() ?? '';
+      _purchaseQty.text = productInfo!.purchasedQuantity?.toString() ?? '';
+      _purchaseDate.text = productInfo!.purchasedDate != null
+          ? productInfo!.purchasedDate!.toIso8601String().split('T').first
+          : '';
+    } else {
+      MySnackBar.showErrorMessage(
+          'Une erreur \'est produite, réessayez dans un instant', context);
+    }
 
-  //   setState(() {});
-  //   return productInfo;
-  // }
+    setState(() {});
+    return productInfo;
+  }
 
   final TextEditingController _productName = TextEditingController();
 
@@ -293,7 +299,7 @@ class _UpdateProductState extends State<UpdateProduct> {
                 height: 16,
               ),
               MyButtons(
-                  onPressed: () {
+                  onPressed: () async {
                     String productCode = _productCode.text;
                     String productName = _productName.text;
                     String brand = _brand.text;
@@ -329,8 +335,8 @@ class _UpdateProductState extends State<UpdateProduct> {
                       otherExpenses: otherExpenses,
                     );
 
-                    ProductController()
-                        .updateProduct(widget.prCode, newProduct, context);
+                    await ProductController()
+                        .updateProduct(productInfo!.id!, newProduct, context);
                     _productCode.clear();
                     _productName.clear();
                     _purchaseDate.clear();

@@ -16,9 +16,13 @@ class ProductController {
     } else {
       try {
         await productService.addProduct(product);
+        MySnackBar.showSuccessMessage('Produit ajouté', context);
         Navigator.push(
             context, MaterialPageRoute(builder: (context) => const HomePage()));
       } on Exception catch (e, stackTrace) {
+        MySnackBar.showErrorMessage(
+            'Une erreur s\'est produite lors de l\'enregistrement du produit',
+            context);
         log('An error occured while adding product: $e',
             error: e, stackTrace: stackTrace);
       }
@@ -31,7 +35,6 @@ class ProductController {
     return allProducts;
   }
 
-  // Retrieve a specific product by product_code
   Future<Product?> getProductByCode(String prodCode) async {
     Product? product = await productService.findProductByCode(prodCode);
 
@@ -52,6 +55,24 @@ class ProductController {
           context, MaterialPageRoute(builder: (context) => const HomePage()));
     } catch (e, stackTrace) {
       log('An error occured while updating product: $e',
+          error: e, stackTrace: stackTrace);
+    }
+  }
+
+  Future<void> restockProduct(
+      int prodId, Product product, BuildContext context) async {
+    if (!_isValidProduct(product)) {
+      MySnackBar.showErrorMessage(
+          'Veuillez remplir tous les champs correctement', context);
+      return;
+    }
+
+    try {
+      await productService.updateProduct(prodId, product);
+      Navigator.pushReplacement(
+          context, MaterialPageRoute(builder: (context) => const HomePage()));
+    } catch (e, stackTrace) {
+      log('An error occured while restocking the product ${product.productName}: $e',
           error: e, stackTrace: stackTrace);
     }
   }
