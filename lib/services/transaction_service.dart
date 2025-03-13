@@ -33,15 +33,24 @@ class TransactionService {
     final url = Uri.parse('$baseUrl/batch');
 
     try {
+      final List<Map<String, dynamic>> jsonList =
+          transactions.map((transaction) {
+        return {
+          'productCode': transaction.productCode,
+          'quantity': transaction.quantity,
+          'sellingDate': transaction.sellingDate?.toIso8601String(),
+          'totalPrice': transaction.totalPrice,
+          // Add any other fields needed by your backend
+        };
+      }).toList();
       final response = await http.post(
         url,
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode(
-            transactions.map((transaction) => transaction.toJson()).toList()),
+            jsonList), //transactions.map((transaction) => transaction.toJson()).toList()
       );
 
       if (response.statusCode == 201) {
-        // Successfully created
         return jsonDecode(response.body);
       } else {
         Map<String, dynamic> errorData = jsonDecode(response.body);

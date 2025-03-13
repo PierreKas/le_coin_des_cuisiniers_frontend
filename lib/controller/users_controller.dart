@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:le_coin_des_cuisiniers_app/components/snack_bar.dart';
-import 'package:le_coin_des_cuisiniers_app/database/database_helper.dart';
 import 'package:le_coin_des_cuisiniers_app/models/users.dart';
 import 'package:le_coin_des_cuisiniers_app/services/user_service.dart';
 import 'package:le_coin_des_cuisiniers_app/views/home_page.dart';

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:le_coin_des_cuisiniers_app/components/snack_bar.dart';
 import 'package:le_coin_des_cuisiniers_app/models/products.dart';
@@ -12,9 +14,14 @@ class ProductController {
       MySnackBar.showErrorMessage(
           'Complète toutes  les cases sans erreur', context);
     } else {
-      await productService.addProduct(product);
-      Navigator.push(
-          context, MaterialPageRoute(builder: (context) => const HomePage()));
+      try {
+        await productService.addProduct(product);
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => const HomePage()));
+      } on Exception catch (e, stackTrace) {
+        log('An error occured while adding product: $e',
+            error: e, stackTrace: stackTrace);
+      }
     }
   }
 
@@ -43,7 +50,10 @@ class ProductController {
       await productService.updateProduct(prodId, product);
       Navigator.pushReplacement(
           context, MaterialPageRoute(builder: (context) => const HomePage()));
-    } catch (e) {}
+    } catch (e, stackTrace) {
+      log('An error occured while updating product: $e',
+          error: e, stackTrace: stackTrace);
+    }
   }
 
   bool _isValidProduct(Product product) {
@@ -63,8 +73,13 @@ class ProductController {
   }
 
   Future<void> deleteProduct(int productId, BuildContext context) async {
-    await productService.deleteProduct(productId);
-    Navigator.push(
-        context, MaterialPageRoute(builder: (context) => const HomePage()));
+    try {
+      await productService.deleteProduct(productId);
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => const HomePage()));
+    } on Exception catch (e, stackTrace) {
+      log('An error occured while trying to delete product: $e',
+          error: e, stackTrace: stackTrace);
+    }
   }
 }

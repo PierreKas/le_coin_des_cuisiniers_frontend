@@ -1,16 +1,16 @@
-import 'dart:math';
+import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:le_coin_des_cuisiniers_app/components/snack_bar.dart';
 import 'package:le_coin_des_cuisiniers_app/models/products.dart';
 import 'package:le_coin_des_cuisiniers_app/models/transactions.dart';
 import 'package:le_coin_des_cuisiniers_app/services/transaction_service.dart';
-import 'package:le_coin_des_cuisiniers_app/views/home_page.dart';
 
 class TransactionsController extends ChangeNotifier {
   static List<Product> productsList = [];
   final List<Transactions> _transactionsList = [];
   List<Transactions> get transactionsList => _transactionsList;
+  String billCode = '';
   Future<void> addItemOnTheBill(
       Transactions transaction, BuildContext context) async {
     _transactionsList.add(transaction);
@@ -93,12 +93,15 @@ class TransactionsController extends ChangeNotifier {
     try {
       Map<String, dynamic> result =
           await transactionService.saveTransactionBatch(transactionsList);
-      String billCode = result['billCode'];
+      billCode = result['billCode'];
       MySnackBar.showSuccessMessage('Transaction(s) enregistrée(s)', context);
-    } catch (e) {
+    } catch (e, stackTrace) {
       MySnackBar.showErrorMessage(
           'Une erreur s\'est produite, enregistrement échoué', context);
-      print('Error: $e');
+
+      //print('Error: $e');
+      log('Error during transaction save: $e',
+          error: e, stackTrace: stackTrace);
     }
   }
 }

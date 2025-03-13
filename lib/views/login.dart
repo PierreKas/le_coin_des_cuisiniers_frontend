@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:le_coin_des_cuisiniers_app/colors/colors.dart';
 import 'package:le_coin_des_cuisiniers_app/components/buttons.dart';
@@ -59,54 +61,19 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                   const SizedBox(height: 20),
                   MyButtons(
-                      onPressed: () {
-                        // showLoadingDialog(context);
-                        showDialog(
-                          context: context,
-                          barrierDismissible: false,
-                          builder: (BuildContext context) {
-                            return const Column(
-                              children: [
-                                Text(
-                                  'Chargement...',
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.bold,
-                                    decoration: TextDecoration.none,
-                                  ),
-                                ),
-                                SizedBox(
-                                  height: 20,
-                                ),
-                                CircularProgressIndicator(
-                                  color: chocolateColor,
-                                  value: 150,
-                                ),
-                              ],
-                            );
-                          },
-                        );
-                        try {
-                          UsersController().login(_phoneController.text,
-                              _passwordController.text, context);
+                    onPressed: () async {
+                      showLoadingDialog(context);
 
-                          if (context.mounted) {
-                            Navigator.of(context).pop();
-                          }
-                        } on Exception catch (e) {
-                          if (context.mounted) {
-                            Navigator.of(context).pop();
-                          }
-                        }
-                        // try {
-                        //   UsersController().login(_phoneController.text,
-                        //       _passwordController.text, context);
-                        // } on Exception catch (e) {
-                        //   print(e);
-                        // }
-                      },
-                      text: 'Login')
+                      try {
+                        await UsersController().login(_phoneController.text,
+                            _passwordController.text, context);
+                      } catch (e, stackTrace) {
+                        log('Login error: $e',
+                            error: e, stackTrace: stackTrace);
+                      }
+                    },
+                    text: 'Login',
+                  )
                 ],
               ),
             ),
