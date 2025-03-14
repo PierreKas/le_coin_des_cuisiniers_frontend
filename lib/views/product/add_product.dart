@@ -335,10 +335,11 @@ class _AddProductState extends State<AddProduct> {
             const SizedBox(height: 20),
 
             /// **Code du produit**
-            const Padding(
-              padding: EdgeInsets.only(right: 240.0),
-              child: MyLabel(labelContent: 'Code du produit'),
-            ),
+            // const Padding(
+            //   padding: EdgeInsets.only(right: 240.0),
+            //   child:
+            // ),
+            const MyLabel(labelContent: 'Code du produit'),
             const SizedBox(height: 10),
             MyTextField(
               controller: _productCode,
@@ -350,10 +351,11 @@ class _AddProductState extends State<AddProduct> {
             const SizedBox(height: 16),
 
             /// **Nom du produit**
-            const Padding(
-              padding: EdgeInsets.only(right: 240.0),
-              child: MyLabel(labelContent: 'Nom du produit'),
-            ),
+            // const Padding(
+            //   padding: EdgeInsets.only(right: 240.0),
+            //   child:
+            // ),
+            const MyLabel(labelContent: 'Nom du produit'),
             const SizedBox(height: 10),
             MyTextField(
               controller: _productName,
@@ -365,10 +367,11 @@ class _AddProductState extends State<AddProduct> {
             const SizedBox(height: 16),
 
             /// **Marque**
-            const Padding(
-              padding: EdgeInsets.only(right: 240.0),
-              child: MyLabel(labelContent: 'Marque'),
-            ),
+            // const Padding(
+            //   padding: EdgeInsets.only(right: 240.0),
+            //   child:
+            // ),
+            const MyLabel(labelContent: 'Marque'),
             const SizedBox(height: 10),
             MyTextField(
               controller: _brand,
@@ -380,10 +383,11 @@ class _AddProductState extends State<AddProduct> {
             const SizedBox(height: 16),
 
             /// **Prix d'achat**
-            const Padding(
-              padding: EdgeInsets.only(right: 240.0),
-              child: MyLabel(labelContent: 'Prix d\'achat'),
-            ),
+            // const Padding(
+            //   padding: EdgeInsets.only(right: 240.0),
+            //   child:
+            // ),
+            const MyLabel(labelContent: 'Prix d\'achat'),
             const SizedBox(height: 10),
             MyTextField(
               controller: _purchasePrice,
@@ -395,10 +399,11 @@ class _AddProductState extends State<AddProduct> {
             const SizedBox(height: 16),
 
             /// **Prix de vente**
-            const Padding(
-              padding: EdgeInsets.only(right: 240.0),
-              child: MyLabel(labelContent: 'Prix de vente'),
-            ),
+            // const Padding(
+            //   padding: EdgeInsets.only(right: 240.0),
+            //   child:
+            // ),
+            const MyLabel(labelContent: 'Prix de vente'),
             const SizedBox(height: 10),
             MyTextField(
               controller: _sellingPrice,
@@ -410,10 +415,11 @@ class _AddProductState extends State<AddProduct> {
             const SizedBox(height: 16),
 
             /// **Autres dépenses**
-            const Padding(
-              padding: EdgeInsets.only(right: 240.0),
-              child: MyLabel(labelContent: 'Autres dépenses'),
-            ),
+            // const Padding(
+            //   padding: EdgeInsets.only(right: 240.0),
+            //   child:
+            // ),
+            const MyLabel(labelContent: 'Autres dépenses'),
             const SizedBox(height: 10),
             MyTextField(
               controller: _otherExpenses,
@@ -425,10 +431,11 @@ class _AddProductState extends State<AddProduct> {
             const SizedBox(height: 16),
 
             /// **Quantité achetée**
-            const Padding(
-              padding: EdgeInsets.only(right: 240.0),
-              child: MyLabel(labelContent: 'Quantité achetée'),
-            ),
+            // const Padding(
+            //   padding: EdgeInsets.only(right: 240.0),
+            //   child:
+            // ),
+            const MyLabel(labelContent: 'Quantité achetée'),
             const SizedBox(height: 10),
             MyTextField(
               controller: _purchaseQty,
@@ -440,10 +447,11 @@ class _AddProductState extends State<AddProduct> {
             const SizedBox(height: 16),
 
             /// **Date d'achat (TextField for Date Picker)**
-            const Padding(
-              padding: EdgeInsets.only(right: 240.0),
-              child: MyLabel(labelContent: 'Date d\'achat'),
-            ),
+            // const Padding(
+            //   padding: EdgeInsets.only(right: 240.0),
+            //   child:
+            // ),
+            const MyLabel(labelContent: 'Date d\'achat'),
             const SizedBox(height: 10),
             TextFormField(
               controller: _purchaseDate,
