@@ -456,6 +456,7 @@ class _ProductsListState extends State<ProductsList> {
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
           child: ExpansionTile(
+            controlAffinity: ListTileControlAffinity.leading,
             title: Text(
               product.productName!,
               style: const TextStyle(

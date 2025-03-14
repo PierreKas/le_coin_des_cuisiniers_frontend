@@ -258,6 +258,7 @@ class _AcceuilState extends State<Acceuil> {
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
           child: ExpansionTile(
+            controlAffinity: ListTileControlAffinity.leading,
             title: Text(
               product.productName!,
               style: const TextStyle(
