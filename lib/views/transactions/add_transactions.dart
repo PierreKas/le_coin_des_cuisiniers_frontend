@@ -8,6 +8,7 @@ import 'package:le_coin_des_cuisiniers_app/controller/transactions_controller.da
 import 'package:le_coin_des_cuisiniers_app/controller/users_controller.dart';
 import 'package:le_coin_des_cuisiniers_app/models/products.dart';
 import 'package:le_coin_des_cuisiniers_app/models/transactions.dart';
+import 'package:le_coin_des_cuisiniers_app/responsive/dimensions.dart';
 import 'package:le_coin_des_cuisiniers_app/views/acceuil.dart';
 import 'package:le_coin_des_cuisiniers_app/views/base_layout.dart';
 import 'package:le_coin_des_cuisiniers_app/views/product/products_list.dart';
@@ -70,7 +71,7 @@ class _AddTransactionState extends State<AddTransaction> {
     }
   }
 
-  Widget desktopBody() {
+  Widget desktop() {
     return Consumer<TransactionsController>(
       builder: (context, value, child) {
         return Padding(
@@ -302,6 +303,179 @@ class _AddTransactionState extends State<AddTransaction> {
     );
   }
 
+  Widget mobile() {
+    return Consumer<TransactionsController>(
+      builder: (context, value, child) {
+        return Padding(
+          padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 25),
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Center(
+                  child: Text(
+                    'Ajouter les produits au panier d\'achat',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(color: Colors.grey),
+                  ),
+                ),
+                const SizedBox(height: 20),
+
+                /// **Nom de l\'article**
+                const MyLabel(labelContent: 'Nom de l\'article'),
+                const SizedBox(height: 10),
+                GestureDetector(
+                  onTap: () {
+                    _fetchProducts();
+                  },
+                  child: DropdownButtonFormField<String>(
+                    value: selectedProductCode,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10.0),
+                        borderSide: const BorderSide(color: chocolateColor),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10.0),
+                        borderSide: const BorderSide(color: Colors.grey),
+                      ),
+                      prefixIcon: const Icon(
+                        Icons.circle_outlined,
+                        color: chocolateColor,
+                      ),
+                    ),
+                    items: productsList.isEmpty
+                        ? []
+                        : productsList.map((Product product) {
+                            return DropdownMenuItem<String>(
+                              value: product.productCode,
+                              child: Text(product.productName!),
+                            );
+                          }).toList(),
+                    onChanged: (String? newProductCode) {
+                      setState(() {
+                        selectedProductCode = newProductCode;
+
+                        selectedProduct = productsList.firstWhere(
+                            (product) => product.productCode == newProductCode);
+
+                        if (selectedProduct != null) {
+                          _unitPrice.text =
+                              selectedProduct!.sellingPrice.toString();
+                          _productName.text =
+                              selectedProduct!.productName.toString();
+                          _productCode.text =
+                              selectedProduct!.productCode.toString();
+                        }
+                      });
+                    },
+                  ),
+                ),
+                const SizedBox(height: 16),
+
+                /// **Quantité**
+                const MyLabel(labelContent: 'Quantité'),
+                const SizedBox(height: 10),
+                MyTextField(
+                  controller: _quantity,
+                  enabled: true,
+                  hintText: '',
+                  obscureText: false,
+                  prefixIcon: Icons.numbers,
+                ),
+                const SizedBox(height: 16),
+
+                /// **Prix unitaire**
+                const MyLabel(labelContent: 'Prix unitaire'),
+                const SizedBox(height: 10),
+                MyTextField(
+                  controller: _unitPrice,
+                  enabled: false,
+                  hintText: '',
+                  obscureText: false,
+                  prefixIcon: Icons.monetization_on,
+                ),
+                const SizedBox(height: 16),
+
+                /// **Prix total**
+                const MyLabel(labelContent: 'Prix total'),
+                const SizedBox(height: 10),
+                MyTextField(
+                  controller: _totalPrice,
+                  enabled: false,
+                  hintText: '',
+                  obscureText: false,
+                  prefixIcon: Icons.monetization_on,
+                ),
+                const SizedBox(height: 30),
+
+                /// **Ajouter Button**
+                Center(
+                  child: MyButtons(
+                    onPressed: () {
+                      String productCode = _productCode.text;
+                      String quantityStr = _quantity.text;
+                      String totalPriceStr = _totalPrice.text;
+
+                      int quantity = int.tryParse(quantityStr) ?? 0;
+                      double totalPrice = double.tryParse(totalPriceStr) ?? 0.0;
+
+                      selectedProduct = productsList.firstWhere(
+                          (product) => product.productCode == productCode);
+
+                      setState(() {
+                        tranId++;
+                      });
+                      Transactions newTransaction = Transactions(
+                          productCode: productCode,
+                          product: selectedProduct,
+                          quantity: quantity,
+                          sellingDate: DateTime.now(),
+                          totalPrice: totalPrice,
+                          transactionId: tranId);
+
+                      Provider.of<TransactionsController>(context,
+                              listen: false)
+                          .addItemOnTheBill(newTransaction, context);
+
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => BaseLayout(
+                            initialIndex: 1, // Sales page index
+                            pages: [
+                              const Acceuil(),
+                              if (UsersController.userRole == 'ADMIN')
+                                const ProductsList(),
+                              if (UsersController.userRole == 'ADMIN')
+                                const UsersList(),
+                              const AddTransaction(),
+                            ],
+                            initialPage: BillItems(transaction: newTransaction),
+                          ),
+                        ),
+                      );
+
+                      _productCode.clear();
+                      _productName.clear();
+                      _quantity.clear();
+                      _unitPrice.clear();
+                      _totalPrice.clear();
+                    },
+                    text: 'Ajouter',
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -349,7 +523,15 @@ class _AddTransactionState extends State<AddTransaction> {
               ),
             ),
           ),
-          desktopBody(),
+          LayoutBuilder(
+            builder: (context, constraints) {
+              if (constraints.maxWidth > tabletWidth) {
+                return desktop();
+              } else {
+                return mobile();
+              }
+            },
+          ),
         ],
       ),
     );

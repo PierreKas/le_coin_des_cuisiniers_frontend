@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:le_coin_des_cuisiniers_app/colors/colors.dart';
 import 'package:le_coin_des_cuisiniers_app/components/snack_bar.dart';
 import 'package:le_coin_des_cuisiniers_app/controller/users_controller.dart';
+import 'package:le_coin_des_cuisiniers_app/responsive/dimensions.dart';
 import 'package:provider/provider.dart';
 import 'package:le_coin_des_cuisiniers_app/components/buttons.dart';
 import 'package:le_coin_des_cuisiniers_app/controller/transactions_controller.dart';
@@ -331,6 +332,119 @@ class _BillItemsState extends State<BillItems> {
     );
   }
 
+  Widget _buildMobileTransactionsList(TransactionsController controller) {
+    return ListView.builder(
+      itemCount: controller.transactionsList.length,
+      itemBuilder: (context, index) {
+        final transaction = controller.transactionsList[index];
+        return Card(
+          color: Colors.white,
+          margin: const EdgeInsets.symmetric(vertical: 6, horizontal: 4),
+          elevation: 2,
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+          child: Padding(
+            padding: const EdgeInsets.all(12),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    // Product name with larger font
+                    Expanded(
+                      flex: 3,
+                      child: Text(
+                        '${transaction.productName}',
+                        style: const TextStyle(
+                          color: chocolateColor,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
+                        ),
+                      ),
+                    ),
+                    // Price info
+                    Expanded(
+                      flex: 2,
+                      child: Text(
+                        '${transaction.totalPrice} \$',
+                        style: const TextStyle(
+                          color: chocolateColor,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
+                        ),
+                        textAlign: TextAlign.right,
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 8),
+                // Transaction details in a single row
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'Prix: ${transaction.unitPrice} \$',
+                      style: const TextStyle(color: chocolateColor),
+                    ),
+                    Text(
+                      'Qté: ${transaction.quantity}',
+                      style: const TextStyle(color: chocolateColor),
+                    ),
+                    Text(
+                      DateFormat('dd-MM-yyyy').format(transaction.sellingDate!),
+                      style:
+                          const TextStyle(color: chocolateColor, fontSize: 12),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 8),
+                // Action buttons
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    _buildIconButton(
+                      onTap: () {
+                        if (UsersController.userRole != 'ADMIN') {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              width: 200,
+                              content: Text(
+                                  'Click sur "Page des ventes" pour acceder à la page des modifications'),
+                              backgroundColor: Colors.green,
+                              behavior: SnackBarBehavior.floating,
+                              duration: Duration(seconds: 5),
+                            ),
+                          );
+                        }
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => UpdateTransaction(
+                              transId: transaction.transactionId!,
+                            ),
+                          ),
+                        );
+                      },
+                      icon: Icons.edit,
+                      color: Colors.blue,
+                    ),
+                    const SizedBox(width: 12),
+                    _buildIconButton(
+                      onTap: () => _showDeleteConfirmationDialog(transaction),
+                      icon: Icons.delete,
+                      color: Colors.red,
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -406,16 +520,24 @@ class _BillItemsState extends State<BillItems> {
                 ),
                 const SizedBox(height: 24),
                 Expanded(
-                  child: SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    child: SingleChildScrollView(
-                      scrollDirection: Axis.vertical,
-                      child: Consumer<TransactionsController>(
-                        builder: (context, controller, _) =>
-                            _buildDataTable(controller),
-                      ),
-                    ),
-                  ),
+                  child: Consumer<TransactionsController>(
+                      builder: (context, controller, _) {
+                    return LayoutBuilder(
+                      builder: (context, constraints) {
+                        if (constraints.maxWidth > mobileWidth) {
+                          return SingleChildScrollView(
+                            scrollDirection: Axis.horizontal,
+                            child: SingleChildScrollView(
+                              scrollDirection: Axis.vertical,
+                              child: _buildDataTable(controller),
+                            ),
+                          );
+                        } else {
+                          return _buildMobileTransactionsList(controller);
+                        }
+                      },
+                    );
+                  }),
                 ),
                 const SizedBox(height: 24),
                 Consumer<TransactionsController>(

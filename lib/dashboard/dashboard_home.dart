@@ -85,80 +85,6 @@ class _DashboardHomeState extends State<DashboardHome> {
             const SizedBox(
               height: 25,
             ),
-            // upCards(
-            //   'Nombre des produits',
-            //   _productList!.length.toString(),
-            //   Colors.green.shade100,
-            //   Icons.inventory,
-            //   () {
-            //     Navigator.push(
-            //         context,
-            //         MaterialPageRoute(
-            //             builder: (context) => const ProductsList()));
-            //   },
-            //   Colors.green,
-            //   context,
-            // ),
-            // const SizedBox(
-            //   height: 20,
-            // ),
-            // upCards(
-            //   'Faible stock',
-            //   _lowStockProductList!.length.toString(),
-            //   Colors.orange.shade100,
-            //   Icons.warning,
-            //   () {
-            //     Navigator.push(
-            //       context,
-            //       MaterialPageRoute(
-            //         builder: (context) => const LowStockProductsList(),
-            //       ),
-            //     );
-            //   },
-            //   Colors.orange,
-            //   context,
-            // ),
-            // const SizedBox(
-            //   height: 20,
-            // ),
-            // upCards(
-            //   'Stock épuisé',
-            //   _outOfStockProductList!.length.toString(),
-            //   Colors.red.shade100,
-            //   Icons.error_outline,
-            //   () {
-            //     Navigator.push(
-            //       context,
-            //       MaterialPageRoute(
-            //         builder: (context) => const OutOfStockProductsList(),
-            //       ),
-            //     );
-            //   },
-            //   Colors.red,
-            //   context,
-            // ),
-            // const SizedBox(
-            //   height: 20,
-            // ),
-            // upCards(
-            //   'Utilisateurs',
-            //   _userList.length.toString(),
-            //   Colors.green.shade100,
-            //   Icons.people,
-            //   () {
-            //     Navigator.push(
-            //       context,
-            //       MaterialPageRoute(
-            //         builder: (context) => const UsersList(),
-            //       ),
-            //     );
-            //   },
-            //   Colors.green,
-            //   context,
-            // ),
-            // const SizedBox(
-            //   height: 20,
-            // ),
             LayoutBuilder(
               builder: (context, constraints) {
                 return Padding(
@@ -167,28 +93,28 @@ class _DashboardHomeState extends State<DashboardHome> {
                   child: Column(
                     //mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      // Container(
-                      //   height: 430,
-                      //   decoration: BoxDecoration(
-                      //       color: Colors.white,
-                      //       borderRadius: BorderRadius.circular(10),
-                      //       boxShadow: [
-                      //         BoxShadow(
-                      //           color: Colors.black.withOpacity(0.5),
-                      //           blurRadius: 4,
-                      //         )
-                      //       ]),
-                      //   child: const Center(
-                      //     child: Padding(
-                      //       padding: EdgeInsets.only(left: 30.0),
-                      //       child: Text(
-                      //           'Dites moi ce que vous voulezque je mette ici comme information(Ce qui va la peine bien sur)'),
-                      //     ),
-                      //   ),
-                      // ),
-                      // const SizedBox(
-                      //   height: 15,
-                      // ),
+                      Container(
+                        height: 430,
+                        decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(10),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.5),
+                                blurRadius: 4,
+                              )
+                            ]),
+                        child: const Center(
+                          child: Padding(
+                            padding: EdgeInsets.only(left: 30.0),
+                            child: Text(
+                                'Dites moi ce que vous voulezque je mette ici comme information(Ce qui va la peine bien sur)'),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 15,
+                      ),
                       Container(
                         height: 430,
                         decoration: BoxDecoration(
@@ -518,185 +444,92 @@ class _DashboardHomeState extends State<DashboardHome> {
                       ],
                     ),
                   )
-                : ListView.builder(
-                    itemCount: _dailyTransactionList.length,
-                    padding: const EdgeInsets.all(16),
-                    itemBuilder: (context, index) {
-                      final transaction = _dailyTransactionList[index];
-                      final total = (transaction.quantity ?? 0) *
-                          (transaction.unitPrice ?? 0);
+                : Column(
+                    children: [
+                      Expanded(
+                        child: ListView.builder(
+                          itemCount: _dailyTransactionList.length,
+                          padding: const EdgeInsets.all(16),
+                          itemBuilder: (context, index) {
+                            final transaction = _dailyTransactionList[index];
+                            final total = (transaction.quantity ?? 0) *
+                                (transaction.unitPrice ?? 0);
 
-                      // for (var i = 0; i < _dailyTransactionList.length; i++) {
-                      //   final totalBytransaction = (transaction.quantity ?? 0) *
-                      //       (transaction.unitPrice ?? 0);
-                      //   generalTotal += totalBytransaction;
-                      // }
-                      for (var transaction in _dailyTransactionList) {
-                        final transactionTotal = (transaction.quantity ?? 0) *
-                            (transaction.unitPrice ?? 0);
-                        generalTotal += transactionTotal;
-                      }
-                      // print('Daily total: $generalTotal \$');
-                      return Container(
-                        margin: const EdgeInsets.only(bottom: 16),
-                        padding: const EdgeInsets.all(16),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(12),
-                          border: Border.all(color: Colors.grey.shade200),
+                            // for (var i = 0; i < _dailyTransactionList.length; i++) {
+                            //   final totalBytransaction = (transaction.quantity ?? 0) *
+                            //       (transaction.unitPrice ?? 0);
+                            //   generalTotal += totalBytransaction;
+                            // }
+                            for (var transaction in _dailyTransactionList) {
+                              final transactionTotal =
+                                  (transaction.quantity ?? 0) *
+                                      (transaction.unitPrice ?? 0);
+                              generalTotal += transactionTotal;
+                            }
+                            // print('Daily total: $generalTotal \$');
+                            return Container(
+                              margin: const EdgeInsets.only(bottom: 16),
+                              padding: const EdgeInsets.all(16),
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(12),
+                                border: Border.all(color: Colors.grey.shade200),
+                              ),
+                              child: Row(
+                                children: [
+                                  Expanded(
+                                    flex: 2,
+                                    child: Text(
+                                      '${transaction.productName}',
+                                      style: const TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w600,
+                                        color: Colors.black87,
+                                      ),
+                                    ),
+                                  ),
+                                  Expanded(
+                                    child: Text(
+                                      'Qté: ${transaction.quantity}',
+                                      style: const TextStyle(
+                                        fontSize: 16,
+                                        color: Colors.black54,
+                                      ),
+                                    ),
+                                  ),
+                                  Expanded(
+                                    child: Text(
+                                      'Prix: ${transaction.unitPrice} \$',
+                                      style: const TextStyle(
+                                        fontSize: 16,
+                                        color: Colors.black54,
+                                      ),
+                                    ),
+                                  ),
+                                  Expanded(
+                                    child: Text(
+                                      'Total: $total \$',
+                                      style: const TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w600,
+                                        color: chocolateColor,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            );
+                          },
                         ),
-                        child: Row(
-                          children: [
-                            Expanded(
-                              flex: 2,
-                              child: Text(
-                                '${transaction.productName}',
-                                style: const TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w600,
-                                  color: Colors.black87,
-                                ),
-                              ),
-                            ),
-                            Expanded(
-                              child: Text(
-                                'Qté: ${transaction.quantity}',
-                                style: const TextStyle(
-                                  fontSize: 16,
-                                  color: Colors.black54,
-                                ),
-                              ),
-                            ),
-                            Expanded(
-                              child: Text(
-                                'Prix: ${transaction.unitPrice} \$',
-                                style: const TextStyle(
-                                  fontSize: 16,
-                                  color: Colors.black54,
-                                ),
-                              ),
-                            ),
-                            Expanded(
-                              child: Text(
-                                'Total: $total \$',
-                                style: const TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w600,
-                                  color: chocolateColor,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      );
-                    },
+                      ),
+                      Text('Total journalier = $generalTotal'),
+                    ],
                   ),
           ),
         ],
       ),
     );
   }
-  // Widget businessChart(BuildContext context) {
-  //   return BarChart(
-  //     BarChartData(
-  //         alignment: BarChartAlignment.spaceAround,
-  //         maxY: 100,
-  //         barTouchData: BarTouchData(enabled: true),
-  //         titlesData: FlTitlesData(
-  //           show: true,
-  //           bottomTitles: AxisTitles(
-  //             sideTitles: SideTitles(
-  //               showTitles: true,
-  //               getTitlesWidget: (value, meta) {
-  //                 switch (value.toInt()) {
-  //                   case 0:
-  //                     return const Text('Text 1');
-  //                   case 1:
-  //                     return const Text('Text 2');
-  //                   case 2:
-  //                     return const Text('Text 3');
-
-  //                   default:
-  //                     return const Text('');
-  //                 }
-  //               },
-  //             ),
-  //           ),
-  //           leftTitles: AxisTitles(
-  //             sideTitles: SideTitles(
-  //               showTitles: true,
-  //               getTitlesWidget: (value, meta) {
-  //                 return Text(value.toInt().toString());
-  //               },
-  //               reservedSize: 40,
-  //             ),
-  //           ),
-  //           rightTitles: const AxisTitles(
-  //             sideTitles: SideTitles(showTitles: false),
-  //           ),
-  //           topTitles: const AxisTitles(
-  //             sideTitles: SideTitles(showTitles: false),
-  //           ),
-  //         ),
-  //         borderData: FlBorderData(
-  //           show: false,
-  //         ),
-  //         gridData: const FlGridData(
-  //           show: true,
-  //         ),
-  //         barGroups: _productsList.asMap().entries.map((entry) {
-  //           return BarChartGroupData(
-  //             x: entry.key,
-  //             barRods: [
-  //               BarChartRodData(
-  //                 toY: entry.value.remainingQuantity!.toDouble(),
-  //                 color: chocolateColor,
-  //                 width: 50,
-  //                 borderRadius: BorderRadius.circular(4),
-  //               ),
-  //             ],
-  //           );
-  //         }).toList()),
-  //   );
-  // }
-
-  // Widget _buildStockParchaseRow(String label, String value) {
-  //   return Row(
-  //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-  //     children: [
-  //       Text(
-  //         label,
-  //         style: const TextStyle(
-  //           color: Colors.white,
-  //           fontSize: 16,
-  //         ),
-  //       ),
-  //       const SizedBox(
-  //         width: 20,
-  //       ),
-  //       Row(
-  //         children: [
-  //           Text(
-  //             value,
-  //             style: const TextStyle(
-  //               color: Colors.white,
-  //               fontSize: 16,
-  //               fontWeight: FontWeight.bold,
-  //             ),
-  //           ),
-  //           const SizedBox(
-  //             width: 8,
-  //           ),
-  //           const Icon(
-  //             Icons.arrow_forward,
-  //             color: Colors.white54,
-  //             size: 16,
-  //           )
-  //         ],
-  //       )
-  //     ],
-  //   );
-  // }
 
   Widget upCards(
       final String title,
@@ -852,24 +685,11 @@ class _DashboardHomeState extends State<DashboardHome> {
     );
     return Scaffold(
       backgroundColor: Colors.white,
-      // body: ((currentWidth > mobileWidth) && ((currentHeight > mobileHeight)))
-      //     ? desktop()
-      //     : mobile(),);
       appBar: AppBar(
         title: const MyAppBarText(content: 'Le coin des cuisiniers'),
         backgroundColor: chocolateColor,
       ),
       body: desktop(),
-      // drawer:
-      //     ((currentWidth > mobileWidth) && ((currentHeight > mobileHeight)))
-      //         ? Drawer(
-      //             child: drawer,
-      //           )
-      //         : null);
-      // drawer: Drawer(
-      //   backgroundColor: Colors.black,
-      //   child: drawer,
-      // )
     );
   }
 }

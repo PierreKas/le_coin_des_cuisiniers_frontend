@@ -16,7 +16,7 @@ class TransactionService {
       final response = await http.get(url);
       if (response.statusCode == 200) {
         dynamic jsonDecodeData = jsonDecode(response.body);
-        print(jsonDecodeData);
+        //print(jsonDecodeData);
 
         transactionList = List<Transactions>.from(
             jsonDecodeData.map((e) => Transactions.fromJson(e)).toList());

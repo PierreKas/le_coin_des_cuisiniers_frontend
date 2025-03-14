@@ -5,6 +5,7 @@ import 'package:le_coin_des_cuisiniers_app/components/label.dart';
 import 'package:le_coin_des_cuisiniers_app/components/textfields.dart';
 import 'package:le_coin_des_cuisiniers_app/controller/product_controller.dart';
 import 'package:le_coin_des_cuisiniers_app/models/products.dart';
+import 'package:le_coin_des_cuisiniers_app/responsive/dimensions.dart';
 import 'package:le_coin_des_cuisiniers_app/views/base_layout.dart';
 import 'package:le_coin_des_cuisiniers_app/views/product/products_list.dart';
 
@@ -350,13 +351,235 @@ class _RestockState extends State<Restock> {
     );
   }
 
+  Widget mobile() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 25),
+      child: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Center(
+              child: Text(
+                'Ravitaillement du produit ${productInfo?.productName ?? ''}',
+                textAlign: TextAlign.center,
+                style: const TextStyle(color: Colors.grey),
+              ),
+            ),
+            const SizedBox(height: 20),
+
+            /// Code du produit
+            const MyLabel(labelContent: 'Code du produit'),
+            const SizedBox(height: 10),
+            MyTextField(
+              controller: _productCode,
+              enabled: false,
+              hintText: '',
+              obscureText: false,
+              prefixIcon: Icons.qr_code_2,
+            ),
+            const SizedBox(height: 16),
+
+            /// Nom du produit
+            const MyLabel(labelContent: 'Nom du produit'),
+            const SizedBox(height: 10),
+            MyTextField(
+              controller: _productName,
+              enabled: true,
+              hintText: '',
+              obscureText: false,
+              prefixIcon: Icons.circle,
+            ),
+            const SizedBox(height: 16),
+
+            /// Marque
+            const MyLabel(labelContent: 'Marque'),
+            const SizedBox(height: 10),
+            MyTextField(
+              controller: _brand,
+              enabled: true,
+              hintText: '',
+              obscureText: false,
+              prefixIcon: Icons.circle,
+            ),
+            const SizedBox(height: 16),
+
+            /// Prix d'achat
+            const MyLabel(labelContent: 'Prix d\'achat'),
+            const SizedBox(height: 10),
+            MyTextField(
+              controller: _purchasePrice,
+              enabled: true,
+              hintText: '',
+              obscureText: false,
+              prefixIcon: Icons.monetization_on,
+            ),
+            const SizedBox(height: 16),
+
+            /// Prix de vente
+            const MyLabel(labelContent: 'Prix de vente'),
+            const SizedBox(height: 10),
+            MyTextField(
+              controller: _sellingPrice,
+              enabled: true,
+              hintText: '',
+              obscureText: false,
+              prefixIcon: Icons.monetization_on,
+            ),
+            const SizedBox(height: 16),
+
+            /// Autres dépenses
+            const MyLabel(labelContent: 'Autres dépenses'),
+            const SizedBox(height: 10),
+            MyTextField(
+              controller: _otherExpenses,
+              enabled: true,
+              hintText: '',
+              obscureText: false,
+              prefixIcon: Icons.monetization_on,
+            ),
+            const SizedBox(height: 16),
+
+            /// Quantité achetée
+            const MyLabel(labelContent: 'Quantité acheté'),
+            const SizedBox(height: 10),
+            MyTextField(
+              controller: _purchaseQty,
+              enabled: true,
+              hintText: '',
+              obscureText: false,
+              prefixIcon: Icons.numbers,
+            ),
+            const SizedBox(height: 16),
+
+            /// Date d'achat
+            const MyLabel(labelContent: 'Date d\'achat'),
+            const SizedBox(height: 10),
+            TextFormField(
+              controller: _purchaseDate,
+              cursorColor: Colors.grey,
+              decoration: InputDecoration(
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                  borderSide: const BorderSide(color: chocolateColor),
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                  borderSide: const BorderSide(color: Colors.grey),
+                ),
+                prefixIcon:
+                    const Icon(Icons.calendar_today, color: chocolateColor),
+              ),
+              onTap: () async {
+                DateTime? pickedDate = await showDatePicker(
+                  context: context,
+                  firstDate: DateTime.now(),
+                  lastDate: DateTime(2026),
+                  initialDate: DateTime.now(),
+                  builder: (context, child) {
+                    return Theme(
+                      data: Theme.of(context).copyWith(
+                        colorScheme: const ColorScheme.light(
+                          primary: chocolateColor, // Header background color
+                          onPrimary: Colors.white, // Header text color
+                          onSurface: Colors.black, // Body text color
+                        ),
+                        textButtonTheme: TextButtonThemeData(
+                          style: TextButton.styleFrom(
+                            foregroundColor:
+                                chocolateColor, // Button text color
+                          ),
+                        ),
+                      ),
+                      child: child!,
+                    );
+                  },
+                );
+
+                if (pickedDate != null) {
+                  setState(() {
+                    _selectedDate = pickedDate;
+                    _purchaseDate.text =
+                        _selectedDate!.toIso8601String().split('T').first;
+                  });
+                }
+              },
+            ),
+            const SizedBox(height: 16),
+
+            /// Button
+            Center(
+              child: MyButtons(
+                onPressed: () {
+                  String productCode = _productCode.text;
+                  String productName = _productName.text;
+                  String brand = _brand.text;
+                  String quantityStr = _purchaseQty.text;
+                  String purchasePriceStr = _purchasePrice.text;
+                  String sellingPriceStr = _sellingPrice.text;
+                  String purchasedDateStr = _purchaseDate.text;
+                  String otherExpensesStr = _otherExpenses.text;
+
+                  int quantity = int.tryParse(quantityStr) ?? 0;
+                  DateTime? purchasedDate = purchasedDateStr.isNotEmpty
+                      ? DateTime.tryParse(purchasedDateStr)
+                      : null;
+                  double purchasePrice =
+                      double.tryParse(purchasePriceStr) ?? 0.0;
+                  double sellingPrice = double.tryParse(sellingPriceStr) ?? 0.0;
+                  double otherExpenses =
+                      double.tryParse(otherExpensesStr) ?? 0.0;
+                  int remainingQuantity =
+                      quantity + (productInfo!.remainingQuantity ?? 0);
+
+                  Product newProduct = Product(
+                    productCode: productCode,
+                    productName: productName,
+                    purchasePrice: purchasePrice,
+                    purchasedDate: purchasedDate,
+                    purchasedQuantity: quantity,
+                    sellingPrice: sellingPrice,
+                    brand: brand,
+                    remainingQuantity: remainingQuantity,
+                    otherExpenses: otherExpenses,
+                  );
+
+                  ProductController()
+                      .updateProduct(productInfo!.id!, newProduct, context);
+                  _productCode.clear();
+                  _productName.clear();
+                  _purchaseDate.clear();
+                  _purchaseQty.clear();
+                  _sellingPrice.clear();
+                  _purchasePrice.clear();
+                  _brand.clear();
+                },
+                text: 'Enregistrer',
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return BaseLayout(
       initialIndex: 1,
       pages: [
         const ProductsList(),
-        desktopBody(),
+        LayoutBuilder(
+          builder: (context, constraints) {
+            if (constraints.maxWidth > tabletWidth) {
+              return desktopBody();
+            } else {
+              return mobile();
+            }
+          },
+        )
       ],
     );
   }

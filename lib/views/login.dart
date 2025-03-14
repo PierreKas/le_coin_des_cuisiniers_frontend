@@ -68,9 +68,12 @@ class _LoginPageState extends State<LoginPage> {
                         await UsersController().login(_phoneController.text,
                             _passwordController.text, context);
                       } catch (e, stackTrace) {
+                        Navigator.of(context).pop();
                         log('Login error: $e',
                             error: e, stackTrace: stackTrace);
                       }
+                      _passwordController.clear();
+                      _phoneController.clear();
                     },
                     text: 'Login',
                   )

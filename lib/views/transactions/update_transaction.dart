@@ -7,6 +7,7 @@ import 'package:le_coin_des_cuisiniers_app/controller/transactions_controller.da
 import 'package:le_coin_des_cuisiniers_app/controller/users_controller.dart';
 import 'package:le_coin_des_cuisiniers_app/models/products.dart';
 import 'package:le_coin_des_cuisiniers_app/models/transactions.dart';
+import 'package:le_coin_des_cuisiniers_app/responsive/dimensions.dart';
 import 'package:le_coin_des_cuisiniers_app/views/acceuil.dart';
 import 'package:le_coin_des_cuisiniers_app/views/base_layout.dart';
 import 'package:le_coin_des_cuisiniers_app/views/product/products_list.dart';
@@ -89,7 +90,7 @@ class _UpdateTransactionState extends State<UpdateTransaction> {
     }
   }
 
-  Widget desktopBody() {
+  Widget desktop() {
     return Consumer<TransactionsController>(
       builder: (context, value, child) {
         return Padding(
@@ -281,6 +282,138 @@ class _UpdateTransactionState extends State<UpdateTransaction> {
     );
   }
 
+  Widget mobile() {
+    return Consumer<TransactionsController>(
+      builder: (context, value, child) {
+        return Padding(
+          padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 25),
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Center(
+                  child: Text(
+                    'MODIFICATION DE LA TRANSACTION',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20,
+                      color: Color.fromARGB(255, 73, 71, 71),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 20),
+
+                // **Nom de l'article**
+                const MyLabel(labelContent: 'Nom de l\'article'),
+                const SizedBox(height: 10),
+                MyTextField(
+                  controller: _productName,
+                  enabled: false,
+                  hintText: '',
+                  obscureText: false,
+                  prefixIcon: Icons.circle,
+                ),
+                const SizedBox(height: 16),
+
+                // **Quantité**
+                const MyLabel(labelContent: 'Quantité'),
+                const SizedBox(height: 10),
+                MyTextField(
+                  controller: _quantity,
+                  enabled: true,
+                  hintText: '',
+                  obscureText: false,
+                  prefixIcon: Icons.numbers,
+                ),
+                const SizedBox(height: 16),
+
+                // **Prix unitaire**
+                const MyLabel(labelContent: 'Prix unitaire'),
+                const SizedBox(height: 10),
+                MyTextField(
+                  controller: _unitPrice,
+                  enabled: false,
+                  hintText: '',
+                  obscureText: false,
+                  prefixIcon: Icons.monetization_on,
+                ),
+                const SizedBox(height: 16),
+
+                // **Prix total**
+                const MyLabel(labelContent: 'Prix total'),
+                const SizedBox(height: 10),
+                MyTextField(
+                  controller: _totalPrice,
+                  enabled: false,
+                  hintText: '',
+                  obscureText: false,
+                  prefixIcon: Icons.monetization_on,
+                ),
+                const SizedBox(height: 30),
+
+                // **Modifier Button**
+                Center(
+                  child: MyButtons(
+                    onPressed: () {
+                      String productCode = _productCode.text;
+                      String quantityStr = _quantity.text;
+                      String totalPriceStr = _totalPrice.text;
+
+                      int quantity = int.tryParse(quantityStr) ?? 0;
+                      double totalPrice = double.tryParse(totalPriceStr) ?? 0.0;
+
+                      selectedProduct = productsList.firstWhere(
+                          (product) => product.productCode == productCode);
+
+                      Transactions transactionToUpdate = Transactions(
+                          productCode: productCode,
+                          product: selectedProduct,
+                          quantity: quantity,
+                          sellingDate: DateTime.now(),
+                          totalPrice: totalPrice,
+                          transactionId: widget.transId);
+
+                      Provider.of<TransactionsController>(context,
+                              listen: false)
+                          .updateTransaction(transactionToUpdate, context);
+
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => BaseLayout(
+                            initialIndex: 1, // Sales page index
+                            pages: [
+                              const Acceuil(),
+                              if (UsersController.userRole == 'ADMIN')
+                                const ProductsList(),
+                              if (UsersController.userRole == 'ADMIN')
+                                const UsersList(),
+                              const AddTransaction(),
+                            ],
+                            initialPage:
+                                BillItems(transaction: transactionToUpdate),
+                          ),
+                        ),
+                      );
+
+                      _productCode.clear();
+                      _productName.clear();
+                      _quantity.clear();
+                      _unitPrice.clear();
+                      _totalPrice.clear();
+                    },
+                    text: 'Modifier',
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return BaseLayout(
@@ -301,7 +434,15 @@ class _UpdateTransactionState extends State<UpdateTransaction> {
               ),
             ),
           ),
-          desktopBody()
+          LayoutBuilder(
+            builder: (context, constraints) {
+              if (constraints.maxWidth > tabletWidth) {
+                return desktop();
+              } else {
+                return mobile();
+              }
+            },
+          ),
         ]),
       ],
     );

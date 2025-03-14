@@ -7,6 +7,7 @@ import 'package:le_coin_des_cuisiniers_app/components/search_textfields.dart';
 import 'package:le_coin_des_cuisiniers_app/components/text_content.dart';
 import 'package:le_coin_des_cuisiniers_app/controller/product_controller.dart';
 import 'package:le_coin_des_cuisiniers_app/models/products.dart';
+import 'package:le_coin_des_cuisiniers_app/responsive/dimensions.dart';
 import 'package:le_coin_des_cuisiniers_app/views/product/add_product.dart';
 import 'package:le_coin_des_cuisiniers_app/views/product/product_restock_history.dart';
 import 'package:le_coin_des_cuisiniers_app/views/product/restock.dart';
@@ -29,10 +30,17 @@ class _ProductsListState extends State<ProductsList> {
   List<Product> productsList = [];
   List<Product> filteredProductsList = [];
   TextEditingController searchController = TextEditingController();
+  bool isLoading = true;
+
   Future<List<Product>> getProductLists() async {
+    setState(() {
+      isLoading = true;
+    });
     productsList = await ProductController().getProducts();
     filteredProductsList = productsList;
-    setState(() {});
+    setState(() {
+      isLoading = false;
+    });
     return productsList;
   }
 
@@ -328,87 +336,366 @@ class _ProductsListState extends State<ProductsList> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const AddProduct(),
+          ),
+        ),
+        backgroundColor: chocolateColor,
+        child: const Icon(
+          Icons.plus_one_outlined,
+          color: Colors.white,
+        ),
+      ),
       backgroundColor: Colors.white,
-      // appBar: AppBar(
-      //   title: const Center(
-      //       child: MyTextHeader(content: 'Le coin des cuisiniers')),
-      //   backgroundColor: Colors.white,
-      // ),
-      body: Stack(
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(left: 10, right: 10),
-            child: Column(
+      body: isLoading
+          ? const Center(
+              child: CircularProgressIndicator(
+              color: chocolateColor,
+            ))
+          : Stack(
               children: [
-                Container(
-                  padding: const EdgeInsets.all(20),
-                  decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(15),
-                      boxShadow: const [
-                        BoxShadow(
-                          color: Colors.white,
-                          spreadRadius: 2,
-                          blurRadius: 5,
-                          //  offset: Offset(0, 3),
-                        )
-                      ]),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const MyTextContent(content: 'Liste des produits'),
-                      SizedBox(
-                        width: 300,
-                        child: MySearchTextField(
-                          onChanged: filterProducts,
-                          controller: searchController,
-                          enabled: true,
-                          hintText: 'Chercher un produit',
-                          obscureText: false,
-                          prefixIcon: Icons.search,
-                        ),
-                      ),
-                      MyButtons(
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const AddProduct()),
-                          );
-                        },
-                        text: 'Ajouter un nouveau produit',
-                      )
-                    ],
+                Padding(
+                  padding: const EdgeInsets.only(left: 10, right: 10),
+                  child: LayoutBuilder(
+                    builder: (context, constraints) {
+                      if (constraints.maxWidth > tabletWidth) {
+                        return desktop();
+                      } else {
+                        return mobile();
+                      }
+                    },
                   ),
                 ),
-                const SizedBox(
-                  height: 24,
-                ),
-                Expanded(
-                  child: SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    child: SingleChildScrollView(
-                      scrollDirection: Axis.vertical,
-                      child: dataTable(),
+                Center(
+                  child: Opacity(
+                    opacity: 0.5,
+                    child: Image.asset(
+                      'assets/logo.PNG',
+                      fit: BoxFit.cover,
+                      width: 100,
+                      height: 100,
                     ),
                   ),
                 ),
               ],
             ),
-          ),
-          Center(
-            child: Opacity(
-              opacity: 0.5,
-              child: Image.asset(
-                'assets/logo.PNG',
-                fit: BoxFit.cover,
-                width: 100,
-                height: 100,
+    );
+  }
+
+  Widget desktop() {
+    return Column(
+      children: [
+        Container(
+          padding: const EdgeInsets.all(20),
+          decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(15),
+              boxShadow: const [
+                BoxShadow(
+                  color: Colors.white,
+                  spreadRadius: 2,
+                  blurRadius: 5,
+                  //  offset: Offset(0, 3),
+                )
+              ]),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const MyTextContent(content: 'Liste des produits'),
+              SizedBox(
+                width: 300,
+                child: MySearchTextField(
+                  onChanged: filterProducts,
+                  controller: searchController,
+                  enabled: true,
+                  hintText: 'Chercher un produit',
+                  obscureText: false,
+                  prefixIcon: Icons.search,
+                ),
               ),
+              MyButtons(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const AddProduct()),
+                  );
+                },
+                text: 'Ajouter un nouveau produit',
+              )
+            ],
+          ),
+        ),
+        const SizedBox(
+          height: 24,
+        ),
+        Expanded(
+          child: SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: SingleChildScrollView(
+              scrollDirection: Axis.vertical,
+              child: dataTable(),
             ),
           ),
-        ],
-      ),
+        ),
+      ],
+    );
+  }
+
+  Widget mobileProductList() {
+    return ListView.builder(
+      itemCount: filteredProductsList.length,
+      itemBuilder: (context, index) {
+        final product = filteredProductsList[index];
+        return Card(
+          color: Colors.white,
+          margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 4),
+          elevation: 2,
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+          child: ExpansionTile(
+            title: Text(
+              product.productName!,
+              style: const TextStyle(
+                color: chocolateColor,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            subtitle: Text(
+              product.productCode!,
+              style: const TextStyle(color: chocolateColor),
+            ),
+            trailing: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+              decoration: BoxDecoration(
+                color: getQuantityColor(product.remainingQuantity!),
+                borderRadius: BorderRadius.circular(20),
+              ),
+              child: Text(
+                product.remainingQuantity.toString(),
+                style: TextStyle(
+                  color: getQuantityColor(product.remainingQuantity!)
+                      .withGreen(100)
+                      .withRed(100)
+                      .withBlue(100),
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    _infoRow('Marque du produit', product.brand!),
+                    const SizedBox(height: 8),
+                    _infoRow('Prix d\'achat',
+                        '${product.purchasePrice?.toStringAsFixed(2)} \$'),
+                    const SizedBox(height: 8),
+                    _infoRow('Autres dépenses',
+                        '${product.otherExpenses?.toStringAsFixed(2)} \$'),
+                    const SizedBox(height: 8),
+                    _infoRow('Prix de revient',
+                        '${((product.purchasePrice ?? 0.0) + (product.otherExpenses ?? 0.0)).toString()} \$'),
+                    const SizedBox(height: 8),
+                    _infoRow('Prix de vente',
+                        '${product.sellingPrice?.toStringAsFixed(2)} \$'),
+                    const SizedBox(height: 8),
+                    _infoRow('Bénefice estimé',
+                        '${((product.sellingPrice ?? 0.0) - ((product.purchasePrice ?? 0.0) + (product.otherExpenses ?? 0.0))).toStringAsFixed(3)} \$'),
+                    const SizedBox(height: 8),
+                    _infoRow('Quantité acheté',
+                        '${product.purchasePrice?.toStringAsFixed(2)} \$'),
+                    const SizedBox(height: 8),
+                    _infoRow('Date d\'achat', '${product.purchasedDate} \$'),
+                    const SizedBox(height: 8),
+                    _infoRow('Prix de vente',
+                        '${product.sellingPrice?.toStringAsFixed(2)} \$'),
+                    const SizedBox(height: 8),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        MouseRegion(
+                          cursor: SystemMouseCursors.click,
+                          child: GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => Restock(
+                                            prCode: product.productCode!,
+                                          )));
+                            },
+                            child: Container(
+                              padding: const EdgeInsets.all(8),
+                              decoration: BoxDecoration(
+                                color: Colors.blue.shade50,
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              child: const Text(
+                                'Ravitailler le stock',
+                                style: TextStyle(
+                                  color: Colors.blue,
+                                ),
+                              ),
+                              // const Icon(Icons.inventory, color: Colors.blue),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 12),
+                        MouseRegion(
+                          cursor: SystemMouseCursors.click,
+                          child: GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          ProductRestockHistory(
+                                            prCode: product.productCode!,
+                                          )));
+                            },
+                            child: Container(
+                              padding: const EdgeInsets.all(8),
+                              decoration: BoxDecoration(
+                                color: Colors.blue.shade50,
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              child: const Text(
+                                'Historique',
+                                style: TextStyle(
+                                  color: Colors.blue,
+                                ),
+                              ),
+                              // const Icon(Icons.history_edu, color: Colors.blue),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 8),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        MouseRegion(
+                          cursor: SystemMouseCursors.click,
+                          child: GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => UpdateProduct(
+                                            productCode: product.productCode!,
+                                          )));
+                            },
+                            child: Container(
+                              padding: const EdgeInsets.all(8),
+                              decoration: BoxDecoration(
+                                color: Colors.blue.shade50,
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              child: const Icon(Icons.edit, color: Colors.blue),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 12),
+                        MouseRegion(
+                          cursor: SystemMouseCursors.click,
+                          child: GestureDetector(
+                            onTap: () =>
+                                _showDeleteConfirmationDialog(product.id!),
+                            child: Container(
+                              padding: const EdgeInsets.all(8),
+                              decoration: BoxDecoration(
+                                color: Colors.red.shade50,
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              child:
+                                  const Icon(Icons.delete, color: Colors.red),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _infoRow(String label, String value) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(
+          label,
+          style: const TextStyle(
+            color: chocolateColor,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+        Text(
+          value,
+          style: const TextStyle(color: chocolateColor),
+        ),
+      ],
+    );
+  }
+
+  Widget mobile() {
+    return Column(
+      children: [
+        Container(
+          padding: const EdgeInsets.all(20),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(15),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey.withOpacity(0.1),
+                spreadRadius: 2,
+                blurRadius: 5,
+                offset: const Offset(0, 3),
+              ),
+            ],
+          ),
+          child: Column(
+            //mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              const Text(
+                'Liste des produits',
+                style: TextStyle(
+                  color: chocolateColor,
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              SizedBox(
+                width: 300,
+                child: MySearchTextField(
+                  onChanged: filterProducts,
+                  controller: searchController,
+                  enabled: true,
+                  hintText: 'Chercher un produit',
+                  obscureText: false,
+                  prefixIcon: Icons.search,
+                ),
+              ),
+            ],
+          ),
+        ),
+        const SizedBox(height: 24),
+        Expanded(
+          child: mobileProductList(),
+        ),
+      ],
     );
   }
 }
