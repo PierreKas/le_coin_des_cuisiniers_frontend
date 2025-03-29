@@ -103,4 +103,10 @@ class ProductController {
           error: e, stackTrace: stackTrace);
     }
   }
+
+  Future<double> totalAmountSpent() async {
+    double totalAmountSpent = await productService.getTotalMoneySpent();
+
+    return totalAmountSpent;
+  }
 }

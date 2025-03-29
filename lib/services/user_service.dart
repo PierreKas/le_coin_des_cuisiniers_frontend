@@ -1,17 +1,21 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:le_coin_des_cuisiniers_app/models/users.dart';
+import 'package:le_coin_des_cuisiniers_app/services/aut_token.dart';
+import 'package:le_coin_des_cuisiniers_app/services/base_url.dart';
 
 class UserService {
   // final String baseUrl = "http://localhost:8080/api/users";
-  final String baseUrl =
-      "https://le-coin-des-cuisiners-backend.onrender.com/api/users";
+  final String userBaseUrl = "$baseUrl/api/users";
   List<User> userList = [];
 
   Future<List<User>> getAllUsers() async {
-    final url = Uri.parse('$baseUrl/all');
+    final url = Uri.parse('$userBaseUrl/all');
     try {
-      final response = await http.get(url);
+      final response = await http.get(
+        url,
+        headers: AuthToken.getHeaders(),
+      );
       if (response.statusCode == 200) {
         dynamic jsonDecodeData = jsonDecode(response.body);
         // print(jsonDecodeData);
@@ -26,11 +30,12 @@ class UserService {
   }
 
   Future<User?> addUser(User user) async {
-    final url = Uri.parse('$baseUrl/add');
+    final url = Uri.parse('$userBaseUrl/add');
     try {
       final response = await http.post(
         url,
-        headers: {'Content-Type': 'application/json'},
+        // headers: {'Content-Type': 'application/json'},
+        headers: AuthToken.getHeaders(),
         body: jsonEncode(user.toJson()),
       );
       if (response.statusCode == 201) {
@@ -44,9 +49,12 @@ class UserService {
   }
 
   Future<User?> findUserById(int userId) async {
-    final url = Uri.parse('$baseUrl/by-id?userId=$userId');
+    final url = Uri.parse('$userBaseUrl/by-id?userId=$userId');
     try {
-      final response = await http.get(url);
+      final response = await http.get(
+        url,
+        headers: AuthToken.getHeaders(),
+      );
       if (response.statusCode == 200) {
         dynamic jsonData = jsonDecode(response.body);
         return User.fromJson(jsonData);
@@ -58,11 +66,13 @@ class UserService {
   }
 
   Future<User?> updateUser(int userId, User user) async {
-    final url = Uri.parse('$baseUrl/update/$userId');
+    final url = Uri.parse('$userBaseUrl/update/$userId');
     try {
       final response = await http.put(
         url,
-        headers: {'Content-Type': 'application/json'},
+
+        headers: AuthToken.getHeaders(),
+        //headers: {'Content-Type': 'application/json'},
         body: jsonEncode(user.toJson()),
       );
       if (response.statusCode == 200) {
@@ -76,9 +86,12 @@ class UserService {
   }
 
   Future<bool> deleteUser(int userId) async {
-    final url = Uri.parse('$baseUrl/delete/$userId');
+    final url = Uri.parse('$userBaseUrl/delete/$userId');
     try {
-      final response = await http.delete(url);
+      final response = await http.delete(
+        url,
+        headers: AuthToken.getHeaders(),
+      );
       if (response.statusCode == 200) {
         return true;
       }
@@ -89,7 +102,7 @@ class UserService {
   }
 
   Future<User?> login(String phoneNumber, String password) async {
-    final url = Uri.parse('$baseUrl/login');
+    final url = Uri.parse('$userBaseUrl/login');
     try {
       // Create a login request object with phone number and password
       Map<String, dynamic> loginRequest = {
@@ -105,6 +118,9 @@ class UserService {
 
       if (response.statusCode == 200) {
         dynamic jsonData = jsonDecode(response.body);
+
+        // Store the JWT token
+        AuthToken.setToken(jsonData['myJWT']);
         // Parse the LoginResponse into a User object
         return User.fromJson(jsonData);
       } else {

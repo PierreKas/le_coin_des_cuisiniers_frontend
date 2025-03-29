@@ -1,21 +1,30 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:le_coin_des_cuisiniers_app/models/products.dart';
+import 'package:le_coin_des_cuisiniers_app/services/aut_token.dart';
+import 'package:le_coin_des_cuisiniers_app/services/base_url.dart';
 
 class ProductService {
   // final String baseUrl = "http://localhost:8080/api/products";
-  final String baseUrl =
-      "https://le-coin-des-cuisiners-backend.onrender.com/api/products";
+  final String productBaseUrl = "$baseUrl/api/products";
   List<Product> productList = [];
 
   Future<List<Product>> getAllProducts() async {
-    final url = Uri.parse('$baseUrl/all');
+    final url = Uri.parse('$productBaseUrl/all');
+
     try {
-      final response = await http.get(url);
+      final response = await http.get(
+        url,
+        headers: AuthToken.getHeaders(),
+      );
+      print('URL: $url');
+      print('Headers: ${AuthToken.getHeaders()}');
+      print('Response Status Code: ${response.statusCode}');
+      print('Response Body: ${response.body}');
       if (response.statusCode == 200) {
         //print(response.body);
         dynamic jsonDecodeData = jsonDecode(response.body);
-        // print(jsonDecodeData);
+        print(jsonDecodeData);
         productList = List<Product>.from(
             jsonDecodeData.map((e) => Product.fromJson(e)).toList());
         return productList;
@@ -27,9 +36,12 @@ class ProductService {
   }
 
   Future<List<Product>?> getLowStockProducts() async {
-    final url = Uri.parse('$baseUrl/low-qty');
+    final url = Uri.parse('$productBaseUrl/low-qty');
     try {
-      final response = await http.get(url);
+      final response = await http.get(
+        url,
+        headers: AuthToken.getHeaders(),
+      );
       if (response.statusCode == 200) {
         dynamic jsonDecodeData = jsonDecode(response.body);
         // print(jsonDecodeData);
@@ -44,9 +56,12 @@ class ProductService {
   }
 
   Future<List<Product>?> getOutOfStockProducts() async {
-    final url = Uri.parse('$baseUrl/out-of-stock');
+    final url = Uri.parse('$productBaseUrl/out-of-stock');
     try {
-      final response = await http.get(url);
+      final response = await http.get(
+        url,
+        headers: AuthToken.getHeaders(),
+      );
       if (response.statusCode == 200) {
         dynamic jsonDecodeData = jsonDecode(response.body);
         // print(jsonDecodeData);
@@ -61,11 +76,15 @@ class ProductService {
   }
 
   Future<Product?> addProduct(Product product) async {
-    final url = Uri.parse('$baseUrl/add');
+    final url = Uri.parse('$productBaseUrl/add');
     try {
       final response = await http.post(
         url,
-        headers: {'Content-Type': 'application/json'},
+        // headers: {
+        //   'Content-Type': 'application/json',
+        //   'aut-token': '${AuthToken.getHeaders()}'
+        // },
+        headers: AuthToken.getHeaders(),
         body: jsonEncode(product.toJson()),
       );
       if (response.statusCode == 201) {
@@ -81,9 +100,12 @@ class ProductService {
   }
 
   Future<Product?> findProductByCode(String code) async {
-    final url = Uri.parse('$baseUrl/by-code/$code');
+    final url = Uri.parse('$productBaseUrl/by-code/$code');
     try {
-      final response = await http.get(url);
+      final response = await http.get(
+        url,
+        headers: AuthToken.getHeaders(),
+      );
       if (response.statusCode == 200) {
         dynamic jsonData = jsonDecode(response.body);
         return Product.fromJson(jsonData);
@@ -95,11 +117,12 @@ class ProductService {
   }
 
   Future<Product?> updateProduct(int productId, Product product) async {
-    final url = Uri.parse('$baseUrl/update/$productId');
+    final url = Uri.parse('$productBaseUrl/update/$productId');
     try {
       final response = await http.put(
         url,
-        headers: {'Content-Type': 'application/json'},
+        //headers: {'Content-Type': 'application/json'},
+        headers: AuthToken.getHeaders(),
         body: jsonEncode(product.toJson()),
       );
       if (response.statusCode == 200) {
@@ -112,12 +135,13 @@ class ProductService {
     return null;
   }
 
-    Future<Product?> restockProduct(int productId, Product product) async {
-    final url = Uri.parse('$baseUrl/update/$productId');
+  Future<Product?> restockProduct(int productId, Product product) async {
+    final url = Uri.parse('$productBaseUrl/update/$productId');
     try {
       final response = await http.put(
         url,
-        headers: {'Content-Type': 'application/json'},
+        //headers: {'Content-Type': 'application/json'},
+        headers: AuthToken.getHeaders(),
         body: jsonEncode(product.toJson()),
       );
       if (response.statusCode == 200) {
@@ -131,9 +155,12 @@ class ProductService {
   }
 
   Future<bool> deleteProduct(int productId) async {
-    final url = Uri.parse('$baseUrl/delete/$productId');
+    final url = Uri.parse('$productBaseUrl/delete/$productId');
     try {
-      final response = await http.delete(url);
+      final response = await http.delete(
+        url,
+        headers: AuthToken.getHeaders(),
+      );
       if (response.statusCode == 200) {
         return true;
       }
@@ -141,5 +168,27 @@ class ProductService {
       throw Exception('Error: $e');
     }
     return false;
+  }
+
+  Future<double> getTotalMoneySpent() async {
+    final url = Uri.parse('$productBaseUrl/total-money-spent');
+
+    try {
+      final response = await http.get(
+        url,
+        headers: AuthToken.getHeaders(),
+      );
+      if (response.statusCode == 200) {
+        dynamic jsonDecodeData = jsonDecode(response.body);
+        print(jsonDecodeData);
+
+        // transactionList = List<Transactions>.from(
+        //     jsonDecodeData.map((e) => Transactions.fromJson(e)).toList());
+        return jsonDecodeData;
+      }
+    } catch (e) {
+      throw Exception('Error: $e');
+    }
+    throw Exception('Try to handle null values');
   }
 }

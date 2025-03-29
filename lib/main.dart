@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:le_coin_des_cuisiniers_app/colors/colors.dart';
 import 'package:le_coin_des_cuisiniers_app/controller/transactions_controller.dart';
+import 'package:le_coin_des_cuisiniers_app/views/home_page.dart';
 import 'package:le_coin_des_cuisiniers_app/views/login.dart';
 //import 'package:pdf/widgets.dart';
 import 'package:provider/provider.dart';

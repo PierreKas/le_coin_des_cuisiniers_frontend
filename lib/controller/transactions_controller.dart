@@ -7,6 +7,7 @@ import 'package:le_coin_des_cuisiniers_app/models/transactions.dart';
 import 'package:le_coin_des_cuisiniers_app/services/transaction_service.dart';
 
 class TransactionsController extends ChangeNotifier {
+  final TransactionService _transactionService = TransactionService();
   static List<Product> productsList = [];
   final List<Transactions> _transactionsList = [];
   List<Transactions> get transactionsList => _transactionsList;
@@ -45,6 +46,24 @@ class TransactionsController extends ChangeNotifier {
     _transactionsList[index] = transaction;
     MySnackBar.showSuccessMessage('Données du produit à jour', context);
     notifyListeners();
+  }
+
+  Future<double> dailyTotal(String date) async {
+    double dailyTotal = await _transactionService.getDailyTotal(date);
+
+    return dailyTotal;
+  }
+
+  Future<double> monthlyTotal(String month) async {
+    double monthlyTotal = await _transactionService.getMonthlyTotal(month);
+
+    return monthlyTotal;
+  }
+
+  Future<double> generalTotalSold() async {
+    double generalTotalSold = await _transactionService.getGeneralTotalSold();
+
+    return generalTotalSold;
   }
 
   void deleteTransaction(Transactions transaction, BuildContext context) {

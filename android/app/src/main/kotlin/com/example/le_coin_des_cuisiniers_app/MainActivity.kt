@@ -1,4 +1,4 @@
-package com.example.le_coin_des_cuisiniers_app
+package com.pierre_kasanani.le_coin_des_cuisiniers_app
 
 import io.flutter.embedding.android.FlutterActivity
 
