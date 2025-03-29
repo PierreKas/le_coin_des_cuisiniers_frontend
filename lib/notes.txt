@@ -9,4 +9,4 @@ web/proxy.json:
       "target": "http://localhost:8080",
       "changeOrigin": true
     }
-  }
+}
