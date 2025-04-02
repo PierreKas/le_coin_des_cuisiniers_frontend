@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:le_coin_des_cuisiniers_app/components/search_textfields.dart';
 import 'package:le_coin_des_cuisiniers_app/controller/product_controller.dart';
+import 'package:le_coin_des_cuisiniers_app/dashboard/dashboard_home.dart';
 import 'package:le_coin_des_cuisiniers_app/models/products.dart';
 import 'package:le_coin_des_cuisiniers_app/responsive/dimensions.dart';
 
@@ -167,7 +168,8 @@ class _AcceuilState extends State<Acceuil> {
                   child: LayoutBuilder(
                     builder: (context, constraints) {
                       if (constraints.maxWidth > mobileWidth) {
-                        return desktop();
+                        // return desktop();
+                        return const DashboardHome();
                       } else {
                         return mobile();
                       }
