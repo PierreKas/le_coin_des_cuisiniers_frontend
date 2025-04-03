@@ -1,3 +1,4 @@
+import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:le_coin_des_cuisiniers_app/colors/colors.dart';
 import 'package:le_coin_des_cuisiniers_app/components/buttons.dart';
@@ -106,13 +107,86 @@ class _AddTransactionState extends State<AddTransaction> {
                             const SizedBox(
                               height: 10,
                             ),
+                            // GestureDetector(
+                            //   onTap: () {
+                            //     _fetchProducts();
+                            //   },
+                            //   child: DropdownButtonFormField<String>(
+                            //     value: selectedProductCode,
+                            //     decoration: InputDecoration(
+                            //         border: OutlineInputBorder(
+                            //           borderRadius: BorderRadius.circular(10),
+                            //         ),
+                            //         focusedBorder: OutlineInputBorder(
+                            //           borderRadius: BorderRadius.circular(10.0),
+                            //           borderSide: const BorderSide(
+                            //             color: chocolateColor,
+                            //           ),
+                            //         ),
+                            //         enabledBorder: OutlineInputBorder(
+                            //           borderRadius: BorderRadius.circular(10.0),
+                            //           borderSide: const BorderSide(
+                            //             color: Colors.grey,
+                            //           ),
+                            //         ),
+                            //         prefixIcon: const Icon(
+                            //           Icons.circle_outlined,
+                            //           color: chocolateColor,
+                            //         )),
+                            //     items: productsList.isEmpty
+                            //         ? []
+                            //         : productsList.map((Product product) {
+                            //             return DropdownMenuItem<String>(
+                            //               value: product.productCode,
+                            //               child: Text(product.productName!),
+                            //             );
+                            //           }).toList(),
+                            //     onChanged: (String? newProductCode) {
+                            //       setState(() {
+                            //         selectedProductCode = newProductCode;
+
+                            //         selectedProduct = productsList.firstWhere(
+                            //             (product) =>
+                            //                 product.productCode ==
+                            //                 newProductCode);
+
+                            //         if (selectedProduct != null) {
+                            //           _unitPrice.text = selectedProduct!
+                            //               .sellingPrice
+                            //               .toString();
+                            //           _productName.text = selectedProduct!
+                            //               .productName
+                            //               .toString();
+                            //           _productCode.text = selectedProduct!
+                            //               .productCode
+                            //               .toString();
+                            //         }
+                            //       });
+                            //     },
+                            //   ),
+                            // ),
                             GestureDetector(
                               onTap: () {
                                 _fetchProducts();
                               },
-                              child: DropdownButtonFormField<String>(
-                                value: selectedProductCode,
-                                decoration: InputDecoration(
+                              child: DropdownSearch<Product>(
+                                popupProps: PopupProps.menu(
+                                  showSearchBox: true,
+                                  searchFieldProps: TextFieldProps(
+                                    decoration: InputDecoration(
+                                      hintText: "Search product",
+                                      prefixIcon: const Icon(Icons.search),
+                                      border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(10),
+                                      ),
+                                    ),
+                                  ),
+                                  menuProps: MenuProps(
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                ),
+                                dropdownDecoratorProps: DropDownDecoratorProps(
+                                  dropdownSearchDecoration: InputDecoration(
                                     border: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(10),
                                     ),
@@ -131,25 +205,19 @@ class _AddTransactionState extends State<AddTransaction> {
                                     prefixIcon: const Icon(
                                       Icons.circle_outlined,
                                       color: chocolateColor,
-                                    )),
-                                items: productsList.isEmpty
-                                    ? []
-                                    : productsList.map((Product product) {
-                                        return DropdownMenuItem<String>(
-                                          value: product.productCode,
-                                          child: Text(product.productName!),
-                                        );
-                                      }).toList(),
-                                onChanged: (String? newProductCode) {
-                                  setState(() {
-                                    selectedProductCode = newProductCode;
-
-                                    selectedProduct = productsList.firstWhere(
-                                        (product) =>
-                                            product.productCode ==
-                                            newProductCode);
-
-                                    if (selectedProduct != null) {
+                                    ),
+                                  ),
+                                ),
+                                items: productsList,
+                                itemAsString: (Product product) =>
+                                    product.productName ?? "",
+                                selectedItem: selectedProduct,
+                                onChanged: (Product? newProduct) {
+                                  if (newProduct != null) {
+                                    setState(() {
+                                      selectedProductCode =
+                                          newProduct.productCode;
+                                      selectedProduct = newProduct;
                                       _unitPrice.text = selectedProduct!
                                           .sellingPrice
                                           .toString();
@@ -159,11 +227,12 @@ class _AddTransactionState extends State<AddTransaction> {
                                       _productCode.text = selectedProduct!
                                           .productCode
                                           .toString();
-                                    }
-                                  });
+                                    });
+                                  }
                                 },
                               ),
                             ),
+
                             const SizedBox(
                               height: 16,
                             ),

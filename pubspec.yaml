@@ -44,6 +44,7 @@ dependencies:
   intl:
   pdf: 
   file_picker: 
+  dropdown_search: ^5.0.6
   #mysql_client:
   #restart_app:
   # firebase_core: #^2.29.0
