@@ -6,6 +6,7 @@ import 'package:le_coin_des_cuisiniers_app/components/appbar_text.dart';
 import 'package:le_coin_des_cuisiniers_app/controller/users_controller.dart';
 import 'package:le_coin_des_cuisiniers_app/dashboard/dashboard_home.dart';
 import 'package:le_coin_des_cuisiniers_app/responsive/dimensions.dart';
+import 'package:le_coin_des_cuisiniers_app/services/aut_token.dart';
 import 'package:le_coin_des_cuisiniers_app/views/acceuil.dart';
 import 'package:le_coin_des_cuisiniers_app/views/login.dart';
 import 'package:le_coin_des_cuisiniers_app/views/product/products_list.dart';
@@ -154,6 +155,7 @@ class _HomePageState extends State<HomePage> {
                     foregroundColor: Colors.white,
                   ),
                   onPressed: () async {
+                    AuthToken.clearToken();
                     Navigator.pushAndRemoveUntil(
                       context,
                       MaterialPageRoute(

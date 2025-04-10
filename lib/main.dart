@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:le_coin_des_cuisiniers_app/colors/colors.dart';
 import 'package:le_coin_des_cuisiniers_app/controller/transactions_controller.dart';
+import 'package:le_coin_des_cuisiniers_app/services/aut_token.dart';
 import 'package:le_coin_des_cuisiniers_app/views/home_page.dart';
 import 'package:le_coin_des_cuisiniers_app/views/login.dart';
 //import 'package:pdf/widgets.dart';
@@ -15,6 +16,9 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final token = AuthToken.getToken();
+    final initialPage = token != null ? const HomePage() : const LoginPage();
+
     return ChangeNotifierProvider(
       create: (context) => TransactionsController(),
       child: MaterialApp(
@@ -23,21 +27,9 @@ class MyApp extends StatelessWidget {
           selectionColor: chocolateColor.withOpacity(0.7),
           // cursorColor: chocolateColor,
         )),
-        home: const LoginPage(),
+        home: initialPage, //const LoginPage(),
         debugShowCheckedModeBanner: false,
       ),
     );
   }
-  // @override
-  // Widget build(BuildContext context) {
-  //   return MaterialApp(
-  //     theme: ThemeData(
-  //         textSelectionTheme: TextSelectionThemeData(
-  //       selectionColor: chocolateColor.withOpacity(0.7),
-  //       // cursorColor: chocolateColor,
-  //     )),
-  //     home: const LoginPage(),
-  //     debugShowCheckedModeBanner: false,
-  //   );
-  // }
 }
