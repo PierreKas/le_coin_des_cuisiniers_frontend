@@ -121,6 +121,10 @@ class UserService {
 
         // Store the JWT token
         AuthToken.setToken(jsonData['myJWT']);
+
+        // AuthToken.setToken(token);
+        AuthToken.setUserRole(jsonData['role']);
+        //UsersController.userRole = role;
         // Parse the LoginResponse into a User object
         return User.fromJson(jsonData);
       } else {

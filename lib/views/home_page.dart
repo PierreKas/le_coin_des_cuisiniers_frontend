@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:le_coin_des_cuisiniers_app/colors/colors.dart';
 import 'package:le_coin_des_cuisiniers_app/components/appbar_text.dart';
@@ -22,6 +20,16 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   int _selectedIndex = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    // Restore the user role from storage
+    final storedRole = AuthToken.getUserRole();
+    if (storedRole != null) {
+      UsersController.userRole = storedRole;
+    }
+  }
 
   // // Define pages for navigation
   // final List<Widget> _pages = [
@@ -107,16 +115,16 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
-  Future<void> relaunchApp() async {
-    // Get the current executable path
-    final executable = Platform.resolvedExecutable;
-    final arguments = Platform.executableArguments;
+  // Future<void> relaunchApp() async {
+  //   // Get the current executable path
+  //   final executable = Platform.resolvedExecutable;
+  //   final arguments = Platform.executableArguments;
 
-    // Relaunch the app
-    await Process.start(executable, arguments);
+  //   // Relaunch the app
+  //   await Process.start(executable, arguments);
 
-    exit(0);
-  }
+  //   exit(0);
+  // }
 
   @override
   Widget build(BuildContext context) {
