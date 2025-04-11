@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:le_coin_des_cuisiniers_app/controller/users_controller.dart';
 import 'package:le_coin_des_cuisiniers_app/models/users.dart';
 import 'package:le_coin_des_cuisiniers_app/services/aut_token.dart';
 import 'package:le_coin_des_cuisiniers_app/services/base_url.dart';
@@ -124,7 +125,7 @@ class UserService {
 
         // AuthToken.setToken(token);
         AuthToken.setUserRole(jsonData['role']);
-        //UsersController.userRole = role;
+        UsersController.userRole = jsonData['role'];
         // Parse the LoginResponse into a User object
         return User.fromJson(jsonData);
       } else {

@@ -1,12 +1,35 @@
 import 'package:flutter/material.dart';
 import 'package:le_coin_des_cuisiniers_app/components/snack_bar.dart';
 import 'package:le_coin_des_cuisiniers_app/models/users.dart';
+import 'package:le_coin_des_cuisiniers_app/services/aut_token.dart';
 import 'package:le_coin_des_cuisiniers_app/services/user_service.dart';
 import 'package:le_coin_des_cuisiniers_app/views/home_page.dart';
 
 class UsersController {
   final UserService _userService = UserService();
   static String userRole = '';
+  Future<bool> login(
+      String phoneNumber, String password, BuildContext context) async {
+    if (phoneNumber.isEmpty || password.isEmpty) {
+      MySnackBar.showErrorMessage('Veuillez remplir tous les champs', context);
+      return false;
+    }
+
+    final user = await _userService.login(phoneNumber, password);
+
+    if (user != null) {
+      userRole = user.role;
+      AuthToken.setUserRole(user.role);
+      Navigator.pushReplacement(
+          context, MaterialPageRoute(builder: (context) => const HomePage()));
+      return true;
+    } else {
+      MySnackBar.showErrorMessage('Le login a échoué', context);
+
+      return false;
+    }
+  }
+
   Future<void> addUser(User user, BuildContext context) async {
     if (user.fullName.isEmpty ||
         user.email.isEmpty ||
@@ -36,26 +59,5 @@ class UsersController {
 
   Future<void> deleteUser(int userId, BuildContext context) async {
     await _userService.deleteUser(userId);
-  }
-
-  Future<bool> login(
-      String phoneNumber, String password, BuildContext context) async {
-    if (phoneNumber.isEmpty || password.isEmpty) {
-      MySnackBar.showErrorMessage('Veuillez remplir tous les champs', context);
-      return false;
-    }
-
-    final user = await _userService.login(phoneNumber, password);
-
-    if (user != null) {
-      userRole = user.role;
-      Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) => const HomePage()));
-      return true;
-    } else {
-      MySnackBar.showErrorMessage('Le login a échoué', context);
-
-      return false;
-    }
   }
 }

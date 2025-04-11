@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:le_coin_des_cuisiniers_app/colors/colors.dart';
 import 'package:le_coin_des_cuisiniers_app/controller/transactions_controller.dart';
+import 'package:le_coin_des_cuisiniers_app/controller/users_controller.dart';
 import 'package:le_coin_des_cuisiniers_app/services/aut_token.dart';
 import 'package:le_coin_des_cuisiniers_app/views/home_page.dart';
 import 'package:le_coin_des_cuisiniers_app/views/login.dart';
@@ -8,6 +9,12 @@ import 'package:le_coin_des_cuisiniers_app/views/login.dart';
 import 'package:provider/provider.dart';
 
 void main() async {
+  final token = AuthToken.getToken();
+  final role = AuthToken.getUserRole();
+
+  if (token != null && role != null) {
+    UsersController.userRole = role; // Set the role from localStorage
+  }
   runApp(const MyApp());
 }
 
