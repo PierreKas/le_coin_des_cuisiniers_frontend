@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:le_coin_des_cuisiniers_app/colors/colors.dart';
 
-void showLoadingDialog(BuildContext context) {
+void showLoadingDialog(BuildContext context, String message) {
   // showDialog(
   //   context: context,
   //   barrierDismissible: false,
@@ -28,7 +28,7 @@ void showLoadingDialog(BuildContext context) {
           borderRadius: BorderRadius.circular(15),
         ),
         backgroundColor: Colors.white.withOpacity(1),
-        child: const Padding(
+        child: Padding(
           padding: EdgeInsets.all(20),
           child: Column(
             mainAxisSize: MainAxisSize.min,
@@ -39,7 +39,7 @@ void showLoadingDialog(BuildContext context) {
               ),
               SizedBox(height: 20),
               Text(
-                'Connexion en cours...',
+                message,
                 style: TextStyle(
                   color: Colors.black87,
                   fontSize: 16,

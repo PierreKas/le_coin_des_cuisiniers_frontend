@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:le_coin_des_cuisiniers_app/colors/colors.dart';
 import 'package:le_coin_des_cuisiniers_app/components/appbar_text.dart';
 import 'package:le_coin_des_cuisiniers_app/components/drawer_label.dart';
+import 'package:le_coin_des_cuisiniers_app/components/loading.dart';
 import 'package:le_coin_des_cuisiniers_app/components/text_content.dart';
 import 'package:le_coin_des_cuisiniers_app/components/text_hearder.dart';
 import 'package:le_coin_des_cuisiniers_app/controller/product_controller.dart';
@@ -426,6 +427,8 @@ class _DashboardHomeState extends State<DashboardHome> {
                     const SizedBox(width: 16),
                     ElevatedButton.icon(
                       onPressed: () async {
+                        showLoadingDialog(context, 'Recherche...');
+                        Navigator.of(context).pop();
                         loadDailyTransaction();
                       },
                       style: ElevatedButton.styleFrom(

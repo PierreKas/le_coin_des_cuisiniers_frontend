@@ -61,7 +61,7 @@ class _LoginPageState extends State<LoginPage> {
                   const SizedBox(height: 20),
                   MyButtons(
                     onPressed: () async {
-                      showLoadingDialog(context);
+                      showLoadingDialog(context, 'Connexion en cours...');
 
                       try {
                         await UsersController().login(_phoneController.text,
