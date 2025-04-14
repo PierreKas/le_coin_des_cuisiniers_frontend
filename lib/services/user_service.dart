@@ -1,5 +1,7 @@
 import 'dart:convert';
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:le_coin_des_cuisiniers_app/components/snack_bar.dart';
 import 'package:le_coin_des_cuisiniers_app/controller/users_controller.dart';
 import 'package:le_coin_des_cuisiniers_app/models/users.dart';
 import 'package:le_coin_des_cuisiniers_app/services/aut_token.dart';
@@ -102,7 +104,8 @@ class UserService {
     return false;
   }
 
-  Future<User?> login(String phoneNumber, String password) async {
+  Future<User?> login(
+      String phoneNumber, String password, BuildContext context) async {
     final url = Uri.parse('$userBaseUrl/login');
     try {
       // Create a login request object with phone number and password
@@ -129,18 +132,32 @@ class UserService {
         // Parse the LoginResponse into a User object
         return User.fromJson(jsonData);
       } else {
-        // Handle different status codes appropriately
-        if (response.statusCode == 400 || response.statusCode == 401) {
-          throw Exception('Invalid credentials');
-        } else if (response.statusCode == 403) {
-          throw Exception('Account blocked');
-        } else {
-          throw Exception(
-              'Login failed with status code: ${response.statusCode}');
+        dynamic errorMessage = jsonDecode(response.body);
+        String error = errorMessage.toString();
+        print(error);
+        if (error.contains("Invalid password")) {
+          MySnackBar.showErrorMessage('Mot de passe incorrect', context);
+        } else if (error.contains("Phone number not found")) {
+          MySnackBar.showErrorMessage('Ton numéro n\'est pas trouvé', context);
+        } else if (error.contains("Blocked account")) {
+          MySnackBar.showErrorMessage('Ce compte est bloqué', context);
         }
+        // Handle different status codes appropriately
+        // if (response.statusCode == 500 ||
+        //     response.statusCode != 201 ||
+        //     response.statusCode != 200) {
+        //   MySnackBar.showErrorMessage('Invalid credentials', context);
+        //   throw Exception('Invalid credentials');
+        // } else if (response.statusCode == 403) {
+        //   throw Exception('Account blocked');
+        // } else {
+        //   throw Exception(
+        //       'Login failed with status code: ${response.statusCode}');
+        // }
       }
     } catch (e) {
       throw Exception('Error during login: $e');
     }
+    return null;
   }
 }

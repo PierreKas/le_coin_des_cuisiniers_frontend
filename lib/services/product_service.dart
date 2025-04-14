@@ -1,5 +1,7 @@
 import 'dart:convert';
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:le_coin_des_cuisiniers_app/components/snack_bar.dart';
 import 'package:le_coin_des_cuisiniers_app/models/products.dart';
 import 'package:le_coin_des_cuisiniers_app/services/aut_token.dart';
 import 'package:le_coin_des_cuisiniers_app/services/base_url.dart';
@@ -17,14 +19,14 @@ class ProductService {
         url,
         headers: AuthToken.getHeaders(),
       );
-      print('URL: $url');
-      print('Headers: ${AuthToken.getHeaders()}');
-      print('Response Status Code: ${response.statusCode}');
-      print('Response Body: ${response.body}');
+      // print('URL: $url');
+      // print('Headers: ${AuthToken.getHeaders()}');
+      // print('Response Status Code: ${response.statusCode}');
+      // print('Response Body: ${response.body}');
       if (response.statusCode == 200) {
         //print(response.body);
         dynamic jsonDecodeData = jsonDecode(response.body);
-        print(jsonDecodeData);
+        // print(jsonDecodeData);
         productList = List<Product>.from(
             jsonDecodeData.map((e) => Product.fromJson(e)).toList());
         return productList;
@@ -75,7 +77,7 @@ class ProductService {
     return null;
   }
 
-  Future<Product?> addProduct(Product product) async {
+  Future<Product?> addProduct(Product product, BuildContext context) async {
     final url = Uri.parse('$productBaseUrl/add');
     try {
       final response = await http.post(
@@ -89,8 +91,16 @@ class ProductService {
       );
       if (response.statusCode == 201) {
         dynamic jsonData = jsonDecode(response.body);
-        print('Added ${response.body}');
+        // print('Added ${response.body}');
+        MySnackBar.showSuccessMessage('Produit ajouté', context);
         return Product.fromJson(jsonData);
+      } else {
+        dynamic errorMessage = jsonDecode(response.body);
+        String error = errorMessage.toString();
+        print(error);
+        if (error.contains("Product code exists")) {
+          MySnackBar.showErrorMessage('Ce code du produit existe', context);
+        }
       }
     } catch (e) {
       print('Error $e');

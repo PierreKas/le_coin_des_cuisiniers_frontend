@@ -88,16 +88,19 @@ class _DashboardHomeState extends State<DashboardHome> {
     setState(() {});
   }
 
-  Future<double> monthlyTotal() async {
+  Future<void> monthlyTotal() async {
     String formattedMonth = monthDateFormatter.format(_selectedMonth!);
     monthlyTotalAmountSold =
         await TransactionsController().monthlyTotal(formattedMonth);
-    return monthlyTotalAmountSold;
+
+    print('Total mensuel: $monthlyTotalAmountSold');
+    setState(() {});
+    // return monthlyTotalAmountSold;
   }
 
   Future<void> generalTotalSold() async {
     generalTotalAmountSold = await TransactionsController().generalTotalSold();
-    print(generalTotalAmountSold);
+    print('Tot sold: $generalTotalAmountSold');
     setState(() {});
   }
 
@@ -178,14 +181,14 @@ class _DashboardHomeState extends State<DashboardHome> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const MyTextHeader(content: 'Le coin des cuisiniers'),
-          const SizedBox(
-            height: 15,
-          ),
-          const MyTextContent(content: 'Dashboard'),
-          const SizedBox(
-            height: 25,
-          ),
+          // const MyTextHeader(content: 'Le coin des cuisiniers'),
+          // const SizedBox(
+          //   height: 15,
+          // ),
+          // const MyTextContent(content: 'Dashboard'),
+          // const SizedBox(
+          //   height: 25,
+          // ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -546,7 +549,36 @@ class _DashboardHomeState extends State<DashboardHome> {
                           },
                         ),
                       ),
-                      Text('Total journalier = $dailyTotalAmountSold'),
+                      Container(
+                        width: double.infinity,
+                        padding: const EdgeInsets.all(15),
+                        decoration: BoxDecoration(
+                          color: chocolateColor, //.shade50,
+                          borderRadius: BorderRadius.circular(15),
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            const Text(
+                              'Total journalier',
+                              style: TextStyle(
+                                color: Colors.white, //.shade700,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                            const SizedBox(height: 8),
+                            Text(
+                              '$dailyTotalAmountSold \$',
+                              style: const TextStyle(
+                                color: Colors.white, //.shade900,
+                                fontSize: 24,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
                     ],
                   ),
           ),
@@ -581,117 +613,6 @@ class _DashboardHomeState extends State<DashboardHome> {
             ),
           ),
           const SizedBox(height: 24),
-          // Container(
-          //   height: 430,
-          //   decoration: BoxDecoration(
-          //     color: Colors.white,
-          //     borderRadius: BorderRadius.circular(12),
-          //     boxShadow: [
-          //       BoxShadow(
-          //         color: Colors.black.withOpacity(0.05),
-          //         blurRadius: 10,
-          //         offset: const Offset(0, 4),
-          //       ),
-          //     ],
-          //   ),
-          //   child: Column(
-          //     children: [
-          //       const Text('Montant total utilisé(achat)'),
-          //       Text('$totalAmountSpent'),
-          //       const Text('Montant total des ventes'),
-          //       Text('$generalTotalAmountSold'),
-          //       const Text('Montant mensuel des ventes'),
-          //       Row(
-          //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          //         children: [
-          //           Expanded(
-          //             child: Container(
-          //               decoration: BoxDecoration(
-          //                 borderRadius: BorderRadius.circular(12),
-          //                 border: Border.all(color: Colors.grey.shade200),
-          //               ),
-          //               child: TextFormField(
-          //                 controller: _searchedMonth,
-          //                 cursorColor: chocolateColor,
-          //                 style: const TextStyle(
-          //                   fontSize: 16,
-          //                   color: Colors.black87,
-          //                 ),
-          //                 decoration: InputDecoration(
-          //                   hintText: 'Sélectionner une date',
-          //                   hintStyle: TextStyle(color: Colors.grey.shade400),
-          //                   contentPadding: const EdgeInsets.symmetric(
-          //                       horizontal: 20, vertical: 16),
-          //                   border: InputBorder.none,
-          //                   prefixIcon: const Icon(
-          //                     Icons.calendar_today,
-          //                     color: chocolateColor,
-          //                     size: 20,
-          //                   ),
-          //                 ),
-          //                 onTap: () async {
-          //                   DateTime? pickedMonth = await showDatePicker(
-          //                     context: context,
-          //                     firstDate: DateTime(2024),
-          //                     lastDate: DateTime(2026),
-          //                     initialDate: DateTime.now(),
-          //                     builder: (context, child) {
-          //                       return Theme(
-          //                         data: Theme.of(context).copyWith(
-          //                           colorScheme: const ColorScheme.light(
-          //                             primary: chocolateColor,
-          //                             onPrimary: Colors.white,
-          //                             onSurface: Colors.black,
-          //                           ),
-          //                           textButtonTheme: TextButtonThemeData(
-          //                             style: TextButton.styleFrom(
-          //                               foregroundColor: chocolateColor,
-          //                             ),
-          //                           ),
-          //                         ),
-          //                         child: child!,
-          //                       );
-          //                     },
-          //                   );
-
-          //                   setState(() {
-          //                     _selectedMonth = pickedMonth;
-          //                     _searchedMonth.text = _selectedMonth!
-          //                         .toIso8601String()
-          //                         .split('T')
-          //                         .first;
-          //                   });
-          //                 },
-          //               ),
-          //             ),
-          //           ),
-          //           const SizedBox(width: 16),
-          //           ElevatedButton.icon(
-          //             onPressed: () async {
-          //               monthlyTotal();
-          //             },
-          //             style: ElevatedButton.styleFrom(
-          //               backgroundColor: chocolateColor,
-          //               foregroundColor: Colors.white,
-          //               padding: const EdgeInsets.symmetric(
-          //                   horizontal: 24, vertical: 16),
-          //               shape: RoundedRectangleBorder(
-          //                 borderRadius: BorderRadius.circular(12),
-          //               ),
-          //             ),
-          //             icon: const Icon(Icons.search, size: 20),
-          //             label: const Text(
-          //               'Rechercher',
-          //               style: TextStyle(
-          //                   fontSize: 16, fontWeight: FontWeight.w600),
-          //             ),
-          //           ),
-          //         ],
-          //       ),
-          //       Text('$monthlyTotalAmountSold'),
-          //     ],
-          //   ),
-          // )
           Container(
             margin: const EdgeInsets.all(16),
             decoration: BoxDecoration(
@@ -710,24 +631,10 @@ class _DashboardHomeState extends State<DashboardHome> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Header Section
-                  const Center(
-                    child: Text(
-                      'Rapport Financier',
-                      style: TextStyle(
-                        fontSize: 22,
-                        fontWeight: FontWeight.bold,
-                        color: chocolateColor, //.shade700,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 20),
-
-                  // Financial Metrics
-                  _buildMetricRow(
-                      'Montant total utilisé (Achat)', totalAmountSpent),
-                  _buildMetricRow(
-                      'Montant total des ventes', generalTotalAmountSold),
+                  _buildMetricRow('Montant total utilisé (Achat)',
+                      totalAmountSpent.toStringAsFixed(2)),
+                  _buildMetricRow('Montant total des ventes',
+                      generalTotalAmountSold.toStringAsFixed(2)),
 
                   const SizedBox(height: 20),
 
@@ -768,7 +675,37 @@ class _DashboardHomeState extends State<DashboardHome> {
                                   horizontal: 15, vertical: 15),
                             ),
                             onTap: () async {
-                              // Your existing date picker logic
+                              DateTime? pickedMonth = await showDatePicker(
+                                context: context,
+                                firstDate: DateTime(2024),
+                                lastDate: DateTime(2026),
+                                initialDate: DateTime.now(),
+                                builder: (context, child) {
+                                  return Theme(
+                                    data: Theme.of(context).copyWith(
+                                      colorScheme: const ColorScheme.light(
+                                        primary: chocolateColor,
+                                        onPrimary: Colors.white,
+                                        onSurface: Colors.black,
+                                      ),
+                                      textButtonTheme: TextButtonThemeData(
+                                        style: TextButton.styleFrom(
+                                          foregroundColor: chocolateColor,
+                                        ),
+                                      ),
+                                    ),
+                                    child: child!,
+                                  );
+                                },
+                              );
+
+                              setState(() {
+                                _selectedMonth = pickedMonth;
+                                _searchedMonth.text = _selectedMonth!
+                                    .toIso8601String()
+                                    .split('T')
+                                    .first;
+                              });
                             },
                           ),
                         ),
@@ -776,7 +713,9 @@ class _DashboardHomeState extends State<DashboardHome> {
                       const SizedBox(width: 12),
                       Expanded(
                         child: ElevatedButton(
-                          onPressed: () => monthlyTotal(),
+                          onPressed: () {
+                            monthlyTotal();
+                          },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: chocolateColor, //.shade600,
                             foregroundColor: Colors.white,
@@ -807,16 +746,16 @@ class _DashboardHomeState extends State<DashboardHome> {
                         const Text(
                           'Total mensuel',
                           style: TextStyle(
-                            color: chocolateColor, //.shade700,
+                            color: Colors.white, //.shade700,
                             fontSize: 16,
                             fontWeight: FontWeight.w600,
                           ),
                         ),
                         const SizedBox(height: 8),
                         Text(
-                          '\$ $monthlyTotalAmountSold',
+                          '$monthlyTotalAmountSold \$',
                           style: const TextStyle(
-                            color: chocolateColor, //.shade900,
+                            color: Colors.white, //.shade900,
                             fontSize: 24,
                             fontWeight: FontWeight.bold,
                           ),
@@ -1012,11 +951,11 @@ class _DashboardHomeState extends State<DashboardHome> {
       ],
     );
     return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(
-        title: const MyAppBarText(content: 'Le coin des cuisiniers'),
-        backgroundColor: chocolateColor,
-      ),
+      // backgroundColor: Colors.white,
+      // appBar: AppBar(
+      //   title: const MyAppBarText(content: 'Le coin des cuisiniers'),
+      //   backgroundColor: chocolateColor,
+      // ),
       body: desktop(),
     );
   }

@@ -15,8 +15,8 @@ class ProductController {
           'Complète toutes  les cases sans erreur', context);
     } else {
       try {
-        await productService.addProduct(product);
-        MySnackBar.showSuccessMessage('Produit ajouté', context);
+        await productService.addProduct(product, context);
+
         Navigator.push(
             context, MaterialPageRoute(builder: (context) => const HomePage()));
       } on Exception catch (e, stackTrace) {

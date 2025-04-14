@@ -15,7 +15,7 @@ class UsersController {
       return false;
     }
 
-    final user = await _userService.login(phoneNumber, password);
+    final user = await _userService.login(phoneNumber, password, context);
 
     if (user != null) {
       userRole = user.role;

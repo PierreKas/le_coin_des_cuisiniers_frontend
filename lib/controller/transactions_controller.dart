@@ -62,7 +62,7 @@ class TransactionsController extends ChangeNotifier {
 
   Future<double> generalTotalSold() async {
     double generalTotalSold = await _transactionService.getGeneralTotalSold();
-
+    print('Tot: $generalTotalSold ');
     return generalTotalSold;
   }
 
@@ -118,8 +118,8 @@ class TransactionsController extends ChangeNotifier {
     TransactionService transactionService = TransactionService();
 
     try {
-      Map<String, dynamic> result =
-          await transactionService.saveTransactionBatch(transactionsList);
+      Map<String, dynamic> result = await transactionService
+          .saveTransactionBatch(transactionsList, context);
       billCode = result['billCode'];
       MySnackBar.showSuccessMessage('Transaction(s) enregistrée(s)', context);
     } catch (e, stackTrace) {
