@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:le_coin_des_cuisiniers_app/colors/colors.dart';
 
-class MyTextField extends StatelessWidget {
+class MyTextField extends StatefulWidget {
   final TextEditingController controller;
   final String hintText;
   final bool obscureText;
@@ -18,15 +18,28 @@ class MyTextField extends StatelessWidget {
   });
 
   @override
+  State<MyTextField> createState() => _MyTextFieldState();
+}
+
+class _MyTextFieldState extends State<MyTextField> {
+  late bool _obscureText;
+  @override
+  void initState() {
+    super.initState();
+    _obscureText = widget.obscureText;
+  }
+
+  @override
   Widget build(BuildContext context) {
     return TextField(
-      controller: controller,
+      style: const TextStyle(color: Colors.black),
+      controller: widget.controller,
       cursorColor: Colors.grey,
-      enabled: enabled,
-      obscureText: obscureText,
+      enabled: widget.enabled,
+      obscureText: widget.obscureText,
       selectionControls: MaterialTextSelectionControls(),
       decoration: InputDecoration(
-        hintText: hintText,
+        hintText: widget.hintText,
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
         ),
@@ -41,9 +54,22 @@ class MyTextField extends StatelessWidget {
           ),
         ),
         prefixIcon: Icon(
-          prefixIcon,
+          widget.prefixIcon,
           color: chocolateColor,
         ),
+        suffixIcon: widget.obscureText
+            ? IconButton(
+                icon: Icon(
+                  _obscureText ? Icons.visibility_off : Icons.visibility,
+                  color: chocolateColor,
+                ),
+                onPressed: () {
+                  setState(() {
+                    _obscureText = !_obscureText;
+                  });
+                },
+              )
+            : null,
       ),
     );
   }

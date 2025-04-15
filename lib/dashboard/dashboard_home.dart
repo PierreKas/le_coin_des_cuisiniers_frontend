@@ -428,8 +428,8 @@ class _DashboardHomeState extends State<DashboardHome> {
                     ElevatedButton.icon(
                       onPressed: () async {
                         showLoadingDialog(context, 'Recherche...');
+                        await loadDailyTransaction();
                         Navigator.of(context).pop();
-                        loadDailyTransaction();
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: chocolateColor,
@@ -716,8 +716,10 @@ class _DashboardHomeState extends State<DashboardHome> {
                       const SizedBox(width: 12),
                       Expanded(
                         child: ElevatedButton(
-                          onPressed: () {
-                            monthlyTotal();
+                          onPressed: () async {
+                            showLoadingDialog(context, 'Recherche...');
+                            await monthlyTotal();
+                            Navigator.of(context).pop();
                           },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: chocolateColor, //.shade600,

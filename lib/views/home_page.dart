@@ -137,23 +137,23 @@ class _HomePageState extends State<HomePage> {
             padding: const EdgeInsets.only(right: 10.0),
             child: Row(
               children: [
-                if (UsersController.userRole == 'ADMIN' &&
-                    MediaQuery.of(context).size.width > mobileWidth)
-                  TextButton(
-                    style: TextButton.styleFrom(backgroundColor: Colors.white),
-                    onPressed: () async {
-                      // showLoadingDialog(context);
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const DashboardHome()),
-                      );
-                    },
-                    child: const Text(
-                      'Dashboard',
-                      style: TextStyle(color: chocolateColor),
-                    ),
-                  ),
+                // if (UsersController.userRole == 'ADMIN' &&
+                //   MediaQuery.of(context).size.width > mobileWidth)
+                // TextButton(
+                //   style: TextButton.styleFrom(backgroundColor: Colors.white),
+                //   onPressed: () async {
+                //     // showLoadingDialog(context);
+                //     Navigator.push(
+                //       context,
+                //       MaterialPageRoute(
+                //           builder: (context) => const DashboardHome()),
+                //     );
+                //   },
+                //   child: const Text(
+                //     'Dashboard',
+                //     style: TextStyle(color: chocolateColor),
+                //   ),
+                //),
                 const SizedBox(
                   width: 15,
                 ),
