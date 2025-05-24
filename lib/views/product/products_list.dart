@@ -1,9 +1,12 @@
 import 'dart:async';
+import 'dart:io';
+import 'package:excel/excel.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:le_coin_des_cuisiniers_app/colors/colors.dart';
 import 'package:le_coin_des_cuisiniers_app/components/buttons.dart';
 import 'package:le_coin_des_cuisiniers_app/components/search_textfields.dart';
+import 'package:le_coin_des_cuisiniers_app/components/snack_bar.dart';
 import 'package:le_coin_des_cuisiniers_app/components/text_content.dart';
 import 'package:le_coin_des_cuisiniers_app/controller/product_controller.dart';
 import 'package:le_coin_des_cuisiniers_app/models/products.dart';
@@ -12,6 +15,10 @@ import 'package:le_coin_des_cuisiniers_app/views/product/add_product.dart';
 import 'package:le_coin_des_cuisiniers_app/views/product/product_restock_history.dart';
 import 'package:le_coin_des_cuisiniers_app/views/product/restock.dart';
 import 'package:le_coin_des_cuisiniers_app/views/product/update_product.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'package:flutter/foundation.dart';
+import 'dart:html' as html;
 
 class ProductsList extends StatefulWidget {
   const ProductsList({super.key});
@@ -54,6 +61,65 @@ class _ProductsListState extends State<ProductsList> {
     setState(() {
       filteredProductsList = filtered;
     });
+  }
+
+  Future<void> _downloadExcel() async {
+    try {
+      if (!kIsWeb) {
+        var status = await Permission.storage.request();
+        print('Permission Status: $status');
+
+        if (!status.isGranted) {
+          MySnackBar.showErrorMessage(
+              'Download failed: permission denied', context);
+          return;
+        }
+      }
+
+      var excel = Excel.createExcel();
+      Sheet sheetObject = excel['Products'];
+      sheetObject.appendRow([
+        'Code',
+        'Nom',
+        'Prix de vente',
+        'Marque',
+      ]);
+
+      for (var product in productsList) {
+        sheetObject.appendRow([
+          product.productCode,
+          product.productName,
+          product.sellingPrice.toString(),
+          product.brand,
+        ]);
+      }
+
+      List<int>? bytes = excel.save();
+
+      if (kIsWeb) {
+        // For web: use AnchorElement to trigger download
+        final blob = html.Blob([bytes]);
+        final url = html.Url.createObjectUrlFromBlob(blob);
+        final anchor = html.AnchorElement(href: url)
+          ..setAttribute("download", "productsStock.xlsx")
+          ..click();
+        html.Url.revokeObjectUrl(url);
+        MySnackBar.showSuccessMessage('Excel file downloaded', context);
+//Fluttertoast.showToast(msg: 'Excel file downloaded');
+      } else {
+        Directory? directory = await getExternalStorageDirectory();
+        String outputFile = '${directory?.path}/Download/productsStock.xlsx';
+        File(outputFile)
+          ..createSync(recursive: true)
+          ..writeAsBytesSync(bytes!);
+        MySnackBar.showSuccessMessage(
+            'Excel file downloaded to $outputFile', context);
+        // Fluttertoast.showToast(msg: 'Excel file downloaded to $outputFile');
+      }
+    } catch (e) {
+      MySnackBar.showErrorMessage('There was an error: $e', context);
+      //Fluttertoast.showToast(msg: 'There was an error: $e');
+    }
   }
 
   Color getQuantityColor(int quantity) {
@@ -337,15 +403,18 @@ class _ProductsListState extends State<ProductsList> {
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
-        onPressed: () => Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => const AddProduct(),
-          ),
-        ),
+        // onPressed: () => Navigator.push(
+        //   context,
+        //   MaterialPageRoute(
+        //     builder: (context) => const AddProduct(),
+        //   ),
+        // ),
+        onPressed: () {
+          _downloadExcel();
+        },
         backgroundColor: chocolateColor,
         child: const Icon(
-          Icons.plus_one_outlined,
+          Icons.download,
           color: Colors.white,
         ),
       ),

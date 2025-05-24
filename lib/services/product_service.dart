@@ -25,8 +25,10 @@ class ProductService {
       // print('Response Body: ${response.body}');
       if (response.statusCode == 200) {
         //print(response.body);
-        dynamic jsonDecodeData = jsonDecode(response.body);
-        // print(jsonDecodeData);
+        final utf8DecodedBody = utf8.decode(response.bodyBytes);
+        dynamic jsonDecodeData = jsonDecode(utf8DecodedBody);
+        //dynamic jsonDecodeData = jsonDecode(response.body);
+        print(jsonDecodeData);
         productList = List<Product>.from(
             jsonDecodeData.map((e) => Product.fromJson(e)).toList());
         return productList;

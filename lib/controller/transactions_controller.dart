@@ -126,7 +126,7 @@ class TransactionsController extends ChangeNotifier {
       MySnackBar.showErrorMessage(
           'Une erreur s\'est produite, enregistrement échoué', context);
 
-      //print('Error: $e');
+      print('Error: $e');
       log('Error during transaction save: $e',
           error: e, stackTrace: stackTrace);
     }

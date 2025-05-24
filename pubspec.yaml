@@ -45,6 +45,9 @@ dependencies:
   pdf: 
   file_picker: 
   dropdown_search: ^5.0.6
+  excel: ^2.0.5
+  permission_handler: ^11.2.0
+  path_provider: ^2.1.2 
   #mysql_client:
   #restart_app:
   # firebase_core: #^2.29.0
