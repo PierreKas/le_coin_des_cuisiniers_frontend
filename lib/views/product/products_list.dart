@@ -290,12 +290,15 @@ class _ProductsListState extends State<ProductsList> {
                 cursor: SystemMouseCursors.click,
                 child: GestureDetector(
                   onTap: () {
+                    ///To modify
                     Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => Restock(
-                                  prCode: product.productCode!,
-                                )));
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => Restock(
+                          prCode: product.productCode!,
+                        ),
+                      ),
+                    );
                   },
                   child: Container(
                     padding: const EdgeInsets.all(8),
@@ -318,12 +321,15 @@ class _ProductsListState extends State<ProductsList> {
                 cursor: SystemMouseCursors.click,
                 child: GestureDetector(
                   onTap: () {
+                    ///To modify
                     Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => ProductRestockHistory(
-                                  prCode: product.productCode!,
-                                )));
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ProductRestockHistory(
+                          prCode: product.productCode!,
+                        ),
+                      ),
+                    );
                   },
                   child: Container(
                     padding: const EdgeInsets.all(8),
@@ -352,6 +358,7 @@ class _ProductsListState extends State<ProductsList> {
                 cursor: SystemMouseCursors.click,
                 child: GestureDetector(
                   onTap: () {
+                    ///To modify
                     Navigator.push(
                         context,
                         MaterialPageRoute(
@@ -487,6 +494,7 @@ class _ProductsListState extends State<ProductsList> {
               ),
               MyButtons(
                 onPressed: () {
+                  ///To modify
                   Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) => const AddProduct()),
@@ -592,12 +600,15 @@ class _ProductsListState extends State<ProductsList> {
                           cursor: SystemMouseCursors.click,
                           child: GestureDetector(
                             onTap: () {
+                              ///To modify
                               Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => Restock(
-                                            prCode: product.productCode!,
-                                          )));
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => Restock(
+                                    prCode: product.productCode!,
+                                  ),
+                                ),
+                              );
                             },
                             child: Container(
                               padding: const EdgeInsets.all(8),
@@ -620,6 +631,7 @@ class _ProductsListState extends State<ProductsList> {
                           cursor: SystemMouseCursors.click,
                           child: GestureDetector(
                             onTap: () {
+                              ///To modify
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
@@ -654,12 +666,15 @@ class _ProductsListState extends State<ProductsList> {
                           cursor: SystemMouseCursors.click,
                           child: GestureDetector(
                             onTap: () {
+                              ///To modify
                               Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => UpdateProduct(
-                                            productCode: product.productCode!,
-                                          )));
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => UpdateProduct(
+                                    productCode: product.productCode!,
+                                  ),
+                                ),
+                              );
                             },
                             child: Container(
                               padding: const EdgeInsets.all(8),

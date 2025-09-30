@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:le_coin_des_cuisiniers_app/colors/colors.dart';
 import 'package:le_coin_des_cuisiniers_app/components/appbar_text.dart';
 import 'package:le_coin_des_cuisiniers_app/controller/users_controller.dart';
 import 'package:le_coin_des_cuisiniers_app/dashboard/dashboard_home.dart';
 import 'package:le_coin_des_cuisiniers_app/responsive/dimensions.dart';
 import 'package:le_coin_des_cuisiniers_app/services/aut_token.dart';
+import 'package:le_coin_des_cuisiniers_app/services/user_service.dart';
 import 'package:le_coin_des_cuisiniers_app/views/acceuil.dart';
 import 'package:le_coin_des_cuisiniers_app/views/login.dart';
 import 'package:le_coin_des_cuisiniers_app/views/product/products_list.dart';
@@ -25,7 +27,8 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     // Restore the user role from storage
-    final storedRole = AuthToken.getUserRole();
+    // final storedRole = AuthToken.getUserRole();
+    final storedRole = UserService.role;
     if (storedRole != null) {
       UsersController.userRole = storedRole;
     }
@@ -143,11 +146,12 @@ class _HomePageState extends State<HomePage> {
                     style: TextButton.styleFrom(backgroundColor: Colors.white),
                     onPressed: () async {
                       // showLoadingDialog(context);
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const DashboardHome()),
-                      );
+                      // Navigator.push(
+                      //   context,
+                      //   MaterialPageRoute(
+                      //       builder: (context) => const DashboardHome()),
+                      // );
+                      context.go('/dashboard');
                     },
                     child: const Text(
                       'Dashboard',
@@ -163,13 +167,17 @@ class _HomePageState extends State<HomePage> {
                     foregroundColor: Colors.white,
                   ),
                   onPressed: () async {
-                    AuthToken.clearToken();
-                    Navigator.pushAndRemoveUntil(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const LoginPage()),
-                      (route) => false,
-                    );
+                    // AuthToken.clearToken();
+                    UserService().logout();
+
+                    ///To modify
+                    // Navigator.pushAndRemoveUntil(
+                    //   context,
+                    //   MaterialPageRoute(
+                    //       builder: (context) => const LoginPage()),
+                    //   (route) => false,
+                    // );
+                    context.go("/");
 
                     // await relaunchApp();
                   },

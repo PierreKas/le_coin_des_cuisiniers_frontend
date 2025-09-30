@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:le_coin_des_cuisiniers_app/components/snack_bar.dart';
 import 'package:le_coin_des_cuisiniers_app/models/products.dart';
 import 'package:le_coin_des_cuisiniers_app/services/product_service.dart';
@@ -17,8 +18,9 @@ class ProductController {
       try {
         await productService.addProduct(product, context);
 
-        Navigator.push(
-            context, MaterialPageRoute(builder: (context) => const HomePage()));
+        // Navigator.push(
+        //     context, MaterialPageRoute(builder: (context) => const HomePage()));
+        context.go("/home");
       } on Exception catch (e, stackTrace) {
         MySnackBar.showErrorMessage(
             'Une erreur s\'est produite lors de l\'enregistrement du produit',
@@ -51,8 +53,9 @@ class ProductController {
 
     try {
       await productService.updateProduct(prodId, product);
-      Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) => const HomePage()));
+      // Navigator.pushReplacement(
+      //     context, MaterialPageRoute(builder: (context) => const HomePage()));
+      context.go("home");
     } catch (e, stackTrace) {
       log('An error occured while updating product: $e',
           error: e, stackTrace: stackTrace);
@@ -69,8 +72,9 @@ class ProductController {
 
     try {
       await productService.updateProduct(prodId, product);
-      Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) => const HomePage()));
+      // Navigator.pushReplacement(
+      //     context, MaterialPageRoute(builder: (context) => const HomePage()));
+      context.go("/home");
     } catch (e, stackTrace) {
       log('An error occured while restocking the product ${product.productName}: $e',
           error: e, stackTrace: stackTrace);
@@ -96,8 +100,9 @@ class ProductController {
   Future<void> deleteProduct(int productId, BuildContext context) async {
     try {
       await productService.deleteProduct(productId);
-      Navigator.push(
-          context, MaterialPageRoute(builder: (context) => const HomePage()));
+      // Navigator.push(
+      //     context, MaterialPageRoute(builder: (context) => const HomePage()));
+      context.go("/home");
     } on Exception catch (e, stackTrace) {
       log('An error occured while trying to delete product: $e',
           error: e, stackTrace: stackTrace);

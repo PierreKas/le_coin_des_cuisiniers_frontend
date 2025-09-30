@@ -611,6 +611,7 @@ import 'package:flutter/material.dart';
 import 'package:le_coin_des_cuisiniers_app/colors/colors.dart';
 import 'package:le_coin_des_cuisiniers_app/components/buttons.dart';
 import 'package:le_coin_des_cuisiniers_app/components/label.dart';
+import 'package:le_coin_des_cuisiniers_app/components/snack_bar.dart';
 import 'package:le_coin_des_cuisiniers_app/components/textfields.dart';
 import 'package:le_coin_des_cuisiniers_app/controller/product_controller.dart';
 import 'package:le_coin_des_cuisiniers_app/controller/transactions_controller.dart';
@@ -895,30 +896,139 @@ class _AddTransactionState extends State<AddTransaction> {
                     ],
                   ),
                   const SizedBox(height: 16),
+                  // MyButtons(
+                  //   onPressed: () {
+                  //     String productCode = _productCode.text;
+                  //     String quantityStr = _quantity.text;
+                  //     String totalPriceStr = _totalPrice.text;
+
+                  //     int quantity = int.tryParse(quantityStr) ?? 0;
+                  //     double totalPrice = double.tryParse(totalPriceStr) ?? 0.0;
+
+                  //     selectedProduct = productsList.firstWhere(
+                  //         (product) => product.productCode == productCode);
+
+                  //     setState(() {
+                  //       tranId++;
+                  //     });
+
+                  //     Transactions newTransaction = Transactions(
+                  //         productCode: productCode,
+                  //         product: selectedProduct,
+                  //         quantity: quantity,
+                  //         sellingDate:
+                  //             selectedDate, // Use selected date instead of DateTime.now()
+                  //         totalPrice: totalPrice,
+                  //         transactionId: tranId);
+
+                  //     Provider.of<TransactionsController>(context,
+                  //             listen: false)
+                  //         .addItemOnTheBill(newTransaction, context);
+
+                  //     Navigator.push(
+                  //       context,
+                  //       MaterialPageRoute(
+                  //         builder: (context) => BaseLayout(
+                  //           initialIndex: 1,
+                  //           pages: [
+                  //             const Acceuil(),
+                  //             if (UsersController.userRole == 'ADMIN')
+                  //               const ProductsList(),
+                  //             if (UsersController.userRole == 'ADMIN')
+                  //               const UsersList(),
+                  //             const AddTransaction(),
+                  //           ],
+                  //           initialPage: BillItems(transaction: newTransaction),
+                  //         ),
+                  //       ),
+                  //     );
+
+                  //     _productCode.clear();
+                  //     _productName.clear();
+                  //     _quantity.clear();
+                  //     _unitPrice.clear();
+                  //     _totalPrice.clear();
+                  //     // Reset date to current date after adding transaction
+                  //     setState(() {
+                  //       selectedDate = DateTime.now();
+                  //       _sellingDateController.text =
+                  //           DateFormat('dd/MM/yyyy').format(selectedDate);
+                  //     });
+                  //   },
+                  //   text: 'Ajouter',
+                  // ),
+                  // Replace the transaction creation section in your MyButtons onPressed callback
                   MyButtons(
                     onPressed: () {
                       String productCode = _productCode.text;
                       String quantityStr = _quantity.text;
                       String totalPriceStr = _totalPrice.text;
+                      String unitPriceStr = _unitPrice.text;
+
+                      // Validate inputs
+                      if (productCode.isEmpty) {
+                        MySnackBar.showErrorMessage(
+                            'Veuillez sélectionner un produit', context);
+                        return;
+                      }
+
+                      if (quantityStr.isEmpty) {
+                        MySnackBar.showErrorMessage(
+                            'Veuillez entrer une quantité', context);
+                        return;
+                      }
 
                       int quantity = int.tryParse(quantityStr) ?? 0;
-                      double totalPrice = double.tryParse(totalPriceStr) ?? 0.0;
+                      if (quantity <= 0) {
+                        MySnackBar.showErrorMessage(
+                            'La quantité doit être supérieure à 0', context);
+                        return;
+                      }
 
-                      selectedProduct = productsList.firstWhere(
-                          (product) => product.productCode == productCode);
+                      double totalPrice = double.tryParse(totalPriceStr) ?? 0.0;
+                      double unitPrice = double.tryParse(unitPriceStr) ?? 0.0;
+
+                      if (totalPrice <= 0) {
+                        MySnackBar.showErrorMessage(
+                            'Prix total invalide', context);
+                        return;
+                      }
+
+                      // Find the selected product
+                      Product? selectedProduct;
+                      try {
+                        selectedProduct = productsList.firstWhere(
+                            (product) => product.productCode == productCode);
+                      } catch (e) {
+                        MySnackBar.showErrorMessage(
+                            'Produit non trouvé', context);
+                        return;
+                      }
 
                       setState(() {
                         tranId++;
                       });
 
+                      // Create transaction with all required fields
                       Transactions newTransaction = Transactions(
-                          productCode: productCode,
-                          product: selectedProduct,
-                          quantity: quantity,
-                          sellingDate:
-                              selectedDate, // Use selected date instead of DateTime.now()
-                          totalPrice: totalPrice,
-                          transactionId: tranId);
+                        productCode: productCode,
+                        product: selectedProduct,
+                        // productName: selectedProduct.productName, // Ensure productName is set
+                        quantity: quantity,
+                        sellingDate: selectedDate, // Use selected date
+                        totalPrice: totalPrice,
+                        // unitPrice: unitPrice, // Ensure unitPrice is set
+                        transactionId: tranId,
+                      );
+
+                      // Debug print before adding
+                      print('Creating new transaction:');
+                      print('  productCode: ${newTransaction.productCode}');
+                      print('  productName: ${newTransaction.productName}');
+                      print('  quantity: ${newTransaction.quantity}');
+                      print('  sellingDate: ${newTransaction.sellingDate}');
+                      print('  totalPrice: ${newTransaction.totalPrice}');
+                      print('  unitPrice: ${newTransaction.unitPrice}');
 
                       Provider.of<TransactionsController>(context,
                               listen: false)
@@ -942,20 +1052,24 @@ class _AddTransactionState extends State<AddTransaction> {
                         ),
                       );
 
+                      // Clear form fields
                       _productCode.clear();
                       _productName.clear();
                       _quantity.clear();
                       _unitPrice.clear();
                       _totalPrice.clear();
-                      // Reset date to current date after adding transaction
+
+                      // Reset date and selected product
                       setState(() {
                         selectedDate = DateTime.now();
                         _sellingDateController.text =
                             DateFormat('dd/MM/yyyy').format(selectedDate);
+                        selectedProduct = null;
+                        selectedProductCode = null;
                       });
                     },
                     text: 'Ajouter',
-                  ),
+                  )
                 ],
               ),
             ),

@@ -7,6 +7,8 @@ class MyTextField extends StatefulWidget {
   final bool obscureText;
   final IconData prefixIcon;
   final bool enabled;
+  final void Function()? onTap;
+  final bool readOnly;
 
   const MyTextField({
     super.key,
@@ -15,6 +17,8 @@ class MyTextField extends StatefulWidget {
     required this.hintText,
     required this.obscureText,
     required this.prefixIcon,
+    this.onTap,
+    this.readOnly = false,
   });
 
   @override
@@ -34,10 +38,11 @@ class _MyTextFieldState extends State<MyTextField> {
     return TextField(
       style: const TextStyle(color: Colors.black),
       controller: widget.controller,
-      cursorColor: Colors.grey,
+      cursorColor: Colors.black,
       enabled: widget.enabled,
-      obscureText: widget.obscureText,
-      selectionControls: MaterialTextSelectionControls(),
+      obscureText: _obscureText,
+      readOnly: widget.readOnly,
+      onTap: widget.onTap,
       decoration: InputDecoration(
         hintText: widget.hintText,
         border: OutlineInputBorder(
@@ -50,7 +55,7 @@ class _MyTextFieldState extends State<MyTextField> {
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10.0),
           borderSide: const BorderSide(
-            color: Colors.grey,
+            color: Colors.black,
           ),
         ),
         prefixIcon: Icon(

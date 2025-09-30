@@ -45,12 +45,26 @@ class Transactions {
     );
   }
 
+  // Map<String, dynamic> toJson() {
+  //   return {
+  //     'billCode': billCode,
+  //     'productCode': productCode,
+  //     'quantity': quantity,
+  //     'sellingDate': sellingDate!.toIso8601String(), //?.toIso8601String(),
+  //     'totalPrice': totalPrice,
+  //     'userId': userId,
+  //     'TransactionId': transactionId,
+  //     'productId': productId,
+  //   };
+  // }
   Map<String, dynamic> toJson() {
     return {
       'billCode': billCode,
       'productCode': productCode,
       'quantity': quantity,
-      'sellingDate': sellingDate!.toIso8601String(), //?.toIso8601String(),
+      'sellingDate': sellingDate?.toIso8601String() ??
+          DateTime.now()
+              .toIso8601String(), // Changed from sellingDate! to sellingDate?
       'totalPrice': totalPrice,
       'userId': userId,
       'TransactionId': transactionId,

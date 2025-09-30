@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:le_coin_des_cuisiniers_app/components/snack_bar.dart';
 import 'package:le_coin_des_cuisiniers_app/models/users.dart';
 import 'package:le_coin_des_cuisiniers_app/services/aut_token.dart';
@@ -19,9 +20,10 @@ class UsersController {
 
     if (user != null) {
       userRole = user.role;
-      AuthToken.setUserRole(user.role);
-      Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) => const HomePage()));
+      // AuthToken.setUserRole(user.role);
+      // Navigator.pushReplacement(
+      //     context, MaterialPageRoute(builder: (context) => const HomePage()));
+      context.go("/home");
       return true;
     } else {
       MySnackBar.showErrorMessage('Le login a échoué', context);
@@ -40,8 +42,9 @@ class UsersController {
     } else {
       await _userService.addUser(user);
 
-      Navigator.push(
-          context, MaterialPageRoute(builder: (context) => const HomePage()));
+      // Navigator.push(
+      //     context, MaterialPageRoute(builder: (context) => const HomePage()));
+      context.go("/home");
     }
   }
 
@@ -53,8 +56,9 @@ class UsersController {
 
   Future<void> updateUser(int userId, User user, BuildContext context) async {
     await _userService.updateUser(userId, user);
-    Navigator.push(
-        context, MaterialPageRoute(builder: (context) => const HomePage()));
+    // Navigator.push(
+    //     context, MaterialPageRoute(builder: (context) => const HomePage()));
+    context.go("/home");
   }
 
   Future<void> deleteUser(int userId, BuildContext context) async {

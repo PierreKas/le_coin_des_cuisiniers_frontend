@@ -1,6 +1,7 @@
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:le_coin_des_cuisiniers_app/colors/colors.dart';
 import 'package:le_coin_des_cuisiniers_app/components/snack_bar.dart';
@@ -417,6 +418,8 @@ class _BillItemsState extends State<BillItems> {
                             ),
                           );
                         }
+
+                        ///To modify
                         Navigator.push(
                           context,
                           MaterialPageRoute(
@@ -579,17 +582,19 @@ class _BillItemsState extends State<BillItems> {
                 const SizedBox(height: 24),
                 Consumer<TransactionsController>(
                   builder: (context, controller, _) => MyButtons(
-                    onPressed: () {
-                      controller.insertTheBillInTheDB(context);
+                    onPressed: () async {
+                      await controller.insertTheBillInTheDB(context);
+
                       // _downloadBillAsPDF(Provider.of<TransactionsController>(
                       //     context,
                       //     listen: false));
                       controller.clearTransactions();
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const HomePage()),
-                      );
+                      // Navigator.push(
+                      //   context,
+                      //   MaterialPageRoute(
+                      //       builder: (context) => const HomePage()),
+                      // );
+                      context.go("/home");
                     },
                     text: 'Vendre',
                   ),

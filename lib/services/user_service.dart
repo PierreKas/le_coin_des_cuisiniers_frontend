@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:flutter_session_jwt/flutter_session_jwt.dart';
 import 'package:http/http.dart' as http;
 import 'package:le_coin_des_cuisiniers_app/components/snack_bar.dart';
 import 'package:le_coin_des_cuisiniers_app/controller/users_controller.dart';
@@ -11,14 +12,27 @@ class UserService {
   // final String baseUrl = "http://localhost:8080/api/users";
   final String userBaseUrl = "$baseUrl/api/users";
   List<User> userList = [];
-
+  String token = "";
+  static String role = "";
   Future<List<User>> getAllUsers() async {
     final url = Uri.parse('$userBaseUrl/all');
     try {
-      final response = await http.get(
-        url,
-        headers: AuthToken.getHeaders(),
-      );
+      String? storedToken = await FlutterSessionJwt.retrieveToken();
+      bool isTokenExpired = await FlutterSessionJwt.isTokenExpired();
+
+      if (storedToken == null || storedToken.isEmpty) {
+        print('There is no token stored');
+        return [];
+      }
+
+      if (isTokenExpired) {
+        print('Token is expired');
+        return [];
+      }
+      final response = await http.get(url, headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $storedToken',
+      });
       if (response.statusCode == 200) {
         dynamic jsonDecodeData = jsonDecode(response.body);
         // print(jsonDecodeData);
@@ -35,10 +49,25 @@ class UserService {
   Future<User?> addUser(User user) async {
     final url = Uri.parse('$userBaseUrl/add');
     try {
+      String? storedToken = await FlutterSessionJwt.retrieveToken();
+      bool isTokenExpired = await FlutterSessionJwt.isTokenExpired();
+
+      if (storedToken == null || storedToken.isEmpty) {
+        print('There is no token stored');
+        return null;
+      }
+
+      if (isTokenExpired) {
+        print('Token is expired');
+        return null;
+      }
       final response = await http.post(
         url,
         // headers: {'Content-Type': 'application/json'},
-        headers: AuthToken.getHeaders(),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $storedToken',
+        },
         body: jsonEncode(user.toJson()),
       );
       if (response.statusCode == 201) {
@@ -54,9 +83,24 @@ class UserService {
   Future<User?> findUserById(int userId) async {
     final url = Uri.parse('$userBaseUrl/by-id?userId=$userId');
     try {
+      String? storedToken = await FlutterSessionJwt.retrieveToken();
+      bool isTokenExpired = await FlutterSessionJwt.isTokenExpired();
+
+      if (storedToken == null || storedToken.isEmpty) {
+        print('There is no token stored');
+        return null;
+      }
+
+      if (isTokenExpired) {
+        print('Token is expired');
+        return null;
+      }
       final response = await http.get(
         url,
-        headers: AuthToken.getHeaders(),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $storedToken',
+        },
       );
       if (response.statusCode == 200) {
         dynamic jsonData = jsonDecode(response.body);
@@ -71,11 +115,24 @@ class UserService {
   Future<User?> updateUser(int userId, User user) async {
     final url = Uri.parse('$userBaseUrl/update/$userId');
     try {
+      String? storedToken = await FlutterSessionJwt.retrieveToken();
+      bool isTokenExpired = await FlutterSessionJwt.isTokenExpired();
+
+      if (storedToken == null || storedToken.isEmpty) {
+        print('There is no token stored');
+        return null;
+      }
+
+      if (isTokenExpired) {
+        print('Token is expired');
+        return null;
+      }
       final response = await http.put(
         url,
-
-        headers: AuthToken.getHeaders(),
-        //headers: {'Content-Type': 'application/json'},
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $storedToken',
+        },
         body: jsonEncode(user.toJson()),
       );
       if (response.statusCode == 200) {
@@ -91,9 +148,24 @@ class UserService {
   Future<bool> deleteUser(int userId) async {
     final url = Uri.parse('$userBaseUrl/delete/$userId');
     try {
+      String? storedToken = await FlutterSessionJwt.retrieveToken();
+      bool isTokenExpired = await FlutterSessionJwt.isTokenExpired();
+
+      if (storedToken == null || storedToken.isEmpty) {
+        print('There is no token stored');
+        return false;
+      }
+
+      if (isTokenExpired) {
+        print('Token is expired');
+        return false;
+      }
       final response = await http.delete(
         url,
-        headers: AuthToken.getHeaders(),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $storedToken',
+        },
       );
       if (response.statusCode == 200) {
         return true;
@@ -123,12 +195,18 @@ class UserService {
       if (response.statusCode == 200) {
         dynamic jsonData = jsonDecode(response.body);
 
-        // Store the JWT token
-        AuthToken.setToken(jsonData['myJWT']);
+        token = jsonData['myJWT'];
+        role = jsonData['role'];
 
-        // AuthToken.setToken(token);
-        AuthToken.setUserRole(jsonData['role']);
-        UsersController.userRole = jsonData['role'];
+        await FlutterSessionJwt.saveToken(token);
+        print('Login successful');
+        print('Role is $role');
+        // // Store the JWT token
+        // AuthToken.setToken(jsonData['myJWT']);
+
+        // // AuthToken.setToken(token);
+        // AuthToken.setUserRole(jsonData['role']);
+        // UsersController.userRole = jsonData['role'];
         // Parse the LoginResponse into a User object
         return User.fromJson(jsonData);
       } else {
@@ -159,5 +237,9 @@ class UserService {
       throw Exception('Error during login: $e');
     }
     return null;
+  }
+
+  void logout() async {
+    await FlutterSessionJwt.deleteToken();
   }
 }

@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:flutter_session_jwt/flutter_session_jwt.dart';
 import 'package:http/http.dart' as http;
 import 'package:le_coin_des_cuisiniers_app/components/snack_bar.dart';
 import 'package:le_coin_des_cuisiniers_app/models/products.dart';
@@ -15,9 +16,24 @@ class ProductService {
     final url = Uri.parse('$productBaseUrl/all');
 
     try {
+      String? storedToken = await FlutterSessionJwt.retrieveToken();
+      bool isTokenExpired = await FlutterSessionJwt.isTokenExpired();
+
+      if (storedToken == null || storedToken.isEmpty) {
+        print('There is no token stored');
+        return [];
+      }
+
+      if (isTokenExpired) {
+        print('Token is expired');
+        return [];
+      }
       final response = await http.get(
         url,
-        headers: AuthToken.getHeaders(),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $storedToken',
+        },
       );
       // print('URL: $url');
       // print('Headers: ${AuthToken.getHeaders()}');
@@ -42,9 +58,24 @@ class ProductService {
   Future<List<Product>?> getLowStockProducts() async {
     final url = Uri.parse('$productBaseUrl/low-qty');
     try {
+      String? storedToken = await FlutterSessionJwt.retrieveToken();
+      bool isTokenExpired = await FlutterSessionJwt.isTokenExpired();
+
+      if (storedToken == null || storedToken.isEmpty) {
+        print('There is no token stored');
+        return [];
+      }
+
+      if (isTokenExpired) {
+        print('Token is expired');
+        return [];
+      }
       final response = await http.get(
         url,
-        headers: AuthToken.getHeaders(),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $storedToken',
+        },
       );
       if (response.statusCode == 200) {
         dynamic jsonDecodeData = jsonDecode(response.body);
@@ -62,9 +93,24 @@ class ProductService {
   Future<List<Product>?> getOutOfStockProducts() async {
     final url = Uri.parse('$productBaseUrl/out-of-stock');
     try {
+      String? storedToken = await FlutterSessionJwt.retrieveToken();
+      bool isTokenExpired = await FlutterSessionJwt.isTokenExpired();
+
+      if (storedToken == null || storedToken.isEmpty) {
+        print('There is no token stored');
+        return [];
+      }
+
+      if (isTokenExpired) {
+        print('Token is expired');
+        return [];
+      }
       final response = await http.get(
         url,
-        headers: AuthToken.getHeaders(),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $storedToken',
+        },
       );
       if (response.statusCode == 200) {
         dynamic jsonDecodeData = jsonDecode(response.body);
@@ -82,13 +128,24 @@ class ProductService {
   Future<Product?> addProduct(Product product, BuildContext context) async {
     final url = Uri.parse('$productBaseUrl/add');
     try {
+      String? storedToken = await FlutterSessionJwt.retrieveToken();
+      bool isTokenExpired = await FlutterSessionJwt.isTokenExpired();
+
+      if (storedToken == null || storedToken.isEmpty) {
+        print('There is no token stored');
+        return null;
+      }
+
+      if (isTokenExpired) {
+        print('Token is expired');
+        return null;
+      }
       final response = await http.post(
         url,
-        // headers: {
-        //   'Content-Type': 'application/json',
-        //   'aut-token': '${AuthToken.getHeaders()}'
-        // },
-        headers: AuthToken.getHeaders(),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $storedToken',
+        },
         body: jsonEncode(product.toJson()),
       );
       if (response.statusCode == 201) {
@@ -114,9 +171,24 @@ class ProductService {
   Future<Product?> findProductByCode(String code) async {
     final url = Uri.parse('$productBaseUrl/by-code/$code');
     try {
+      String? storedToken = await FlutterSessionJwt.retrieveToken();
+      bool isTokenExpired = await FlutterSessionJwt.isTokenExpired();
+
+      if (storedToken == null || storedToken.isEmpty) {
+        print('There is no token stored');
+        return null;
+      }
+
+      if (isTokenExpired) {
+        print('Token is expired');
+        return null;
+      }
       final response = await http.get(
         url,
-        headers: AuthToken.getHeaders(),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $storedToken',
+        },
       );
       if (response.statusCode == 200) {
         dynamic jsonData = jsonDecode(response.body);
@@ -131,10 +203,24 @@ class ProductService {
   Future<Product?> updateProduct(int productId, Product product) async {
     final url = Uri.parse('$productBaseUrl/update/$productId');
     try {
+      String? storedToken = await FlutterSessionJwt.retrieveToken();
+      bool isTokenExpired = await FlutterSessionJwt.isTokenExpired();
+
+      if (storedToken == null || storedToken.isEmpty) {
+        print('There is no token stored');
+        return null;
+      }
+
+      if (isTokenExpired) {
+        print('Token is expired');
+        return null;
+      }
       final response = await http.put(
         url,
-        //headers: {'Content-Type': 'application/json'},
-        headers: AuthToken.getHeaders(),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $storedToken',
+        },
         body: jsonEncode(product.toJson()),
       );
       if (response.statusCode == 200) {
@@ -150,10 +236,24 @@ class ProductService {
   Future<Product?> restockProduct(int productId, Product product) async {
     final url = Uri.parse('$productBaseUrl/update/$productId');
     try {
+      String? storedToken = await FlutterSessionJwt.retrieveToken();
+      bool isTokenExpired = await FlutterSessionJwt.isTokenExpired();
+
+      if (storedToken == null || storedToken.isEmpty) {
+        print('There is no token stored');
+        return null;
+      }
+
+      if (isTokenExpired) {
+        print('Token is expired');
+        return null;
+      }
       final response = await http.put(
         url,
-        //headers: {'Content-Type': 'application/json'},
-        headers: AuthToken.getHeaders(),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $storedToken',
+        },
         body: jsonEncode(product.toJson()),
       );
       if (response.statusCode == 200) {
@@ -169,9 +269,24 @@ class ProductService {
   Future<bool> deleteProduct(int productId) async {
     final url = Uri.parse('$productBaseUrl/delete/$productId');
     try {
+      String? storedToken = await FlutterSessionJwt.retrieveToken();
+      bool isTokenExpired = await FlutterSessionJwt.isTokenExpired();
+
+      if (storedToken == null || storedToken.isEmpty) {
+        print('There is no token stored');
+        return false;
+      }
+
+      if (isTokenExpired) {
+        print('Token is expired');
+        return false;
+      }
       final response = await http.delete(
         url,
-        headers: AuthToken.getHeaders(),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $storedToken',
+        },
       );
       if (response.statusCode == 200) {
         return true;
@@ -186,9 +301,24 @@ class ProductService {
     final url = Uri.parse('$productBaseUrl/total-money-spent');
 
     try {
+      String? storedToken = await FlutterSessionJwt.retrieveToken();
+      bool isTokenExpired = await FlutterSessionJwt.isTokenExpired();
+
+      if (storedToken == null || storedToken.isEmpty) {
+        print('There is no token stored');
+        return 0;
+      }
+
+      if (isTokenExpired) {
+        print('Token is expired');
+        return 0;
+      }
       final response = await http.get(
         url,
-        headers: AuthToken.getHeaders(),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $storedToken',
+        },
       );
       if (response.statusCode == 200) {
         dynamic jsonDecodeData = jsonDecode(response.body);
