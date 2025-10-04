@@ -42,9 +42,10 @@ class UsersController {
     } else {
       await _userService.addUser(user);
 
-      // Navigator.push(
-      //     context, MaterialPageRoute(builder: (context) => const HomePage()));
-      context.go("/home");
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => const HomePage()));
+      MySnackBar.showSuccessMessage('User created', context);
+      // context.go("/home");
     }
   }
 

@@ -408,6 +408,9 @@ class _ProductsListState extends State<ProductsList> {
 
   @override
   Widget build(BuildContext context) {
+    double width = MediaQuery.sizeOf(context).width;
+    double height = MediaQuery.sizeOf(context).height;
+
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         // onPressed: () => Navigator.push(
@@ -417,11 +420,16 @@ class _ProductsListState extends State<ProductsList> {
         //   ),
         // ),
         onPressed: () {
-          _downloadExcel();
+          if (width > tabletWidth) {
+            _downloadExcel();
+          } else {
+            Navigator.push(
+                context, MaterialPageRoute(builder: (context) => AddProduct()));
+          }
         },
         backgroundColor: chocolateColor,
-        child: const Icon(
-          Icons.download,
+        child: Icon(
+          width > tabletWidth ? Icons.download : Icons.add_outlined,
           color: Colors.white,
         ),
       ),

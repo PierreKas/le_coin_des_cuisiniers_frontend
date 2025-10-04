@@ -142,7 +142,7 @@ class _LoginPageState extends State<LoginPage> {
             child: Center(
               child: SingleChildScrollView(
                 child: Container(
-                  margin: const EdgeInsets.symmetric(horizontal: 380),
+                  margin: const EdgeInsets.symmetric(horizontal: 24),
                   padding: const EdgeInsets.all(20),
                   decoration: BoxDecoration(
                     color: Colors.white.withOpacity(0.9),
