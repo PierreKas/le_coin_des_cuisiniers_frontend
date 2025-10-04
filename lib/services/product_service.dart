@@ -333,4 +333,70 @@ class ProductService {
     }
     throw Exception('Try to handle null values');
   }
+
+  ////////////////////////////////
+  Future<Map<String, dynamic>> saveProductBatch(
+      List<Product> productsss, BuildContext context) async {
+    print('Products to record: $productsss');
+    final url = Uri.parse('$productBaseUrl/batch');
+
+    try {
+      String? storedToken = await FlutterSessionJwt.retrieveToken();
+      bool isTokenExpired = await FlutterSessionJwt.isTokenExpired();
+
+      if (storedToken == null || storedToken.isEmpty) {
+        print('There is no token stored');
+        return {"token": "There is no token stored"};
+      }
+
+      if (isTokenExpired) {
+        print('Token is expired');
+
+        return {"token": "Token is expired"};
+      }
+
+      final List<Map<String, dynamic>> jsonList = productsss.map((product) {
+        return {
+          'productCode': product.productCode,
+          'productName': product.productName,
+          'purchasePrice': product.purchasePrice,
+          'purchasedQuantity': product.purchasedQuantity,
+          'purchasedDate': product.purchasedDate?.toIso8601String(),
+          'sellingPrice': product.sellingPrice,
+          'brand': product.brand,
+          'remainingQuantity': product.remainingQuantity,
+          'otherExpenses': product.otherExpenses,
+        };
+      }).toList();
+      final response = await http.post(
+        url,
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $storedToken',
+        },
+        body: jsonEncode(jsonList),
+      );
+
+      if (response.statusCode == 201) {
+        return jsonDecode(response.body);
+      } else {
+        Map<String, dynamic> errorData = jsonDecode(response.body);
+        String error = errorData.toString();
+
+        print(error);
+        // if (error.contains("Le stock n'est pas suffisant")) {
+        //   MySnackBar.showErrorMessage(
+        //       'Le stock n\'est pas suffisant pour ce produit', context);
+        // } else if (error.contains("No transactions provided")) {
+        //   MySnackBar.showErrorMessage(
+        //       'Ajoutez une transaction avant de vendre', context);
+        // }
+        throw Exception(errorData['message'] ?? 'Failed to record products');
+      }
+    } catch (e) {
+      throw Exception('Error submitting products: $e');
+    }
+  }
+
+  ///
 }

@@ -150,4 +150,20 @@ class Product {
       'id': id,
     };
   }
+
+  @override
+  String toString() {
+    return 'Product('
+        'id: $id, '
+        'productCode: $productCode, '
+        'productName: $productName, '
+        'brand: $brand, '
+        'purchasePrice: $purchasePrice, '
+        'otherExpenses: $otherExpenses, '
+        'sellingPrice: $sellingPrice, '
+        'purchasedQuantity: $purchasedQuantity, '
+        'remainingQuantity: $remainingQuantity, '
+        'purchasedDate: ${purchasedDate?.toIso8601String()}'
+        ')';
+  }
 }
