@@ -403,7 +403,7 @@ class _RecordingListState extends State<RecordingList> {
                               // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(
-                                  'Liste des transactions',
+                                  'Liste des produits',
                                   style: TextStyle(
                                     color: chocolateColor,
                                     fontSize: 24,
