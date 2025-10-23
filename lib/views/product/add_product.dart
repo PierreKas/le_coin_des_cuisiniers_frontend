@@ -949,198 +949,208 @@ class _AddProductState extends State<AddProduct> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
+            // const Text(
+            //   'Complétez ici les informations du nouveau produit',
+            //   textAlign: TextAlign.center,
+            //   style: TextStyle(color: Colors.grey),
+            // ),
             const Text(
-              'Complétez ici les informations du nouveau produit',
+              'POUR ENREGISTRER UN NOUVEAU PRODUIT AGRANDISSEZ VOTRE NAVIGATEUR SVP!',
               textAlign: TextAlign.center,
-              style: TextStyle(color: Colors.grey),
+              style: TextStyle(color: Colors.red),
             ),
-            const SizedBox(height: 20),
-            const MyLabel(labelContent: 'Code du produit'),
-            const SizedBox(height: 10),
-            MyTextField(
-              controller: _productCode,
-              enabled: true,
-              hintText: '',
-              obscureText: false,
-              prefixIcon: Icons.qr_code_2,
+            const Text(
+              'CE PROBLEME SERA REGLE BIENTOT, MAIS VEUILLEZ COMPRENDRE POUR LE MOMENT',
+              textAlign: TextAlign.center,
+              style: TextStyle(color: Colors.red),
             ),
-            const SizedBox(height: 16),
-            const MyLabel(labelContent: 'Nom du produit'),
-            const SizedBox(height: 10),
-            MyTextField(
-              controller: _productName,
-              enabled: true,
-              hintText: '',
-              obscureText: false,
-              prefixIcon: Icons.circle,
-            ),
-            const SizedBox(height: 16),
-            const MyLabel(labelContent: 'Marque'),
-            const SizedBox(height: 10),
-            MyTextField(
-              controller: _brand,
-              enabled: true,
-              hintText: '',
-              obscureText: false,
-              prefixIcon: Icons.circle,
-            ),
-            const SizedBox(height: 16),
-            const MyLabel(labelContent: 'Prix d\'achat'),
-            const SizedBox(height: 10),
-            MyTextField(
-              controller: _purchasePrice,
-              enabled: true,
-              hintText: '',
-              obscureText: false,
-              prefixIcon: Icons.monetization_on,
-            ),
-            const SizedBox(height: 16),
-            const MyLabel(labelContent: 'Prix de vente'),
-            const SizedBox(height: 10),
-            MyTextField(
-              controller: _sellingPrice,
-              enabled: true,
-              hintText: '',
-              obscureText: false,
-              prefixIcon: Icons.monetization_on,
-            ),
-            const SizedBox(height: 16),
-            const MyLabel(labelContent: 'Quantité achetée'),
-            const SizedBox(height: 10),
-            MyTextField(
-              controller: _purchaseQty,
-              enabled: true,
-              hintText: '',
-              obscureText: false,
-              prefixIcon: Icons.numbers,
-            ),
-            const SizedBox(height: 16),
-            const MyLabel(labelContent: 'Date d\'achat'),
-            const SizedBox(height: 10),
-            TextFormField(
-              controller: _purchaseDate,
-              cursorColor: Colors.grey,
-              decoration: InputDecoration(
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10.0),
-                  borderSide: const BorderSide(color: chocolateColor),
-                ),
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10.0),
-                  borderSide: const BorderSide(color: Colors.grey),
-                ),
-                prefixIcon:
-                    const Icon(Icons.calendar_today, color: chocolateColor),
-              ),
-              onTap: () async {
-                DateTime? pickedDate = await showDatePicker(
-                  context: context,
-                  firstDate: DateTime(2024),
-                  lastDate: DateTime(2026),
-                  initialDate: DateTime.now(),
-                  builder: (context, child) {
-                    return Theme(
-                      data: Theme.of(context).copyWith(
-                        colorScheme: const ColorScheme.light(
-                          primary: chocolateColor,
-                          onPrimary: Colors.white,
-                          onSurface: Colors.black,
-                        ),
-                        textButtonTheme: TextButtonThemeData(
-                          style: TextButton.styleFrom(
-                            foregroundColor: chocolateColor,
-                          ),
-                        ),
-                      ),
-                      child: child!,
-                    );
-                  },
-                );
+            // const SizedBox(height: 20),
+            // const MyLabel(labelContent: 'Code du produit'),
+            // const SizedBox(height: 10),
+            // MyTextField(
+            //   controller: _productCode,
+            //   enabled: true,
+            //   hintText: '',
+            //   obscureText: false,
+            //   prefixIcon: Icons.qr_code_2,
+            // ),
+            // const SizedBox(height: 16),
+            // const MyLabel(labelContent: 'Nom du produit'),
+            // const SizedBox(height: 10),
+            // MyTextField(
+            //   controller: _productName,
+            //   enabled: true,
+            //   hintText: '',
+            //   obscureText: false,
+            //   prefixIcon: Icons.circle,
+            // ),
+            // const SizedBox(height: 16),
+            // const MyLabel(labelContent: 'Marque'),
+            // const SizedBox(height: 10),
+            // MyTextField(
+            //   controller: _brand,
+            //   enabled: true,
+            //   hintText: '',
+            //   obscureText: false,
+            //   prefixIcon: Icons.circle,
+            // ),
+            // const SizedBox(height: 16),
+            // const MyLabel(labelContent: 'Prix d\'achat'),
+            // const SizedBox(height: 10),
+            // MyTextField(
+            //   controller: _purchasePrice,
+            //   enabled: true,
+            //   hintText: '',
+            //   obscureText: false,
+            //   prefixIcon: Icons.monetization_on,
+            // ),
+            // const SizedBox(height: 16),
+            // const MyLabel(labelContent: 'Prix de vente'),
+            // const SizedBox(height: 10),
+            // MyTextField(
+            //   controller: _sellingPrice,
+            //   enabled: true,
+            //   hintText: '',
+            //   obscureText: false,
+            //   prefixIcon: Icons.monetization_on,
+            // ),
+            // const SizedBox(height: 16),
+            // const MyLabel(labelContent: 'Quantité achetée'),
+            // const SizedBox(height: 10),
+            // MyTextField(
+            //   controller: _purchaseQty,
+            //   enabled: true,
+            //   hintText: '',
+            //   obscureText: false,
+            //   prefixIcon: Icons.numbers,
+            // ),
+            // const SizedBox(height: 16),
+            // const MyLabel(labelContent: 'Date d\'achat'),
+            // const SizedBox(height: 10),
+            // TextFormField(
+            //   controller: _purchaseDate,
+            //   cursorColor: Colors.grey,
+            //   decoration: InputDecoration(
+            //     border: OutlineInputBorder(
+            //       borderRadius: BorderRadius.circular(10),
+            //     ),
+            //     focusedBorder: OutlineInputBorder(
+            //       borderRadius: BorderRadius.circular(10.0),
+            //       borderSide: const BorderSide(color: chocolateColor),
+            //     ),
+            //     enabledBorder: OutlineInputBorder(
+            //       borderRadius: BorderRadius.circular(10.0),
+            //       borderSide: const BorderSide(color: Colors.grey),
+            //     ),
+            //     prefixIcon:
+            //         const Icon(Icons.calendar_today, color: chocolateColor),
+            //   ),
+            //   onTap: () async {
+            //     DateTime? pickedDate = await showDatePicker(
+            //       context: context,
+            //       firstDate: DateTime(2024),
+            //       lastDate: DateTime(2026),
+            //       initialDate: DateTime.now(),
+            //       builder: (context, child) {
+            //         return Theme(
+            //           data: Theme.of(context).copyWith(
+            //             colorScheme: const ColorScheme.light(
+            //               primary: chocolateColor,
+            //               onPrimary: Colors.white,
+            //               onSurface: Colors.black,
+            //             ),
+            //             textButtonTheme: TextButtonThemeData(
+            //               style: TextButton.styleFrom(
+            //                 foregroundColor: chocolateColor,
+            //               ),
+            //             ),
+            //           ),
+            //           child: child!,
+            //         );
+            //       },
+            //     );
 
-                if (pickedDate != null) {
-                  _purchaseDate.text =
-                      pickedDate.toIso8601String().split('T').first;
-                }
-              },
-            ),
-            const SizedBox(height: 30),
-            MyButtons(
-              onPressed: () {
-                String productCode = _productCode.text;
-                String productName = _productName.text;
-                String brand = _brand.text;
-                String quantityStr = _purchaseQty.text;
-                String purchasePriceStr = _purchasePrice.text;
-                String sellingPriceStr = _sellingPrice.text;
-                String purchasedDateStr = _purchaseDate.text;
+            //     if (pickedDate != null) {
+            //       _purchaseDate.text =
+            //           pickedDate.toIso8601String().split('T').first;
+            //     }
+            //   },
+            // ),
+            // const SizedBox(height: 30),
+            // MyButtons(
+            //   onPressed: () {
+            //     String productCode = _productCode.text;
+            //     String productName = _productName.text;
+            //     String brand = _brand.text;
+            //     String quantityStr = _purchaseQty.text;
+            //     String purchasePriceStr = _purchasePrice.text;
+            //     String sellingPriceStr = _sellingPrice.text;
+            //     String purchasedDateStr = _purchaseDate.text;
 
-                int quantity = int.tryParse(quantityStr) ?? 0;
-                DateTime? purchasedDate = purchasedDateStr.isNotEmpty
-                    ? DateTime.tryParse(purchasedDateStr)
-                    : null;
-                double purchasePrice = double.tryParse(purchasePriceStr) ?? 0.0;
-                double sellingPrice = double.tryParse(sellingPriceStr) ?? 0.0;
+            //     int quantity = int.tryParse(quantityStr) ?? 0;
+            //     DateTime? purchasedDate = purchasedDateStr.isNotEmpty
+            //         ? DateTime.tryParse(purchasedDateStr)
+            //         : null;
+            //     double purchasePrice = double.tryParse(purchasePriceStr) ?? 0.0;
+            //     double sellingPrice = double.tryParse(sellingPriceStr) ?? 0.0;
 
-                Product newProduct = Product(
-                  productCode: productCode,
-                  productName: productName,
-                  purchasePrice: purchasePrice,
-                  purchasedDate: purchasedDate,
-                  purchasedQuantity: quantity,
-                  sellingPrice: sellingPrice,
-                  brand: brand,
-                  remainingQuantity: quantity,
-                  otherExpenses: 0.0,
-                );
+            //     Product newProduct = Product(
+            //       productCode: productCode,
+            //       productName: productName,
+            //       purchasePrice: purchasePrice,
+            //       purchasedDate: purchasedDate,
+            //       purchasedQuantity: quantity,
+            //       sellingPrice: sellingPrice,
+            //       brand: brand,
+            //       remainingQuantity: quantity,
+            //       otherExpenses: 0.0,
+            //     );
 
-                ProductController().addProductOnList(newProduct, context);
-                _productCode.clear();
-                _productName.clear();
-                _purchaseDate.clear();
-                _purchaseQty.clear();
-                _sellingPrice.clear();
-                _purchasePrice.clear();
-                _brand.clear();
-              },
-              text: 'Ajouter',
-            ),
-            const SizedBox(height: 16),
-            SizedBox(
-              width: double.infinity,
-              child: OutlinedButton.icon(
-                onPressed: () => Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => BaseLayout(
-                      initialIndex: 1,
-                      pages: [
-                        const Acceuil(),
-                        if (UsersController.userRole == 'ADMIN')
-                          const ProductsList(),
-                        if (UsersController.userRole == 'ADMIN')
-                          const UsersList(),
-                        const AddTransaction(),
-                      ],
-                      initialPage: RecordingList(product: productt),
-                    ),
-                  ),
-                ),
-                style: OutlinedButton.styleFrom(
-                  foregroundColor: chocolateColor,
-                  side: const BorderSide(color: chocolateColor, width: 2),
-                  padding: const EdgeInsets.symmetric(vertical: 16),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                ),
-                icon: const Icon(Icons.checklist),
-                label: const Text('Voir la liste'),
-              ),
-            ),
-            const SizedBox(height: 30),
+            //     ProductController().addProductOnList(newProduct, context);
+            //     _productCode.clear();
+            //     _productName.clear();
+            //     _purchaseDate.clear();
+            //     _purchaseQty.clear();
+            //     _sellingPrice.clear();
+            //     _purchasePrice.clear();
+            //     _brand.clear();
+            //   },
+            //   text: 'Ajouter',
+            // ),
+            // const SizedBox(height: 16),
+            // SizedBox(
+            //   width: double.infinity,
+            //   child: OutlinedButton.icon(
+            //     onPressed: () => Navigator.push(
+            //       context,
+            //       MaterialPageRoute(
+            //         builder: (context) => BaseLayout(
+            //           initialIndex: 1,
+            //           pages: [
+            //             const Acceuil(),
+            //             if (UsersController.userRole == 'ADMIN')
+            //               const ProductsList(),
+            //             if (UsersController.userRole == 'ADMIN')
+            //               const UsersList(),
+            //             const AddTransaction(),
+            //           ],
+            //           initialPage: RecordingList(product: productt),
+            //         ),
+            //       ),
+            //     ),
+            //     style: OutlinedButton.styleFrom(
+            //       foregroundColor: chocolateColor,
+            //       side: const BorderSide(color: chocolateColor, width: 2),
+            //       padding: const EdgeInsets.symmetric(vertical: 16),
+            //       shape: RoundedRectangleBorder(
+            //         borderRadius: BorderRadius.circular(10),
+            //       ),
+            //     ),
+            //     icon: const Icon(Icons.checklist),
+            //     label: const Text('Voir la liste'),
+            //   ),
+            // ),
+            // const SizedBox(height: 30),
           ],
         ),
       ),
