@@ -857,7 +857,7 @@ class _AddProductState extends State<AddProduct> {
                   SizedBox(
                     width: 200,
                     child: MyButtons(
-                      onPressed: () async {
+                      onPressed: () {
                         String productCode = _productCode.text;
                         String productName = _productName.text;
                         String brand = _brand.text;
@@ -1096,7 +1096,7 @@ class _AddProductState extends State<AddProduct> {
                   otherExpenses: 0.0,
                 );
 
-                ProductController().addProduct(newProduct, context);
+                ProductController().addProductOnList(newProduct, context);
                 _productCode.clear();
                 _productName.clear();
                 _purchaseDate.clear();

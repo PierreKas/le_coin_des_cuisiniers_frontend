@@ -14,7 +14,7 @@ class ProductController extends ChangeNotifier {
   ///////////////////////////
   final List<Product> _productsList = [];
   List<Product> get producttsList => _productsList;
-  Future<void> addProductOnList(Product product, BuildContext context) async {
+  void addProductOnList(Product product, BuildContext context) {
     // Add debug print to see the transaction being added
     print(
         'Attempting to add transaction: ${product.productCode}, quantity: ${product.purchasedQuantity}');
@@ -105,26 +105,26 @@ class ProductController extends ChangeNotifier {
   }
 
   ///////////////////////////
-  Future<void> addProduct(Product product, BuildContext context) async {
-    if (!_isValidProduct(product)) {
-      MySnackBar.showErrorMessage(
-          'Complète toutes  les cases sans erreur', context);
-    } else {
-      try {
-        await productService.addProduct(product, context);
+  // Future<void> addProduct(Product product, BuildContext context) async {
+  //   if (!_isValidProduct(product)) {
+  //     MySnackBar.showErrorMessage(
+  //         'Complète toutes  les cases sans erreur', context);
+  //   } else {
+  //     try {
+  //       await productService.addProduct(product, context);
 
-        // Navigator.push(
-        //     context, MaterialPageRoute(builder: (context) => const HomePage()));
-        context.go("/home");
-      } on Exception catch (e, stackTrace) {
-        MySnackBar.showErrorMessage(
-            'Une erreur s\'est produite lors de l\'enregistrement du produit',
-            context);
-        log('An error occured while adding product: $e',
-            error: e, stackTrace: stackTrace);
-      }
-    }
-  }
+  //       // Navigator.push(
+  //       //     context, MaterialPageRoute(builder: (context) => const HomePage()));
+  //       context.go("/home");
+  //     } on Exception catch (e, stackTrace) {
+  //       MySnackBar.showErrorMessage(
+  //           'Une erreur s\'est produite lors de l\'enregistrement du produit',
+  //           context);
+  //       log('An error occured while adding product: $e',
+  //           error: e, stackTrace: stackTrace);
+  //     }
+  //   }
+  // }
 
   Future<List<Product>> getProducts() async {
     List<Product> allProducts = await productService.getAllProducts();
