@@ -46,8 +46,10 @@ class _HomePageState extends State<HomePage> {
   List<Widget> get _pages {
     List<Widget> availablePages = [
       const Acceuil(),
-      if (UsersController.userRole == 'ADMIN') const ProductsList(),
-      if (UsersController.userRole == 'ADMIN') const UsersList(),
+      // if (UsersController.userRole == 'ADMIN') const ProductsList(),
+      // if (UsersController.userRole == 'ADMIN') const UsersList(),
+      const ProductsList(),
+      const UsersList(),
       const AddTransaction(),
     ];
     return availablePages;
@@ -59,16 +61,16 @@ class _HomePageState extends State<HomePage> {
         icon: Icon(Icons.home),
         label: 'Acceuil',
       ),
-      if (UsersController.userRole == 'ADMIN')
-        const BottomNavigationBarItem(
-          icon: Icon(Icons.store),
-          label: 'Produits',
-        ),
-      if (UsersController.userRole == 'ADMIN')
-        const BottomNavigationBarItem(
-          icon: Icon(Icons.person),
-          label: 'Utilisateurs',
-        ),
+      //   if (UsersController.userRole == 'ADMIN')
+      const BottomNavigationBarItem(
+        icon: Icon(Icons.store),
+        label: 'Produits',
+      ),
+      // if (UsersController.userRole == 'ADMIN')
+      const BottomNavigationBarItem(
+        icon: Icon(Icons.person),
+        label: 'Utilisateurs',
+      ),
       const BottomNavigationBarItem(
         icon: Icon(Icons.shopping_cart),
         label: 'Page des ventes',
@@ -77,46 +79,37 @@ class _HomePageState extends State<HomePage> {
     return items;
   }
 
-  // void _onItemTapped(int index) {
-  //   setState(() {
-  //     _selectedIndex = index;
-  //   });
-  // }
-  // void _onItemTapped(int index) {
-  //   // Adjust index if user is not an admin
-  //   int adjustedIndex = index;
-  //   if (UsersController.userRole != 'ADMIN') {
-  //     // Map the index to the correct page for non-admin users
-  //     if (index >= 1 && _pages.length < 4) {
-  //       adjustedIndex = index + 1;
-  //     }
-  //   }
-  //   setState(() {
-  //     _selectedIndex = adjustedIndex;
-  //   });
-  // }
   void _onItemTapped(int index) {
     // Calculate the correct page index based on user role
     int adjustedIndex = 0;
-    if (UsersController.userRole == 'ADMIN') {
-      // Admin has full access to all pages
-      adjustedIndex = index;
-    } else {
-      // Non-admin navigation mapping
-      switch (index) {
-        case 0: // Home
-          adjustedIndex = 0;
-          break;
-        case 1: // Sales Page (for non-admin)
-          adjustedIndex = _pages.length - 1;
-          break;
-      }
-    }
+    adjustedIndex = index;
 
     setState(() {
       _selectedIndex = adjustedIndex;
     });
   }
+  // void _onItemTapped(int index) {
+  //   // Calculate the correct page index based on user role
+  //   int adjustedIndex = 0;
+  //   if (UsersController.userRole == 'ADMIN') {
+  //     // Admin has full access to all pages
+  //     adjustedIndex = index;
+  //   } else {
+  //     // Non-admin navigation mapping
+  //     switch (index) {
+  //       case 0: // Home
+  //         adjustedIndex = 0;
+  //         break;
+  //       case 1: // Sales Page (for non-admin)
+  //         adjustedIndex = 0; // _pages.length - 1;
+  //         break;
+  //     }
+  //   }
+
+  //   setState(() {
+  //     _selectedIndex = adjustedIndex;
+  //   });
+  // }
 
   // Future<void> relaunchApp() async {
   //   // Get the current executable path
@@ -140,8 +133,7 @@ class _HomePageState extends State<HomePage> {
             padding: const EdgeInsets.only(right: 10.0),
             child: Row(
               children: [
-                if (UsersController.userRole == 'ADMIN' &&
-                    MediaQuery.of(context).size.width > mobileWidth)
+                if (MediaQuery.of(context).size.width > mobileWidth)
                   TextButton(
                     style: TextButton.styleFrom(backgroundColor: Colors.white),
                     onPressed: () async {

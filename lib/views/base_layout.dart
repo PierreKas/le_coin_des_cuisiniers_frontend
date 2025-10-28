@@ -27,19 +27,21 @@ class _BaseLayoutState extends State<BaseLayout> {
     super.initState();
 
     // Prepare pages based on user role
-    _availablePages = UsersController.userRole == 'ADMIN'
-        ? widget.pages
-        : [
-            widget.pages[0], // Home
-            widget.pages[widget.pages.length - 1] // Sales/Transaction page
-          ];
+    // _availablePages = UsersController.userRole == 'ADMIN'
+    //     ? widget.pages
+    //     : [
+    //         widget.pages[0], // Home
+    //         widget.pages[widget.pages.length - 1] // Sales/Transaction page
+    //       ];
+    _availablePages =
+        UsersController.userRole == 'ADMIN' ? widget.pages : widget.pages;
 
     // Adjust initial index for non-admin users
-    _selectedIndex = UsersController.userRole == 'ADMIN'
-        ? widget.initialIndex
-        : (widget.initialIndex >= _availablePages.length
-            ? 0
-            : widget.initialIndex);
+    // _selectedIndex = UsersController.userRole == 'ADMIN'
+    //     ? widget.initialIndex
+    //     : (widget.initialIndex >= _availablePages.length
+    //         ? 0
+    //         : widget.initialIndex);
   }
 
   void _onItemTapped(int index) {
@@ -55,7 +57,7 @@ class _BaseLayoutState extends State<BaseLayout> {
           adjustedIndex = 0;
           break;
         case 1: // Sales Page (for non-admin)
-          adjustedIndex = _availablePages.length - 1;
+          adjustedIndex = 0; //_availablePages.length - 1;
           break;
       }
     }
@@ -79,20 +81,30 @@ class _BaseLayoutState extends State<BaseLayout> {
       // Use initialPage if provided, otherwise use _availablePages
       body: widget.initialPage ?? _availablePages[_selectedIndex],
       bottomNavigationBar: UsersController.userRole != 'ADMIN'
-          ? BottomNavigationBar(
+          ?
+          // BottomNavigationBar(
+          //     type: BottomNavigationBarType.fixed,
+          //     currentIndex: 1, // Always highlight Sales page for non-admin
+          //     onTap: _onItemTapped,
+          //     items: const [
+          //       BottomNavigationBarItem(
+          //         icon: Icon(Icons.home),
+          //         label: 'Acceuil',
+          //       ),
+          //       BottomNavigationBarItem(
+          //         icon: Icon(Icons.shopping_cart),
+          //         label: 'Page des ventes',
+          //       ),
+          //     ],
+          //     selectedItemColor: Colors.white,
+          //     unselectedItemColor: Colors.grey,
+          //     backgroundColor: chocolateColor,
+          //   )
+          BottomNavigationBar(
               type: BottomNavigationBarType.fixed,
-              currentIndex: 1, // Always highlight Sales page for non-admin
+              currentIndex: _selectedIndex,
               onTap: _onItemTapped,
-              items: const [
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.home),
-                  label: 'Acceuil',
-                ),
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.shopping_cart),
-                  label: 'Page des ventes',
-                ),
-              ],
+              items: _bottomNavItems,
               selectedItemColor: Colors.white,
               unselectedItemColor: Colors.grey,
               backgroundColor: chocolateColor,

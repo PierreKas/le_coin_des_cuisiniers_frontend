@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:le_coin_des_cuisiniers_app/dashboard/dashboard_home.dart';
+import 'package:le_coin_des_cuisiniers_app/dashboard/views/products_list_dashboard.dart';
 import 'package:le_coin_des_cuisiniers_app/views/home_page.dart';
 import 'package:le_coin_des_cuisiniers_app/views/login.dart';
+import 'package:le_coin_des_cuisiniers_app/views/transactions/add_transactions.dart';
 
 class Routes {
   GoRouter router = GoRouter(routes: <RouteBase>[
@@ -42,46 +44,32 @@ class Routes {
             // ],
           ),
           GoRoute(
-            path: 'commissions',
+            path: 'products',
             builder: (BuildContext context, GoRouterState state) {
-              return const HomePage();
+              return const ProductsList();
             },
-            routes: <RouteBase>[
-              GoRoute(
-                path: 'add',
-                builder: (BuildContext context, GoRouterState state) {
-                  return const HomePage();
-                },
-              ),
-            ],
+            // routes: <RouteBase>[
+            //   GoRoute(
+            //     path: 'add',
+            //     builder: (BuildContext context, GoRouterState state) {
+            //       return const HomePage();
+            //     },
+            //   ),
+            // ],
           ),
           GoRoute(
-            path: 'classes',
+            path: 'ventes',
             builder: (BuildContext context, GoRouterState state) {
-              return const HomePage();
+              return const AddTransaction();
             },
-            routes: <RouteBase>[
-              GoRoute(
-                path: 'add',
-                builder: (BuildContext context, GoRouterState state) {
-                  return const HomePage();
-                },
-              ),
-            ],
-          ),
-          GoRoute(
-            path: 'kingdom-homes',
-            builder: (BuildContext context, GoRouterState state) {
-              return const HomePage();
-            },
-            routes: <RouteBase>[
-              GoRoute(
-                path: 'add',
-                builder: (BuildContext context, GoRouterState state) {
-                  return const HomePage();
-                },
-              ),
-            ],
+            // routes: <RouteBase>[
+            //   GoRoute(
+            //     path: 'add',
+            //     builder: (BuildContext context, GoRouterState state) {
+            //       return const HomePage();
+            //     },
+            //   ),
+            // ],
           ),
         ])
   ]);
