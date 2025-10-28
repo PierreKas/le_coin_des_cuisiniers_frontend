@@ -476,7 +476,7 @@ class _RecordingListState extends State<RecordingList> {
                       // );
                       context.go("/home");
                     },
-                    text: 'Vendre',
+                    text: 'Tout Enregistrer',
                   ),
                 ),
               ],

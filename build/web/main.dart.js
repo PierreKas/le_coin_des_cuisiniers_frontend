@@ -116875,7 +116875,7 @@ if(b.b>576)return A.dR(A.dR(s.auX(r),B.ao),B.bK)
 else return s.auY(r)},
 $S:33}
 A.aN0.prototype={
-$3(a,b,c){return new A.eM(new A.aMW(this.a,a,b),"Vendre",null,null,null)},
+$3(a,b,c){return new A.eM(new A.aMW(this.a,a,b),"Tout Enregistrer",null,null,null)},
 $C:"$3",
 $R:3,
 $S:660}
