@@ -45,7 +45,8 @@ class _HomePageState extends State<HomePage> {
   // ];
   List<Widget> get _pages {
     List<Widget> availablePages = [
-      const Acceuil(),
+      //const Acceuil(),
+      const DashboardHome(),
       // if (UsersController.userRole == 'ADMIN') const ProductsList(),
       // if (UsersController.userRole == 'ADMIN') const UsersList(),
       const ProductsList(),

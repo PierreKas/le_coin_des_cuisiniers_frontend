@@ -107,6 +107,7 @@ class _DashboardHomeState extends State<DashboardHome> {
 
   Future<void> totalAmountSPent() async {
     totalAmountSpent = await ProductController().totalAmountSpent();
+    print('Tot used: $totalAmountSpent');
     setState(() {});
     // totalAmountSpent = await ProductController().totalAmountSpent();
   }

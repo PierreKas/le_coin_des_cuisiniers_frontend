@@ -641,6 +641,7 @@
 // }
 import 'package:flutter/material.dart';
 import 'package:le_coin_des_cuisiniers_app/colors/colors.dart';
+import 'package:le_coin_des_cuisiniers_app/components/appbar_text.dart';
 import 'package:le_coin_des_cuisiniers_app/components/buttons.dart';
 import 'package:le_coin_des_cuisiniers_app/components/label.dart';
 import 'package:le_coin_des_cuisiniers_app/components/textfields.dart';
@@ -907,13 +908,13 @@ class _AddProductState extends State<AddProduct> {
                       MaterialPageRoute(
                         builder: (context) => BaseLayout(
                           initialIndex: 1,
-                          pages: [
-                            const Acceuil(),
-                            if (UsersController.userRole == 'ADMIN')
-                              const ProductsList(),
-                            if (UsersController.userRole == 'ADMIN')
-                              const UsersList(),
-                            const AddTransaction(),
+                          pages: const [
+                            Acceuil(),
+                            //  if (UsersController.userRole == 'ADMIN')
+                            ProductsList(),
+                            //  if (UsersController.userRole == 'ADMIN')
+                            UsersList(),
+                            AddTransaction(),
                           ],
                           initialPage: RecordingList(product: productt),
                         ),
@@ -943,7 +944,7 @@ class _AddProductState extends State<AddProduct> {
   }
 
   Widget mobileBody() {
-    return Padding(
+    return const Padding(
       padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 25),
       child: SingleChildScrollView(
         child: Column(
@@ -1159,36 +1160,72 @@ class _AddProductState extends State<AddProduct> {
 
   @override
   Widget build(BuildContext context) {
-    return BaseLayout(
-      initialIndex: 2,
-      pages: [
-        const Acceuil(),
-        const ProductsList(),
-        Stack(
-          children: [
-            Center(
-              child: Opacity(
-                opacity: 0.5,
-                child: Image.asset(
-                  'assets/logo.PNG',
-                  fit: BoxFit.contain,
-                  width: 250,
-                  height: 250,
-                ),
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: chocolateColor,
+        // automaticallyImplyLeading: false,
+        title: const MyAppBarText(content: 'Le coin des cuisiniers'),
+      ),
+      body: Stack(
+        children: [
+          Center(
+            child: Opacity(
+              opacity: 0.5,
+              child: Image.asset(
+                'assets/logo.PNG',
+                fit: BoxFit.contain,
+                width: 250,
+                height: 250,
               ),
             ),
-            LayoutBuilder(
-              builder: (context, constraints) {
-                if (constraints.maxWidth > tabletWidth) {
-                  return desktopBody();
-                } else {
-                  return mobileBody();
-                }
-              },
-            ),
-          ],
-        ),
-      ],
+          ),
+          LayoutBuilder(
+            builder: (context, constraints) {
+              if (constraints.maxWidth > tabletWidth) {
+                return desktopBody();
+              } else {
+                return mobileBody();
+              }
+            },
+          ),
+        ],
+      ),
     );
   }
 }
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return BaseLayout(
+//       initialIndex: 2,
+//       pages: [
+//         const Acceuil(),
+//         const ProductsList(),
+//         Stack(
+//           children: [
+//             Center(
+//               child: Opacity(
+//                 opacity: 0.5,
+//                 child: Image.asset(
+//                   'assets/logo.PNG',
+//                   fit: BoxFit.contain,
+//                   width: 250,
+//                   height: 250,
+//                 ),
+//               ),
+//             ),
+//             LayoutBuilder(
+//               builder: (context, constraints) {
+//                 if (constraints.maxWidth > tabletWidth) {
+//                   return desktopBody();
+//                 } else {
+//                   return mobileBody();
+//                 }
+//               },
+//             ),
+//           ],
+//         ),
+//       ],
+//     );
+//   }
+// }
