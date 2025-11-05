@@ -243,7 +243,7 @@ class _ProductsListState extends State<ProductsList> {
           style: const TextStyle(color: chocolateColor),
         )),
         DataCell(Text(
-          '${((product.purchasePrice ?? 0.0) + (product.otherExpenses ?? 0.0)).toString()} \$',
+          '${((product.purchasePrice ?? 0.0 * (product.purchasedQuantity ?? 0.0)) + (product.otherExpenses ?? 0.0)).toString()} \$',
           style: const TextStyle(color: chocolateColor),
         )),
         DataCell(Text(
@@ -251,7 +251,7 @@ class _ProductsListState extends State<ProductsList> {
           style: const TextStyle(color: chocolateColor),
         )),
         DataCell(Text(
-          '${((product.sellingPrice ?? 0.0) - ((product.purchasePrice ?? 0.0) + (product.otherExpenses ?? 0.0))).toStringAsFixed(3)} \$',
+          '${(((product.sellingPrice ?? 0.0) * (product.purchasedQuantity ?? 0.0)) - ((product.purchasePrice ?? 0.0 * (product.purchasedQuantity ?? 0.0)) + (product.otherExpenses ?? 0.0))).toStringAsFixed(3)} \$',
           style: const TextStyle(color: chocolateColor),
         )),
         DataCell(Text(
